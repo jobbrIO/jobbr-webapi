@@ -3,8 +3,8 @@ using System.Net;
 using System.Web.Http;
 using Jobbr.Common.Model;
 using Jobbr.Server.Core;
+using Jobbr.WebAPI.Common.Models;
 using WebAPI.Mapping;
-using WebAPI.Models;
 
 namespace WebAPI.Controller
 {

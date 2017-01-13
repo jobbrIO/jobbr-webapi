@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace WebAPI.Models
+namespace Jobbr.WebAPI.Common.Models
 {
     public class JobDto
     {

@@ -6,8 +6,8 @@ using System.Net.Http.Headers;
 using System.Web.Http;
 using Jobbr.Common.Model;
 using Jobbr.Server.Common;
+using Jobbr.WebAPI.Common.Models;
 using Newtonsoft.Json;
-using WebAPI.Models;
 
 namespace WebAPI.Controller
 {

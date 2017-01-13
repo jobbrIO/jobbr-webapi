@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace WebAPI.Models
+namespace Jobbr.WebAPI.Common.Models
 {
     /// <summary>
     /// The job run dto.
@@ -37,5 +37,11 @@ namespace WebAPI.Models
         public List<JobRunArtefactDto> Artefacts { get; set; }
 
         public string JobTitle { get; set; }
+    }
+
+    public class JobRunArtefactDto
+    {
+        public string Filename { get; set; }
+        public long Size { get; set; }
     }
 }

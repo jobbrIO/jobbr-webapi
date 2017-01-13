@@ -83,10 +83,6 @@
     <Compile Include="JsonTypeConverter.cs" />
     <Compile Include="Mapping\JobMapper.cs" />
     <Compile Include="Mapping\TriggerMapper.cs" />
-    <Compile Include="Models\JobDto.cs" />
-    <Compile Include="Models\JobRunArtefactDto.cs" />
-    <Compile Include="Models\JobRunDto.cs" />
-    <Compile Include="Models\JobTriggerDtoBase.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="TraceSourceExceptionLogger.cs" />
     <Compile Include="WebHost.cs" />
@@ -98,6 +94,10 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Jobbr.WebAPI.Common\Jobbr.WebAPI.Common.csproj">
+      <Project>{A2477520-351E-4429-8F75-BE728382C2A5}</Project>
+      <Name>Jobbr.WebAPI.Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\submodules\jobbr-server\source\Jobbr.Common\Jobbr.Common.csproj">
       <Project>{37e22e5d-f8b2-4336-b509-53c94b170e4c}</Project>
       <Name>Jobbr.Common</Name>

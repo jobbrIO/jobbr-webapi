@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace WebAPI.Models
+namespace Jobbr.WebAPI.Common.Models
 {
     /// <summary>
     /// The job trigger base.

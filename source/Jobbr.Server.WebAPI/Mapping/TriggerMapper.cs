@@ -1,6 +1,6 @@
 using Jobbr.Common.Model;
+using Jobbr.WebAPI.Common.Models;
 using Newtonsoft.Json;
-using WebAPI.Models;
 
 namespace WebAPI.Mapping
 {

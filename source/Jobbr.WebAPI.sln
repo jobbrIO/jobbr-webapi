@@ -15,6 +15,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jobbr.Tests", "submodules\j
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jobbr.Server.WebAPI", "Jobbr.Server.WebAPI\Jobbr.Server.WebAPI.csproj", "{B158F9AD-5480-4415-9BCE-8D8663C3F3C0}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jobbr.WebAPI.Common", "Jobbr.WebAPI.Common\Jobbr.WebAPI.Common.csproj", "{A2477520-351E-4429-8F75-BE728382C2A5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -41,6 +43,10 @@ Global
 		{B158F9AD-5480-4415-9BCE-8D8663C3F3C0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B158F9AD-5480-4415-9BCE-8D8663C3F3C0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B158F9AD-5480-4415-9BCE-8D8663C3F3C0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A2477520-351E-4429-8F75-BE728382C2A5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A2477520-351E-4429-8F75-BE728382C2A5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A2477520-351E-4429-8F75-BE728382C2A5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A2477520-351E-4429-8F75-BE728382C2A5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
