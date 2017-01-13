@@ -3,14 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
 using System.Web.Http.ExceptionHandling;
+using Jobbr.Server.WebAPI.App_Packages.LibLog._3._1;
 using Jobbr.Shared;
 using Jobbr.WebAPI.Common.Models;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using Owin;
-using WebAPI.App_Packages.LibLog._3._1;
 
-namespace WebAPI
+namespace Jobbr.Server.WebAPI
 {
     /// <summary>
     /// The OWIN startup class.

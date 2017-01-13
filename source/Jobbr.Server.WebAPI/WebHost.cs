@@ -1,17 +1,17 @@
 using System;
 using Jobbr.Server.Common;
+using Jobbr.Server.WebAPI.App_Packages.LibLog._3._1;
 using Jobbr.Shared;
 using Microsoft.Owin.Hosting;
 using Microsoft.Owin.Hosting.Services;
 using Microsoft.Owin.Hosting.Starter;
-using WebAPI.App_Packages.LibLog._3._1;
 
-namespace WebAPI
+namespace Jobbr.Server.WebAPI
 {
     /// <summary>
     /// The web host.
     /// </summary>
-    public class WebHost
+    public class WebHost : IJobbrComponent
     {
         /// <summary>
         /// The logger.
@@ -80,6 +80,12 @@ namespace WebAPI
                 this.web.Dispose();
             }
 
+            this.web = null;
+        }
+
+        public void Dispose()
+        {
+            this.web.Dispose();
             this.web = null;
         }
     }

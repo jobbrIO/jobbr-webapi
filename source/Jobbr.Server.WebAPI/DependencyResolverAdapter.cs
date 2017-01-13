@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Web.Http.Dependencies;
 using Jobbr.Shared;
 
-namespace WebAPI
+namespace Jobbr.Server.WebAPI
 {
     public class DependencyResolverAdapter : IDependencyResolver
     {

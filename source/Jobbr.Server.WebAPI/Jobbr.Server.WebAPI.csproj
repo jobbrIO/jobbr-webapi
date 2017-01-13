@@ -7,8 +7,8 @@
     <ProjectGuid>{B158F9AD-5480-4415-9BCE-8D8663C3F3C0}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>WebAPI</RootNamespace>
-    <AssemblyName>WebAPI</AssemblyName>
+    <RootNamespace>Jobbr.Server.WebAPI</RootNamespace>
+    <AssemblyName>Jobbr.Server.WebAPI</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -83,6 +83,7 @@
     <Compile Include="JsonTypeConverter.cs" />
     <Compile Include="Mapping\JobMapper.cs" />
     <Compile Include="Mapping\TriggerMapper.cs" />
+    <Compile Include="JobbrBuilderExtensions.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="TraceSourceExceptionLogger.cs" />
     <Compile Include="WebHost.cs" />

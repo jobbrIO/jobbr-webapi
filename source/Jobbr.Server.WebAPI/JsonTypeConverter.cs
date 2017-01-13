@@ -5,7 +5,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json.Serialization;
 
-namespace WebAPI
+namespace Jobbr.Server.WebAPI
 {
     /// <summary>
     /// Inspired by code from Michael Schnyder.

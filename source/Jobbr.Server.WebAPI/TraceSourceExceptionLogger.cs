@@ -1,9 +1,9 @@
 using System.Threading;
 using System.Threading.Tasks;
 using System.Web.Http.ExceptionHandling;
-using WebAPI.App_Packages.LibLog._3._1;
+using Jobbr.Server.WebAPI.App_Packages.LibLog._3._1;
 
-namespace WebAPI
+namespace Jobbr.Server.WebAPI
 {
     public class TraceSourceExceptionLogger : IExceptionLogger
     {

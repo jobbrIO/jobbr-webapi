@@ -4,11 +4,11 @@ using System.Net;
 using System.Web.Http;
 using Jobbr.Common.Model;
 using Jobbr.Server.Core;
+using Jobbr.Server.WebAPI.Mapping;
 using Jobbr.WebAPI.Common.Models;
 using Newtonsoft.Json;
-using WebAPI.Mapping;
 
-namespace WebAPI.Controller
+namespace Jobbr.Server.WebAPI.Controller
 {
     /// <summary>
     /// The job controller.

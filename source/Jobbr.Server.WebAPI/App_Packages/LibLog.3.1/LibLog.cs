@@ -29,8 +29,6 @@
 // Define LIBLOG_PORTABLE conditional compilation symbol for PCL compatibility
 
 using System;
-using System;
-using System.Collections.Generic;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
@@ -39,7 +37,7 @@ using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
 
-namespace WebAPI.App_Packages.LibLog._3._1
+namespace Jobbr.Server.WebAPI.App_Packages.LibLog._3._1
 {
 #pragma warning disable 1591
 
