@@ -34,11 +34,11 @@ server.Start();
 ```
 
 ### Configuration
-There is a default configuration which binds the API-Endpoint to `http://localhost:80`. This can be adjusted by using the fluent-syntax on the configuration object when one of the various overloads of the builder.AddWebApi()-Method. See example below
+There is a default configuration which binds the API-Endpoint to `http://localhost:80/jobbr/api`. This can be adjusted by using the fluent-syntax on the configuration object when one of the various overloads of the builder.AddWebApi()-Method. See example below
 
 ```C#
 builder.AddWebApi(config => {
-  config.BaseUrl = "localhost:8765";
+  config.BaseUrl = "http://localhost:8765";
   }
 ```
 Please note that the configuration options reflects the current feature set of the server directly.
