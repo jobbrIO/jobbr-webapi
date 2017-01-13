@@ -7,15 +7,17 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Server", "Server", "{F59260
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jobbr.Server", "submodules\jobbr-server\source\Jobbr.Server\Jobbr.Server.csproj", "{A45F729D-8629-4C7A-96B8-29EAA8D52919}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jobbr.Common", "submodules\jobbr-server\source\Jobbr.Common\Jobbr.Common.csproj", "{37E22E5D-F8B2-4336-B509-53C94B170E4C}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jobbr.Shared", "submodules\jobbr-server\source\Jobbr.Shared\Jobbr.Shared.csproj", "{4C7FF32D-8514-4D17-B21C-3EF69968AB1F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jobbr.Tests", "submodules\jobbr-server\source\Jobbr.Tests\Jobbr.Tests.csproj", "{304D07A5-D6D1-4F48-819E-5D28ED8755AC}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jobbr.Server.WebAPI", "Jobbr.Server.WebAPI\Jobbr.Server.WebAPI.csproj", "{B158F9AD-5480-4415-9BCE-8D8663C3F3C0}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jobbr.Common", "submodules\jobbr-server\source\Jobbr.Common\Jobbr.Common.csproj", "{37E22E5D-F8B2-4336-B509-53C94B170E4C}"
+EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jobbr.WebAPI.Common", "Jobbr.WebAPI.Common\Jobbr.WebAPI.Common.csproj", "{A2477520-351E-4429-8F75-BE728382C2A5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jobbr.Client", "Jobbr.Client\Jobbr.Client.csproj", "{79CF40B0-F063-4CA7-826B-7C92C0BE8232}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,10 +29,6 @@ Global
 		{A45F729D-8629-4C7A-96B8-29EAA8D52919}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A45F729D-8629-4C7A-96B8-29EAA8D52919}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A45F729D-8629-4C7A-96B8-29EAA8D52919}.Release|Any CPU.Build.0 = Release|Any CPU
-		{37E22E5D-F8B2-4336-B509-53C94B170E4C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{37E22E5D-F8B2-4336-B509-53C94B170E4C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{37E22E5D-F8B2-4336-B509-53C94B170E4C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{37E22E5D-F8B2-4336-B509-53C94B170E4C}.Release|Any CPU.Build.0 = Release|Any CPU
 		{4C7FF32D-8514-4D17-B21C-3EF69968AB1F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{4C7FF32D-8514-4D17-B21C-3EF69968AB1F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4C7FF32D-8514-4D17-B21C-3EF69968AB1F}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -43,18 +41,26 @@ Global
 		{B158F9AD-5480-4415-9BCE-8D8663C3F3C0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B158F9AD-5480-4415-9BCE-8D8663C3F3C0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B158F9AD-5480-4415-9BCE-8D8663C3F3C0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{37E22E5D-F8B2-4336-B509-53C94B170E4C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{37E22E5D-F8B2-4336-B509-53C94B170E4C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{37E22E5D-F8B2-4336-B509-53C94B170E4C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{37E22E5D-F8B2-4336-B509-53C94B170E4C}.Release|Any CPU.Build.0 = Release|Any CPU
 		{A2477520-351E-4429-8F75-BE728382C2A5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{A2477520-351E-4429-8F75-BE728382C2A5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A2477520-351E-4429-8F75-BE728382C2A5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A2477520-351E-4429-8F75-BE728382C2A5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{79CF40B0-F063-4CA7-826B-7C92C0BE8232}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{79CF40B0-F063-4CA7-826B-7C92C0BE8232}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{79CF40B0-F063-4CA7-826B-7C92C0BE8232}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{79CF40B0-F063-4CA7-826B-7C92C0BE8232}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{A45F729D-8629-4C7A-96B8-29EAA8D52919} = {F59260A4-5DDC-479B-BF94-AF8D3687F443}
-		{37E22E5D-F8B2-4336-B509-53C94B170E4C} = {F59260A4-5DDC-479B-BF94-AF8D3687F443}
 		{4C7FF32D-8514-4D17-B21C-3EF69968AB1F} = {F59260A4-5DDC-479B-BF94-AF8D3687F443}
 		{304D07A5-D6D1-4F48-819E-5D28ED8755AC} = {F59260A4-5DDC-479B-BF94-AF8D3687F443}
+		{37E22E5D-F8B2-4336-B509-53C94B170E4C} = {F59260A4-5DDC-479B-BF94-AF8D3687F443}
 	EndGlobalSection
 EndGlobal
