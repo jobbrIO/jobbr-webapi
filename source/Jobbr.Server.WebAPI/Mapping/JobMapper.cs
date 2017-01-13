@@ -1,5 +1,5 @@
 using System;
-using Jobbr.Server.Model;
+using Jobbr.Common.Model;
 using Newtonsoft.Json;
 using WebAPI.Models;
 

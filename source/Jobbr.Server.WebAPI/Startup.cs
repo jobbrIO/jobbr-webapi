@@ -4,11 +4,11 @@ using System.Linq;
 using System.Web.Http;
 using System.Web.Http.ExceptionHandling;
 using Jobbr.Shared;
+using Jobbr.WebAPI.Common.Models;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using Owin;
 using WebAPI.App_Packages.LibLog._3._1;
-using WebAPI.Models;
 
 namespace WebAPI
 {

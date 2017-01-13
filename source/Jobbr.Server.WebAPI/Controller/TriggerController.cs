@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Net;
 using System.Web.Http;
+using Jobbr.Common.Model;
 using Jobbr.Server.Core;
-using Jobbr.Server.Model;
 using WebAPI.Mapping;
 using WebAPI.Models;
 

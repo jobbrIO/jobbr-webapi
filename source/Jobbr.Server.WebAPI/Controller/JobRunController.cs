@@ -4,8 +4,8 @@ using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Web.Http;
+using Jobbr.Common.Model;
 using Jobbr.Server.Common;
-using Jobbr.Server.Model;
 using Newtonsoft.Json;
 using WebAPI.Models;
 
