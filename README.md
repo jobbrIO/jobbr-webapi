@@ -1,7 +1,6 @@
-# jobbr-webapi
+# Jobbr Server Extension
 Adds Rest-style api to a Jobbr-Server and a strong typed .NET Client
 
-# Jobbr Server Extension
 ## Installation
 Install the NuGet "Jobbr.Server.WebAPI" to the project where you host you Jobbr-Server. Because the Web Api builds up on an OWIN Pipeline, you need to install a appropriate Host, for instance a HttpListener.
 
