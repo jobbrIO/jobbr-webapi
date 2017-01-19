@@ -4,3 +4,6 @@
 [submodule "source/submodules/jobbr-cm-registration"]
 	path = source/submodules/jobbr-cm-registration
 	url = https://github.com/jobbrIO/jobbr-cm-registration.git
+[submodule "source/submodules/jobbr-server"]
+	path = source/submodules/jobbr-server
+	url = https://github.com/jobbrIO/jobbr-server.git
