@@ -1,5 +1,4 @@
-﻿using Jobbr.Server.Builder;
-using Jobbr.Server.Common;
+﻿using Jobbr.ComponentModel.Registration;
 
 namespace Jobbr.Server.WebAPI
 {
