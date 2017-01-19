@@ -67,7 +67,7 @@ namespace Jobbr.WebApi.Tests
         }
 
         [TestMethod]
-        public void RegisteredAsComponent_JobbrIsStarted_CanLoadDependencies()
+        public void RegisteredAsComponent_JobbrIsStarted_CanLoadSomeJobs()
         {
             using (GivenARunningServerWithWebApi())
             {
