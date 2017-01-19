@@ -9,8 +9,9 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Jobbr.Server.WebAPI</RootNamespace>
     <AssemblyName>Jobbr.Server.WebAPI</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -99,17 +100,9 @@
       <Project>{A2477520-351E-4429-8F75-BE728382C2A5}</Project>
       <Name>Jobbr.WebAPI.Common</Name>
     </ProjectReference>
-    <ProjectReference Include="..\submodules\jobbr-server\source\Jobbr.Common\Jobbr.Common.csproj">
-      <Project>{37e22e5d-f8b2-4336-b509-53c94b170e4c}</Project>
-      <Name>Jobbr.Common</Name>
-    </ProjectReference>
     <ProjectReference Include="..\submodules\jobbr-server\source\Jobbr.Server\Jobbr.Server.csproj">
       <Project>{a45f729d-8629-4c7a-96b8-29eaa8d52919}</Project>
       <Name>Jobbr.Server</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\submodules\jobbr-server\source\Jobbr.Shared\Jobbr.Shared.csproj">
-      <Project>{4c7ff32d-8514-4d17-b21c-3ef69968ab1f}</Project>
-      <Name>Jobbr.Shared</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
