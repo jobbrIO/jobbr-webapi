@@ -5,8 +5,6 @@ VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Submodules", "Submodules", "{F59260A4-5DDC-479B-BF94-AF8D3687F443}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jobbr.Server", "submodules\jobbr-server\source\Jobbr.Server\Jobbr.Server.csproj", "{A45F729D-8629-4C7A-96B8-29EAA8D52919}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jobbr.Server.WebAPI", "Jobbr.Server.WebAPI\Jobbr.Server.WebAPI.csproj", "{B158F9AD-5480-4415-9BCE-8D8663C3F3C0}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jobbr.WebAPI.Common", "Jobbr.WebAPI.Common\Jobbr.WebAPI.Common.csproj", "{A2477520-351E-4429-8F75-BE728382C2A5}"
@@ -19,16 +17,26 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jobbr.ComponentModel.Manage
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jobbr.ComponentModel.Registration", "submodules\jobbr-cm-registration\source\Jobbr.ComponentModel.Registration\Jobbr.ComponentModel.Registration.csproj", "{DA63448E-F6CD-4519-9284-09028659AD28}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Server", "Server", "{BF87C330-1634-4295-9F6C-37AB4DC948A9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jobbr.Server", "submodules\jobbr-server\source\Jobbr.Server\Jobbr.Server.csproj", "{A45F729D-8629-4C7A-96B8-29EAA8D52919}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jobbr.Shared", "submodules\jobbr-server\source\Jobbr.Shared\Jobbr.Shared.csproj", "{4C7FF32D-8514-4D17-B21C-3EF69968AB1F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jobbr.Common", "submodules\jobbr-server\source\Jobbr.Common\Jobbr.Common.csproj", "{37E22E5D-F8B2-4336-B509-53C94B170E4C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Submodules", "Submodules", "{EE0CFF84-60B3-4F40-92E1-96E6050CCB78}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jobbr.ComponentModel.Registration", "submodules\jobbr-server\source\submodules\jobbr-cm-registration\source\Jobbr.ComponentModel.Registration\Jobbr.ComponentModel.Registration.csproj", "{0718496B-04F3-4197-9ED6-F2ECB73ECC03}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jobbr.ComponentModel.Management", "submodules\jobbr-server\source\submodules\jobbr-cm-management\source\Jobbr.ComponentModel.Management\Jobbr.ComponentModel.Management.csproj", "{44C1E5B0-5802-48FA-910E-17665587979D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{A45F729D-8629-4C7A-96B8-29EAA8D52919}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A45F729D-8629-4C7A-96B8-29EAA8D52919}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A45F729D-8629-4C7A-96B8-29EAA8D52919}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A45F729D-8629-4C7A-96B8-29EAA8D52919}.Release|Any CPU.Build.0 = Release|Any CPU
 		{B158F9AD-5480-4415-9BCE-8D8663C3F3C0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{B158F9AD-5480-4415-9BCE-8D8663C3F3C0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B158F9AD-5480-4415-9BCE-8D8663C3F3C0}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -53,13 +61,39 @@ Global
 		{DA63448E-F6CD-4519-9284-09028659AD28}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DA63448E-F6CD-4519-9284-09028659AD28}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DA63448E-F6CD-4519-9284-09028659AD28}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A45F729D-8629-4C7A-96B8-29EAA8D52919}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A45F729D-8629-4C7A-96B8-29EAA8D52919}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A45F729D-8629-4C7A-96B8-29EAA8D52919}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A45F729D-8629-4C7A-96B8-29EAA8D52919}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4C7FF32D-8514-4D17-B21C-3EF69968AB1F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4C7FF32D-8514-4D17-B21C-3EF69968AB1F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4C7FF32D-8514-4D17-B21C-3EF69968AB1F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4C7FF32D-8514-4D17-B21C-3EF69968AB1F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{37E22E5D-F8B2-4336-B509-53C94B170E4C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{37E22E5D-F8B2-4336-B509-53C94B170E4C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{37E22E5D-F8B2-4336-B509-53C94B170E4C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{37E22E5D-F8B2-4336-B509-53C94B170E4C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0718496B-04F3-4197-9ED6-F2ECB73ECC03}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0718496B-04F3-4197-9ED6-F2ECB73ECC03}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0718496B-04F3-4197-9ED6-F2ECB73ECC03}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0718496B-04F3-4197-9ED6-F2ECB73ECC03}.Release|Any CPU.Build.0 = Release|Any CPU
+		{44C1E5B0-5802-48FA-910E-17665587979D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{44C1E5B0-5802-48FA-910E-17665587979D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{44C1E5B0-5802-48FA-910E-17665587979D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{44C1E5B0-5802-48FA-910E-17665587979D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{A45F729D-8629-4C7A-96B8-29EAA8D52919} = {F59260A4-5DDC-479B-BF94-AF8D3687F443}
 		{C83448F5-759D-4322-ACFE-B447D1ABF9EC} = {F59260A4-5DDC-479B-BF94-AF8D3687F443}
 		{DA63448E-F6CD-4519-9284-09028659AD28} = {F59260A4-5DDC-479B-BF94-AF8D3687F443}
+		{BF87C330-1634-4295-9F6C-37AB4DC948A9} = {F59260A4-5DDC-479B-BF94-AF8D3687F443}
+		{A45F729D-8629-4C7A-96B8-29EAA8D52919} = {BF87C330-1634-4295-9F6C-37AB4DC948A9}
+		{4C7FF32D-8514-4D17-B21C-3EF69968AB1F} = {BF87C330-1634-4295-9F6C-37AB4DC948A9}
+		{37E22E5D-F8B2-4336-B509-53C94B170E4C} = {BF87C330-1634-4295-9F6C-37AB4DC948A9}
+		{EE0CFF84-60B3-4F40-92E1-96E6050CCB78} = {BF87C330-1634-4295-9F6C-37AB4DC948A9}
+		{0718496B-04F3-4197-9ED6-F2ECB73ECC03} = {EE0CFF84-60B3-4F40-92E1-96E6050CCB78}
+		{44C1E5B0-5802-48FA-910E-17665587979D} = {EE0CFF84-60B3-4F40-92E1-96E6050CCB78}
 	EndGlobalSection
 EndGlobal

@@ -1,7 +1,6 @@
 using System;
-using Jobbr.Server.Common;
+using Jobbr.ComponentModel.Registration;
 using Jobbr.Server.WebAPI.App_Packages.LibLog._3._1;
-using Jobbr.Shared;
 using Microsoft.Owin.Hosting;
 using Microsoft.Owin.Hosting.Services;
 using Microsoft.Owin.Hosting.Starter;
@@ -21,36 +20,38 @@ namespace Jobbr.Server.WebAPI
         /// <summary>
         /// The dependency resolver.
         /// </summary>
-        private readonly IJobbrDependencyResolver dependencyResolver;
+        private readonly IJobbrServiceProvider dependencyResolver;
 
         /// <summary>
-        /// The web.
+        /// The configuration for this component
         /// </summary>
-        private IDisposable web;
+        private readonly JobbrWebApiConfiguration configuration;
 
         /// <summary>
-        /// The configuration.
+        /// The webhost that serves for the OWIN WebAPI component
         /// </summary>
-        private IJobbrConfiguration configuration;
+        private IDisposable webHost;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="WebHost"/> class.
         /// </summary>
-        /// <param name="dependencyResolver">
-        /// The dependency resolver.
-        /// </param>
-        public WebHost(IJobbrDependencyResolver dependencyResolver)
+        public WebHost(IJobbrServiceProvider dependencyResolver, JobbrWebApiConfiguration configuration)
         {
             this.dependencyResolver = dependencyResolver;
-
-            this.configuration = (IJobbrConfiguration)this.dependencyResolver.GetService(typeof(IJobbrConfiguration));
+            this.configuration = configuration;
         }
 
         /// <summary>
-        /// The start.
+        /// Start the component
         /// </summary>
         public void Start()
         {
+            if (string.IsNullOrWhiteSpace(this.configuration.BackendAddress))
+            {
+                throw new ArgumentException("Unable to start WebServer when no BackendUrl is specified");
+            }
+
+
             var services = (ServiceProvider)ServicesFactory.Create();
             var options = new StartOptions()
                               {
@@ -59,34 +60,28 @@ namespace Jobbr.Server.WebAPI
                                          }, 
                                   AppStartup = typeof(Startup).FullName
                               };
-
-            services.Add(typeof(IJobbrDependencyResolver), () => this.dependencyResolver);
+            // Pass through the IJobbrServiceProvider to allow Startup-Classes to let them inject this dependency
+            services.Add(typeof(IJobbrServiceProvider), () => this.dependencyResolver);
 
             var hostingStarter = services.GetService<IHostingStarter>();
-            this.web = hostingStarter.Start(options); // constructs Startup instance internally
+            this.webHost = hostingStarter.Start(options);
 
-            Logger.InfoFormat("Started OWIN-Host (WebEndpoint) with for '{0}' at '{1}'", options.AppStartup, this.configuration.BackendAddress);
+            Logger.InfoFormat($"Started OWIN-Host for WebAPI at '{this.configuration.BackendAddress}'.");
         }
 
-        /// <summary>
-        /// The stop.
-        /// </summary>
         public void Stop()
         {
             Logger.InfoFormat("Stopping OWIN-Host for Web-Endpoints'");
 
-            if (this.web != null)
-            {
-                this.web.Dispose();
-            }
+            this.webHost?.Dispose();
 
-            this.web = null;
+            this.webHost = null;
         }
 
         public void Dispose()
         {
-            this.web.Dispose();
-            this.web = null;
+            this.webHost.Dispose();
+            this.webHost = null;
         }
     }
 }

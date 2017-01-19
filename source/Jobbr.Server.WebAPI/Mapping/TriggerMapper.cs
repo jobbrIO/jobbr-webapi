@@ -1,4 +1,4 @@
-using Jobbr.Common.Model;
+using Jobbr.ComponentModel.Management.Model;
 using Jobbr.WebAPI.Common.Models;
 using Newtonsoft.Json;
 
@@ -8,47 +8,46 @@ namespace Jobbr.Server.WebAPI.Mapping
     {
         internal static ScheduledTriggerDto ConvertToDto(ScheduledTrigger trigger)
         {
-            var dto = new ScheduledTriggerDto { StartDateTimeUtc = trigger.StartDateTimeUtc};
-            return (ScheduledTriggerDto)AddBaseInfos(trigger, dto);
+            var dto = new ScheduledTriggerDto { StartDateTimeUtc = trigger.StartDateTimeUtc, TriggerType = ScheduledTriggerDto.TypeName };
+            return (ScheduledTriggerDto)MapCommonValues(trigger, dto);
         }
 
         internal static InstantTriggerDto ConvertToDto(InstantTrigger trigger)
         {
-            var dto = new InstantTriggerDto { DelayedMinutes = trigger.DelayedMinutes };
-            return (InstantTriggerDto)AddBaseInfos(trigger, dto);
+            var dto = new InstantTriggerDto { DelayedMinutes = trigger.DelayedMinutes, TriggerType = InstantTriggerDto.TypeName };
+            return (InstantTriggerDto)MapCommonValues(trigger, dto);
         }
 
         internal static RecurringTriggerDto ConvertToDto(RecurringTrigger trigger)
         {
-            var dto = new RecurringTriggerDto { StartDateTimeUtc = trigger.StartDateTimeUtc, EndDateTimeUtc = trigger.EndDateTimeUtc, Definition = trigger.Definition, };
-            return (RecurringTriggerDto)AddBaseInfos(trigger, dto);
+            var dto = new RecurringTriggerDto { StartDateTimeUtc = trigger.StartDateTimeUtc, EndDateTimeUtc = trigger.EndDateTimeUtc, Definition = trigger.Definition, TriggerType = RecurringTriggerDto.TypeName};
+            return (RecurringTriggerDto)MapCommonValues(trigger, dto);
         }
 
         internal static RecurringTrigger ConvertToTrigger(RecurringTriggerDto dto)
         {
-            var trigger = new RecurringTrigger() { TriggerType = RecurringTrigger.TypeName, Definition = dto.Definition, StartDateTimeUtc = dto.StartDateTimeUtc, EndDateTimeUtc = dto.EndDateTimeUtc };
-            return (RecurringTrigger)AddBaseInfos(dto, trigger);
+            var trigger = new RecurringTrigger() { Definition = dto.Definition, StartDateTimeUtc = dto.StartDateTimeUtc, EndDateTimeUtc = dto.EndDateTimeUtc };
+            return (RecurringTrigger)MapCommonValues(dto, trigger);
         }
 
         internal static ScheduledTrigger ConvertToTrigger(ScheduledTriggerDto dto)
         {
-            var trigger = new ScheduledTrigger { TriggerType = ScheduledTrigger.TypeName, StartDateTimeUtc = dto.StartDateTimeUtc };
-            return (ScheduledTrigger)AddBaseInfos(dto, trigger);
+            var trigger = new ScheduledTrigger { StartDateTimeUtc = dto.StartDateTimeUtc };
+            return (ScheduledTrigger)MapCommonValues(dto, trigger);
         }
 
         internal static InstantTrigger ConvertToTrigger(InstantTriggerDto dto)
         {
-            var trigger = new InstantTrigger() { TriggerType = InstantTrigger.TypeName, DelayedMinutes = dto.DelayedMinutes };
-            return (InstantTrigger)AddBaseInfos(dto, trigger);
+            var trigger = new InstantTrigger() { DelayedMinutes = dto.DelayedMinutes };
+            return (InstantTrigger)MapCommonValues(dto, trigger);
         }
 
-        internal static JobTriggerDtoBase AddBaseInfos(JobTriggerBase trigger, JobTriggerDtoBase dto)
+        internal static JobTriggerDtoBase MapCommonValues(IJobTrigger trigger, JobTriggerDtoBase dto)
         {
             dto.Id = trigger.Id;
             dto.Comment = trigger.Comment;
             dto.IsActive = trigger.IsActive;
             dto.Parameters = trigger.Parameters != null ? JsonConvert.DeserializeObject(trigger.Parameters) : null;
-            dto.TriggerType = trigger.TriggerType;
             dto.UserDisplayName = trigger.UserDisplayName;
             dto.UserId = trigger.UserId;
             dto.UserName = trigger.UserName;
@@ -56,12 +55,11 @@ namespace Jobbr.Server.WebAPI.Mapping
             return dto;
         }
 
-        internal static JobTriggerBase AddBaseInfos(JobTriggerDtoBase dto, JobTriggerBase trigger)
+        internal static IJobTrigger MapCommonValues(JobTriggerDtoBase dto, IJobTrigger trigger)
         {
             trigger.Comment = dto.Comment;
             trigger.IsActive = dto.IsActive;
             trigger.Parameters = JsonConvert.SerializeObject(dto.Parameters);
-            trigger.TriggerType = dto.TriggerType;
             trigger.UserDisplayName = dto.UserDisplayName;
             trigger.UserId = dto.UserId;
             trigger.UserName = dto.UserName;

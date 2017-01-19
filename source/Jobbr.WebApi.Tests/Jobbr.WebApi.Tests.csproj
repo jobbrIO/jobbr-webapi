@@ -16,6 +16,7 @@
     <ReferencePath>$(ProgramFiles)\Common Files\microsoft shared\VSTT\$(VisualStudioVersion)\UITestExtensionPackages</ReferencePath>
     <IsCodedUITest>False</IsCodedUITest>
     <TestProjectType>UnitTest</TestProjectType>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -66,6 +67,10 @@
     <ProjectReference Include="..\submodules\jobbr-server\source\Jobbr.Server\Jobbr.Server.csproj">
       <Project>{A45F729D-8629-4C7A-96B8-29EAA8D52919}</Project>
       <Name>Jobbr.Server</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\submodules\jobbr-server\source\submodules\jobbr-cm-registration\source\Jobbr.ComponentModel.Registration\Jobbr.ComponentModel.Registration.csproj">
+      <Project>{0718496b-04f3-4197-9ed6-f2ecb73ecc03}</Project>
+      <Name>Jobbr.ComponentModel.Registration</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

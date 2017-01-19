@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Web.Http;
-using Jobbr.Server.Common;
 
 namespace Jobbr.Server.WebAPI.Controller
 {
@@ -9,9 +8,9 @@ namespace Jobbr.Server.WebAPI.Controller
     /// </summary>
     public class DefaultController : ApiController
     {
-        private readonly IJobbrConfiguration configuration;
+        private readonly JobbrWebApiConfiguration configuration;
 
-        public DefaultController(IJobbrConfiguration configuration)
+        public DefaultController(JobbrWebApiConfiguration configuration)
         {
             this.configuration = configuration;
         }

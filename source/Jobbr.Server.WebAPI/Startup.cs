@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
 using System.Web.Http.ExceptionHandling;
+using Jobbr.ComponentModel.Registration;
 using Jobbr.Server.WebAPI.App_Packages.LibLog._3._1;
-using Jobbr.Shared;
 using Jobbr.WebAPI.Common.Models;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
@@ -12,60 +12,54 @@ using Owin;
 
 namespace Jobbr.Server.WebAPI
 {
-    /// <summary>
-    /// The OWIN startup class.
-    /// </summary>
     public class Startup
     {
         private static readonly ILog Logger = LogProvider.For<WebHost>();
 
         /// <summary>
-        /// The dependency resolver.
+        /// The dependency resolver from the JobbrServer which needs to be passed through the OWIN stack to WebAPI
         /// </summary>
-        private readonly IJobbrDependencyResolver dependencyResolver;
+        private readonly IJobbrServiceProvider dependencyResolver;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Startup"/> class.
         /// </summary>
-        /// <param name="dependencyResolver">
+        /// <param name="serviceProvider">
         /// The dependency resolver.
         /// </param>
-        public Startup(IJobbrDependencyResolver dependencyResolver)
+        public Startup(IJobbrServiceProvider serviceProvider)
         {
-            if (dependencyResolver == null)
+            if (serviceProvider == null)
             {
-                throw new ArgumentException("Please provide a dependency resolver. See http://servercoredump.com/question/27246240/inject-current-user-owin-host-web-api-service for details", "dependencyResolver");
+                throw new ArgumentException("Please provide a service provider. See http://servercoredump.com/question/27246240/inject-current-user-owin-host-web-api-service for details", "serviceProvider");
             }
 
-            this.dependencyResolver = dependencyResolver;
+            this.dependencyResolver = serviceProvider;
         }
 
-        /// <summary>
-        /// The configuration.
-        /// </summary>
-        /// <param name="app">
-        /// The app.
-        /// </param>
         public void Configuration(IAppBuilder app)
         {
-            // Ensure Web API for self-host. 
-            HttpConfiguration config = new HttpConfiguration();
+            var config = new HttpConfiguration();
 
+            // Set the resolved to the service provider that gets injected when constructing this component
+            config.DependencyResolver = new DependencyResolverAdapter(this.dependencyResolver);
+
+            // Add trace logger for exceptions
+            config.Services.Add(typeof(IExceptionLogger), new TraceSourceExceptionLogger(Logger));
+
+            // Controllers all have attributes
             config.MapHttpAttributeRoutes();
+
+            // Serialization
             var jsonSerializerSettings = new JsonSerializerSettings() { ContractResolver = new CamelCasePropertyNamesContractResolver(), NullValueHandling = NullValueHandling.Ignore };
-
             jsonSerializerSettings.Converters.Add(new JsonTypeConverter<JobTriggerDtoBase>("TriggerType", this.JobTriggerTypeResolver));
-
             config.Formatters.JsonFormatter.SerializerSettings = jsonSerializerSettings;
 
-            // Remove XML Responses
+            // Remove XML response format
             var appXmlType = config.Formatters.XmlFormatter.SupportedMediaTypes.FirstOrDefault(t => t.MediaType == "application/xml");
             config.Formatters.XmlFormatter.SupportedMediaTypes.Remove(appXmlType);
 
-            config.DependencyResolver = new DependencyResolverAdapter(this.dependencyResolver);
-
-            config.Services.Add(typeof(IExceptionLogger), new TraceSourceExceptionLogger(Logger));
-
+            // Finally attach WebApi to the pipeline with the given configuration
             app.UseWebApi(config);
         }
 

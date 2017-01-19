@@ -36,7 +36,7 @@
 //        [Route("client/jobrun/{jobRunId}")]
 //        public IHttpActionResult GetJonbRunInfos(long jobRunId)
 //        {
-//            var jobRun = this.jobManagementService.GetJobRun(jobRunId);
+//            var jobRun = this.jobManagementService.GetJobRunById(jobRunId);
 
 //            if (jobRun == null)
 //            {
@@ -69,7 +69,7 @@
 //        [Route("client/jobrun/{jobRunId}")]
 //        public IHttpActionResult PutJobRunUpdate(long jobRunId, [FromBody] JobRunUpdateDto dto)
 //        {
-//            var jobRun = this.jobManagementService.GetJobRun(jobRunId);
+//            var jobRun = this.jobManagementService.GetJobRunById(jobRunId);
 
 //            if (jobRun == null)
 //            {
@@ -88,7 +88,7 @@
 //        [Route("client/jobrun/{jobRunId}/artefacts")]
 //        public IHttpActionResult AddArtefacts(long jobRunId)
 //        {
-//            var jobRun = this.jobManagementService.GetJobRun(jobRunId);
+//            var jobRun = this.jobManagementService.GetJobRunById(jobRunId);
 
 //            if (jobRun == null)
 //            {

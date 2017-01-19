@@ -1,18 +1,18 @@
 using System;
 using System.Collections.Generic;
 using System.Web.Http.Dependencies;
-using Jobbr.Shared;
+using Jobbr.ComponentModel.Registration;
 
 namespace Jobbr.Server.WebAPI
 {
     public class DependencyResolverAdapter : IDependencyResolver
     {
-        private readonly IJobbrDependencyResolver dependencyResolver;
+        private readonly IJobbrServiceProvider serviceProvider;
 
 
-        public DependencyResolverAdapter(IJobbrDependencyResolver dependencyResolver)
+        public DependencyResolverAdapter(IJobbrServiceProvider serviceProvider)
         {
-            this.dependencyResolver = dependencyResolver;
+            this.serviceProvider = serviceProvider;
         }
 
         public void Dispose()
@@ -21,17 +21,17 @@ namespace Jobbr.Server.WebAPI
 
         public object GetService(Type serviceType)
         {
-            return this.dependencyResolver.GetService(serviceType);
+            return this.serviceProvider.GetService(serviceType);
         }
 
         public IEnumerable<object> GetServices(Type serviceType)
         {
-            return this.dependencyResolver.GetServices(serviceType);
+            return this.serviceProvider.GetServices(serviceType);
         }
 
         public IDependencyScope BeginScope()
         {
-            return this;
+            return new DependencyResolverAdapter(this.serviceProvider.GetChild());
         }
     }
 }

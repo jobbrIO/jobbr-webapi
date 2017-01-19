@@ -2,8 +2,8 @@
 using System.Linq;
 using System.Net;
 using System.Web.Http;
-using Jobbr.Common.Model;
-using Jobbr.Server.Core;
+using Jobbr.ComponentModel.Management;
+using Jobbr.ComponentModel.Management.Model;
 using Jobbr.Server.WebAPI.Mapping;
 using Jobbr.WebAPI.Common.Models;
 using Newtonsoft.Json;
@@ -15,13 +15,10 @@ namespace Jobbr.Server.WebAPI.Controller
     /// </summary>
     public class JobController : ApiController
     {
-        private readonly IStateService service;
-
         private readonly IJobManagementService jobManagementService;
 
-        public JobController(IStateService service, IJobManagementService jobManagementService)
+        public JobController(IJobManagementService jobManagementService)
         {
-            this.service = service;
             this.jobManagementService = jobManagementService;
         }
 
@@ -38,7 +35,7 @@ namespace Jobbr.Server.WebAPI.Controller
         {
             var job = this.jobManagementService.GetJobById(jobId);
 
-            var triggers = this.jobManagementService.GetTriggers(jobId);
+            var triggers = this.jobManagementService.GetTriggersByJobId(jobId);
             
             var jobDto = JobMapper.Map(job);
             jobDto.Trigger = triggers.Select(t => TriggerMapper.ConvertToDto(t as dynamic)).Cast<JobTriggerDtoBase>().ToList();

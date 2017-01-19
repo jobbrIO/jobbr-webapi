@@ -4,8 +4,8 @@ using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Web.Http;
-using Jobbr.Common.Model;
-using Jobbr.Server.Common;
+using Jobbr.ComponentModel.Management;
+using Jobbr.ComponentModel.Management.Model;
 using Jobbr.WebAPI.Common.Models;
 using Newtonsoft.Json;
 
@@ -13,21 +13,18 @@ namespace Jobbr.Server.WebAPI.Controller
 {
     public class JobRunController : ApiController
     {
-        private IJobStorageProvider jobStorageProvider;
+        private readonly IJobManagementService jobManagementService;
 
-        private IArtefactsStorageProvider artefactsStorageProvider;
-
-        public JobRunController(IJobStorageProvider jobStorageProvider, IArtefactsStorageProvider artefactsStorageProvider)
+        public JobRunController(IJobManagementService jobManagementService)
         {
-            this.jobStorageProvider = jobStorageProvider;
-            this.artefactsStorageProvider = artefactsStorageProvider;
+            this.jobManagementService = jobManagementService;
         }
 
         [HttpGet]
         [Route("api/jobRuns/{jobRunId}")]
         public IHttpActionResult GetJonRun(long jobRunId)
         {
-            var jobRun = this.jobStorageProvider.GetJobRunById(jobRunId);
+            var jobRun = this.jobManagementService.GetJobRunById(jobRunId);
 
             if (jobRun == null)
             {
@@ -43,7 +40,7 @@ namespace Jobbr.Server.WebAPI.Controller
         [Route("api/jobRuns/")]
         public IHttpActionResult GetJonRunsByUserId(long userId)
         {
-            var jobRuns = this.jobStorageProvider.GetJobRunsForUserId(userId).OrderByDescending(r => r.Id);
+            var jobRuns = this.jobManagementService.GetJobRunsByUserOrderByIdDesc(userId);
 
             var jobRunDtos = jobRuns.Select(this.ConvertToDto);
 
@@ -54,7 +51,7 @@ namespace Jobbr.Server.WebAPI.Controller
         [Route("api/jobRuns/")]
         public IHttpActionResult GetJonRunsByTriggerId(long triggerId)
         {
-            var jobRuns = this.jobStorageProvider.GetJobRunsByTriggerId(triggerId);
+            var jobRuns = this.jobManagementService.GetJobRunsByTriggerId(triggerId);
 
             var jobRunDtos = jobRuns.Select(this.ConvertToDto);
 
@@ -65,7 +62,7 @@ namespace Jobbr.Server.WebAPI.Controller
         [Route("api/jobRuns/")]
         public IHttpActionResult GetJonRunsByUserName(string userName)
         {
-            var jobRuns = this.jobStorageProvider.GetJobRunsForUserName(userName).OrderByDescending(r => r.Id);
+            var jobRuns = this.jobManagementService.GetJobRunsByUserNameOrderOrderByIdDesc(userName);
 
             var jobRunDtos = jobRuns.Select(this.ConvertToDto);
 
@@ -76,14 +73,14 @@ namespace Jobbr.Server.WebAPI.Controller
         [Route("api/jobRuns/{jobRunId}/artefacts/{filename}")]
         public IHttpActionResult GetArtefact(long jobRunId, string filename)
         {
-            var jobRun = this.jobStorageProvider.GetJobRunById(jobRunId);
+            var jobRun = this.jobManagementService.GetJobRunById(jobRunId);
 
             if (jobRun == null)
             {
                 return this.NotFound();
             }
 
-            var fileStream = this.artefactsStorageProvider.Load(jobRun.UniqueId, filename);
+            var fileStream = this.jobManagementService.GetArtefactAsStream(jobRun, filename);
 
             HttpResponseMessage result = new HttpResponseMessage(HttpStatusCode.OK);
 
@@ -98,10 +95,10 @@ namespace Jobbr.Server.WebAPI.Controller
             var jobParameter = jobRun.JobParameters != null ? JsonConvert.DeserializeObject(jobRun.JobParameters) : null;
             var instanceParameter = jobRun.InstanceParameters != null ? JsonConvert.DeserializeObject(jobRun.InstanceParameters) : null;
 
-            var files = this.artefactsStorageProvider.GetFiles(jobRun.UniqueId);
-            var filesList = files.Select(fileInfo => new JobRunArtefactDto() { Filename = fileInfo.Name, Size = fileInfo.Length, }).ToList();
+            var files = this.jobManagementService.GetArtefactForJob(jobRun);
+            var filesList = files.Select(fileInfo => new JobRunArtefactDto() { Filename = fileInfo.Filename, Size = fileInfo.Size, }).ToList();
 
-            var job = this.jobStorageProvider.GetJobById(jobRun.JobId);
+            var job = this.jobManagementService.GetJobById(jobRun.JobId);
 
             var dto = new JobRunDto()
                           {
@@ -110,7 +107,7 @@ namespace Jobbr.Server.WebAPI.Controller
                               JobName = job.UniqueName,
                               JobTitle = job.UniqueName,
                               TriggerId = jobRun.TriggerId,
-                              UniqueId = new Guid(jobRun.UniqueId),
+                              UniqueId = jobRun.UniqueId,
                               JobParameter = jobParameter,
                               InstanceParameter = instanceParameter,
                               State = jobRun.State.ToString(),

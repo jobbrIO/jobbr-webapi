@@ -1,5 +1,4 @@
-using System;
-using Jobbr.Common.Model;
+using Jobbr.ComponentModel.Management.Model;
 using Jobbr.WebAPI.Common.Models;
 using Newtonsoft.Json;
 
@@ -28,7 +27,7 @@ namespace Jobbr.Server.WebAPI.Mapping
                            JobRunId = jobRun.Id,
                            JobId = jobRun.JobId,
                            TriggerId = jobRun.TriggerId,
-                           UniqueId = new Guid(jobRun.UniqueId),
+                           UniqueId = jobRun.UniqueId,
                            State = jobRun.State.ToString(),
                            Progress = jobRun.Progress,
                            PlannedStartUtc = jobRun.PlannedStartDateTimeUtc,

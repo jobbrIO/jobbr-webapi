@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Net;
 using System.Web.Http;
-using Jobbr.Common.Model;
-using Jobbr.Server.Core;
+using Jobbr.ComponentModel.Management;
+using Jobbr.ComponentModel.Management.Model;
 using Jobbr.Server.WebAPI.Mapping;
 using Jobbr.WebAPI.Common.Models;
 
@@ -35,48 +35,51 @@ namespace Jobbr.Server.WebAPI.Controller
         [Route("api/triggers/{triggerId}")]
         public IHttpActionResult UpdateTrigger(long triggerId, [FromBody] JobTriggerDtoBase dto)
         {
-            var trigger = this.jobManagementService.GetTriggerById(triggerId);
+            var currentTrigger = this.jobManagementService.GetTriggerById(triggerId);
 
-            if (trigger == null)
+            if (currentTrigger == null)
             {
                 return this.NotFound();
             }
 
             bool hadChanges = false;
-            if (trigger.IsActive && !dto.IsActive)
+            if (currentTrigger.IsActive && !dto.IsActive)
             {
-                trigger.IsActive = false;
-                this.jobManagementService.DisableTrigger(trigger.Id, true);
+                currentTrigger.IsActive = false;
+                this.jobManagementService.DisableTrigger(currentTrigger.Id);
                 hadChanges = true;
             }
-            else if (!trigger.IsActive && dto.IsActive)
+            else if (!currentTrigger.IsActive && dto.IsActive)
             {
-                trigger.IsActive = true;
-                this.jobManagementService.EnableTrigger(trigger.Id);
+                currentTrigger.IsActive = true;
+                this.jobManagementService.EnableTrigger(currentTrigger.Id);
                 hadChanges = true;
             }
 
             var recurringTriggerDto = dto as RecurringTriggerDto;
-            if (recurringTriggerDto != null && !string.IsNullOrEmpty(recurringTriggerDto.Definition) && recurringTriggerDto.Definition != ((RecurringTrigger)trigger).Definition)
+            if (recurringTriggerDto != null && !string.IsNullOrEmpty(recurringTriggerDto.Definition) && recurringTriggerDto.Definition != ((RecurringTrigger)currentTrigger).Definition)
             {
-                ((RecurringTrigger)trigger).Definition = recurringTriggerDto.Definition;
-                this.jobManagementService.UpdateTrigger(trigger.Id, trigger);
+                ((RecurringTrigger)currentTrigger).Definition = recurringTriggerDto.Definition;
+                this.jobManagementService.UpdateTriggerDefinition(currentTrigger.Id, recurringTriggerDto.Definition);
                 
                 hadChanges = true;
             }
 
             var scheduledTriggerDto = dto as ScheduledTriggerDto;
-            if (scheduledTriggerDto != null && scheduledTriggerDto.StartDateTimeUtc >= DateTime.UtcNow && scheduledTriggerDto.StartDateTimeUtc != ((ScheduledTrigger)trigger).StartDateTimeUtc)
+            if (scheduledTriggerDto != null && scheduledTriggerDto.StartDateTimeUtc >= DateTime.UtcNow && scheduledTriggerDto.StartDateTimeUtc != ((ScheduledTrigger)currentTrigger).StartDateTimeUtc)
             {
-                ((ScheduledTrigger)trigger).StartDateTimeUtc = scheduledTriggerDto.StartDateTimeUtc;
-                this.jobManagementService.UpdateTrigger(trigger.Id, trigger);
+                ((ScheduledTrigger)currentTrigger).StartDateTimeUtc = scheduledTriggerDto.StartDateTimeUtc;
+                this.jobManagementService.UpdatetriggerStartTime(currentTrigger.Id, scheduledTriggerDto.StartDateTimeUtc);
 
                 hadChanges = true;
             }
 
             if (hadChanges)
             {
-                return this.Ok(TriggerMapper.ConvertToDto((dynamic)trigger));
+                // Reload trigger
+                currentTrigger = this.jobManagementService.GetTriggerById(triggerId);
+
+                return this.Ok(TriggerMapper.ConvertToDto((dynamic)currentTrigger));
             }
             
             return this.StatusCode(HttpStatusCode.NotModified);
@@ -124,6 +127,7 @@ namespace Jobbr.Server.WebAPI.Controller
             return this.AddTrigger(triggerDto, job);
         }
 
+        [HttpPost]
         [Route("api/jobs/{uniqueName}/trigger")]
         public IHttpActionResult AddTriggerForJobUniqueName(string uniqueName, [FromBody] JobTriggerDtoBase triggerDto)
         {
@@ -150,7 +154,7 @@ namespace Jobbr.Server.WebAPI.Controller
             }
 
             var trigger = TriggerMapper.ConvertToTrigger(triggerDto as dynamic);
-            ((JobTriggerBase)trigger).JobId = job.Id;
+            ((IJobTrigger)trigger).JobId = job.Id;
 
             var triggerId = this.jobManagementService.AddTrigger(trigger);
 
