@@ -25,7 +25,7 @@ namespace Jobbr.Server.WebAPI
         /// <summary>
         /// The configuration for this component
         /// </summary>
-        private readonly JobbrWebApiConfiguration configuration;
+        private readonly IJobbrWebApiConfiguration configuration;
 
         /// <summary>
         /// The webhost that serves for the OWIN WebAPI component
@@ -35,7 +35,7 @@ namespace Jobbr.Server.WebAPI
         /// <summary>
         /// Initializes a new instance of the <see cref="WebHost"/> class.
         /// </summary>
-        public WebHost(IJobbrServiceProvider dependencyResolver, JobbrWebApiConfiguration configuration)
+        public WebHost(IJobbrServiceProvider dependencyResolver, IJobbrWebApiConfiguration configuration)
         {
             this.dependencyResolver = dependencyResolver;
             this.configuration = configuration;

@@ -1,13 +1,12 @@
 namespace Jobbr.Server.WebAPI
 {
-    public class JobbrWebApiConfiguration
+    public interface IJobbrWebApiConfiguration
     {
-        public JobbrWebApiConfiguration()
-        {
-            this.BackendAddress = "http://localhost:80/jobbr";
+        string BackendAddress { get; }
+    }
 
-        }
-
+    public class JobbrWebApiConfiguration : IJobbrWebApiConfiguration
+    {
         public string BackendAddress { get; set; }
     }
 }
