@@ -15,10 +15,12 @@ namespace Jobbr.Server.WebAPI.Controller
     /// </summary>
     public class JobController : ApiController
     {
+        private readonly IQueryService queryService;
         private readonly IJobManagementService jobManagementService;
 
-        public JobController(IJobManagementService jobManagementService)
+        public JobController(IQueryService queryService, IJobManagementService jobManagementService)
         {
+            this.queryService = queryService;
             this.jobManagementService = jobManagementService;
         }
 
@@ -26,16 +28,16 @@ namespace Jobbr.Server.WebAPI.Controller
         [Route("api/jobs")]
         public IHttpActionResult AllJobs()
         {
-            return this.Ok(this.jobManagementService.GetAllJobs().Select(JobMapper.Map));
+            return this.Ok(this.queryService.GetAllJobs().Select(JobMapper.Map));
         }
 
         [HttpGet]
         [Route("api/jobs/{jobId}")]
         public IHttpActionResult SingleJob(long jobId)
         {
-            var job = this.jobManagementService.GetJobById(jobId);
+            var job = this.queryService.GetJobById(jobId);
 
-            var triggers = this.jobManagementService.GetTriggersByJobId(jobId);
+            var triggers = this.queryService.GetTriggersByJobId(jobId);
             
             var jobDto = JobMapper.Map(job);
             jobDto.Trigger = triggers.Select(t => TriggerMapper.ConvertToDto(t as dynamic)).Cast<JobTriggerDtoBase>().ToList();
@@ -54,7 +56,7 @@ namespace Jobbr.Server.WebAPI.Controller
                 return this.StatusCode(HttpStatusCode.NotAcceptable);
             }
 
-            var existingJob = this.jobManagementService.GetJobByUniqueName(identifier);
+            var existingJob = this.queryService.GetJobByUniqueName(identifier);
 
             if (existingJob != null)
             {
@@ -71,7 +73,7 @@ namespace Jobbr.Server.WebAPI.Controller
         [Route("api/jobs/{jobId:long}")]
         public IHttpActionResult UpdateJob(long jobId, [FromBody] JobDto dto)
         {
-            var existingJob = this.jobManagementService.GetJobById(jobId);
+            var existingJob = this.queryService.GetJobById(jobId);
 
             if (existingJob == null)
             {
@@ -85,7 +87,7 @@ namespace Jobbr.Server.WebAPI.Controller
         [Route("api/jobs/{jobId:long}/runs")]
         public IHttpActionResult GetJobRunsForJobById(long jobId)
         {
-            var jobRuns = this.jobManagementService.GetJobRuns().Where(jr => jr.JobId == jobId);
+            var jobRuns = this.queryService.GetJobRuns().Where(jr => jr.JobId == jobId);
 
             var list = jobRuns.Select(JobMapper.Map).ToList();
 
@@ -96,9 +98,9 @@ namespace Jobbr.Server.WebAPI.Controller
         [Route("api/jobs/{uniqueName}/runs")]
         public IHttpActionResult GetJobRunsForJobByUniqueName(string uniqueName)
         {
-            var job = this.jobManagementService.GetJobByUniqueName(uniqueName);
+            var job = this.queryService.GetJobByUniqueName(uniqueName);
 
-            var jobRuns = this.jobManagementService.GetJobRuns().Where(jr => jr.JobId == job.Id);
+            var jobRuns = this.queryService.GetJobRuns().Where(jr => jr.JobId == job.Id);
 
             var list = jobRuns.Select(JobMapper.Map).ToList();
 

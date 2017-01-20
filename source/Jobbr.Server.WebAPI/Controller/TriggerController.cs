@@ -10,10 +10,12 @@ namespace Jobbr.Server.WebAPI.Controller
 {
     public class TriggerController : ApiController
     {
+        private readonly IQueryService queryService;
         private readonly IJobManagementService jobManagementService;
 
-        public TriggerController(IJobManagementService jobManagementService)
+        public TriggerController(IQueryService queryService, IJobManagementService jobManagementService)
         {
+            this.queryService = queryService;
             this.jobManagementService = jobManagementService;
         }
 
@@ -21,7 +23,7 @@ namespace Jobbr.Server.WebAPI.Controller
         [Route("api/triggers/{triggerId}")]
         public IHttpActionResult GetTriggerById(long triggerId)
         {
-            var trigger = this.jobManagementService.GetTriggerById(triggerId);
+            var trigger = this.queryService.GetTriggerById(triggerId);
 
             if (trigger == null)
             {
@@ -35,7 +37,7 @@ namespace Jobbr.Server.WebAPI.Controller
         [Route("api/triggers/{triggerId}")]
         public IHttpActionResult UpdateTrigger(long triggerId, [FromBody] JobTriggerDtoBase dto)
         {
-            var currentTrigger = this.jobManagementService.GetTriggerById(triggerId);
+            var currentTrigger = this.queryService.GetTriggerById(triggerId);
 
             if (currentTrigger == null)
             {
@@ -77,7 +79,7 @@ namespace Jobbr.Server.WebAPI.Controller
             if (hadChanges)
             {
                 // Reload trigger
-                currentTrigger = this.jobManagementService.GetTriggerById(triggerId);
+                currentTrigger = this.queryService.GetTriggerById(triggerId);
 
                 return this.Ok(TriggerMapper.ConvertToDto((dynamic)currentTrigger));
             }
@@ -89,35 +91,35 @@ namespace Jobbr.Server.WebAPI.Controller
         [Route("api/jobs/{jobId:long}/trigger")]
         public IHttpActionResult GetTriggersForJob(long jobId)
         {
-            var job = this.jobManagementService.GetJobById(jobId);
+            var job = this.queryService.GetJobById(jobId);
 
             if (job == null)
             {
                 return this.NotFound();
             }
 
-            return this.Ok(this.jobManagementService.GetTriggersByJobId(jobId));
+            return this.Ok(this.queryService.GetTriggersByJobId(jobId));
         }
 
         [HttpGet]
         [Route("api/jobs/{uniqueName}/trigger")]
         public IHttpActionResult GetTriggersForJob(string uniqueName)
         {
-            var job = this.jobManagementService.GetJobByUniqueName(uniqueName);
+            var job = this.queryService.GetJobByUniqueName(uniqueName);
 
             if (job == null)
             {
                 return this.NotFound();
             }
 
-            return this.Ok(this.jobManagementService.GetTriggersByJobId(job.Id));
+            return this.Ok(this.queryService.GetTriggersByJobId(job.Id));
         }
 
         [HttpPost]
         [Route("api/jobs/{jobId:long}/trigger")]
         public IHttpActionResult AddTriggerForJobId(long jobId, [FromBody] JobTriggerDtoBase triggerDto)
         {
-            var job = this.jobManagementService.GetJobById(jobId);
+            var job = this.queryService.GetJobById(jobId);
 
             if (job == null)
             {
@@ -131,7 +133,7 @@ namespace Jobbr.Server.WebAPI.Controller
         [Route("api/jobs/{uniqueName}/trigger")]
         public IHttpActionResult AddTriggerForJobUniqueName(string uniqueName, [FromBody] JobTriggerDtoBase triggerDto)
         {
-            var job = this.jobManagementService.GetJobByUniqueName(uniqueName);
+            var job = this.queryService.GetJobByUniqueName(uniqueName);
 
             if (job == null)
             {

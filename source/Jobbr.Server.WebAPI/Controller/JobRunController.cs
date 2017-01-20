@@ -13,10 +13,12 @@ namespace Jobbr.Server.WebAPI.Controller
 {
     public class JobRunController : ApiController
     {
+        private readonly IQueryService queryService;
         private readonly IJobManagementService jobManagementService;
 
-        public JobRunController(IJobManagementService jobManagementService)
+        public JobRunController(IQueryService queryService, IJobManagementService jobManagementService)
         {
+            this.queryService = queryService;
             this.jobManagementService = jobManagementService;
         }
 
@@ -24,7 +26,7 @@ namespace Jobbr.Server.WebAPI.Controller
         [Route("api/jobRuns/{jobRunId}")]
         public IHttpActionResult GetJonRun(long jobRunId)
         {
-            var jobRun = this.jobManagementService.GetJobRunById(jobRunId);
+            var jobRun = this.queryService.GetJobRunById(jobRunId);
 
             if (jobRun == null)
             {
@@ -40,7 +42,7 @@ namespace Jobbr.Server.WebAPI.Controller
         [Route("api/jobRuns/")]
         public IHttpActionResult GetJonRunsByUserId(long userId)
         {
-            var jobRuns = this.jobManagementService.GetJobRunsByUserOrderByIdDesc(userId);
+            var jobRuns = this.queryService.GetJobRunsByUserOrderByIdDesc(userId);
 
             var jobRunDtos = jobRuns.Select(this.ConvertToDto);
 
@@ -51,7 +53,7 @@ namespace Jobbr.Server.WebAPI.Controller
         [Route("api/jobRuns/")]
         public IHttpActionResult GetJonRunsByTriggerId(long triggerId)
         {
-            var jobRuns = this.jobManagementService.GetJobRunsByTriggerId(triggerId);
+            var jobRuns = this.queryService.GetJobRunsByTriggerId(triggerId);
 
             var jobRunDtos = jobRuns.Select(this.ConvertToDto);
 
@@ -62,7 +64,7 @@ namespace Jobbr.Server.WebAPI.Controller
         [Route("api/jobRuns/")]
         public IHttpActionResult GetJonRunsByUserName(string userName)
         {
-            var jobRuns = this.jobManagementService.GetJobRunsByUserNameOrderOrderByIdDesc(userName);
+            var jobRuns = this.queryService.GetJobRunsByUserNameOrderOrderByIdDesc(userName);
 
             var jobRunDtos = jobRuns.Select(this.ConvertToDto);
 
@@ -73,7 +75,7 @@ namespace Jobbr.Server.WebAPI.Controller
         [Route("api/jobRuns/{jobRunId}/artefacts/{filename}")]
         public IHttpActionResult GetArtefact(long jobRunId, string filename)
         {
-            var jobRun = this.jobManagementService.GetJobRunById(jobRunId);
+            var jobRun = this.queryService.GetJobRunById(jobRunId);
 
             if (jobRun == null)
             {
@@ -98,7 +100,7 @@ namespace Jobbr.Server.WebAPI.Controller
             var files = this.jobManagementService.GetArtefactForJob(jobRun);
             var filesList = files.Select(fileInfo => new JobRunArtefactDto() { Filename = fileInfo.Filename, Size = fileInfo.Size, }).ToList();
 
-            var job = this.jobManagementService.GetJobById(jobRun.JobId);
+            var job = this.queryService.GetJobById(jobRun.JobId);
 
             var dto = new JobRunDto()
                           {
