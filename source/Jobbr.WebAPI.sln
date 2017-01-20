@@ -23,8 +23,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jobbr.Server", "submodules\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jobbr.Shared", "submodules\jobbr-server\source\Jobbr.Shared\Jobbr.Shared.csproj", "{4C7FF32D-8514-4D17-B21C-3EF69968AB1F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jobbr.Common", "submodules\jobbr-server\source\Jobbr.Common\Jobbr.Common.csproj", "{37E22E5D-F8B2-4336-B509-53C94B170E4C}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Submodules", "Submodules", "{EE0CFF84-60B3-4F40-92E1-96E6050CCB78}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jobbr.ComponentModel.Registration", "submodules\jobbr-server\source\submodules\jobbr-cm-registration\source\Jobbr.ComponentModel.Registration\Jobbr.ComponentModel.Registration.csproj", "{0718496B-04F3-4197-9ED6-F2ECB73ECC03}"
@@ -34,6 +32,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jobbr.ComponentModel.ArtefactStorage", "submodules\jobbr-server\source\submodules\jobbr-cm-artefactstorage\source\Jobbr.ComponentModel.ArtefactStorage\Jobbr.ComponentModel.ArtefactStorage.csproj", "{183F7730-D805-405C-92B4-84BB151C2371}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jobbr.ComponentModel.JobStorage", "submodules\jobbr-server\source\submodules\jobbr-cm-jobstorage\source\Jobbr.ComponentModel.JobStorage\Jobbr.ComponentModel.JobStorage.csproj", "{375FFCCA-E278-4744-96DD-D4AB92186C66}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jobbr.ComponentModel.Execution", "submodules\jobbr-server\source\submodules\jobbr-cm-execution\source\Jobbr.ComponentModel.Execution\Jobbr.ComponentModel.Execution.csproj", "{F3083433-365E-4A70-A76F-78F27AEFB7B4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -73,10 +73,6 @@ Global
 		{4C7FF32D-8514-4D17-B21C-3EF69968AB1F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4C7FF32D-8514-4D17-B21C-3EF69968AB1F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4C7FF32D-8514-4D17-B21C-3EF69968AB1F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{37E22E5D-F8B2-4336-B509-53C94B170E4C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{37E22E5D-F8B2-4336-B509-53C94B170E4C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{37E22E5D-F8B2-4336-B509-53C94B170E4C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{37E22E5D-F8B2-4336-B509-53C94B170E4C}.Release|Any CPU.Build.0 = Release|Any CPU
 		{0718496B-04F3-4197-9ED6-F2ECB73ECC03}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{0718496B-04F3-4197-9ED6-F2ECB73ECC03}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0718496B-04F3-4197-9ED6-F2ECB73ECC03}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -93,6 +89,10 @@ Global
 		{375FFCCA-E278-4744-96DD-D4AB92186C66}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{375FFCCA-E278-4744-96DD-D4AB92186C66}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{375FFCCA-E278-4744-96DD-D4AB92186C66}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F3083433-365E-4A70-A76F-78F27AEFB7B4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F3083433-365E-4A70-A76F-78F27AEFB7B4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F3083433-365E-4A70-A76F-78F27AEFB7B4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F3083433-365E-4A70-A76F-78F27AEFB7B4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -103,11 +103,11 @@ Global
 		{BF87C330-1634-4295-9F6C-37AB4DC948A9} = {F59260A4-5DDC-479B-BF94-AF8D3687F443}
 		{A45F729D-8629-4C7A-96B8-29EAA8D52919} = {BF87C330-1634-4295-9F6C-37AB4DC948A9}
 		{4C7FF32D-8514-4D17-B21C-3EF69968AB1F} = {BF87C330-1634-4295-9F6C-37AB4DC948A9}
-		{37E22E5D-F8B2-4336-B509-53C94B170E4C} = {BF87C330-1634-4295-9F6C-37AB4DC948A9}
 		{EE0CFF84-60B3-4F40-92E1-96E6050CCB78} = {BF87C330-1634-4295-9F6C-37AB4DC948A9}
 		{0718496B-04F3-4197-9ED6-F2ECB73ECC03} = {EE0CFF84-60B3-4F40-92E1-96E6050CCB78}
 		{44C1E5B0-5802-48FA-910E-17665587979D} = {EE0CFF84-60B3-4F40-92E1-96E6050CCB78}
 		{183F7730-D805-405C-92B4-84BB151C2371} = {EE0CFF84-60B3-4F40-92E1-96E6050CCB78}
 		{375FFCCA-E278-4744-96DD-D4AB92186C66} = {EE0CFF84-60B3-4F40-92E1-96E6050CCB78}
+		{F3083433-365E-4A70-A76F-78F27AEFB7B4} = {EE0CFF84-60B3-4F40-92E1-96E6050CCB78}
 	EndGlobalSection
 EndGlobal
