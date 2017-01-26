@@ -7,19 +7,7 @@ namespace Jobbr.Server.WebAPI
     {
         public static void AddWebApi(this IJobbrBuilder builder)
         {
-            var config = new JobbrWebApiConfiguration()
-            {
-                BackendAddress = "http://localhost:80/jobbr"
-            };
-
-            AddWebApi(builder, config);
-        }
-
-        public static void AddWebApi(IJobbrBuilder builder, JobbrWebApiConfiguration config)
-        {
-            builder.Add<JobbrWebApiConfiguration>(config);
-
-            builder.Register<IJobbrComponent>(typeof(WebHost));
+            builder.AddWebApi(configuration => { } );
         }
 
         public static void AddWebApi(this IJobbrBuilder builder, Action<JobbrWebApiConfiguration> config)
@@ -28,7 +16,10 @@ namespace Jobbr.Server.WebAPI
 
             config(customConfig);
 
-            AddWebApi(builder, customConfig);
+            builder.Add<JobbrWebApiConfiguration>(customConfig);
+
+            builder.Register<IJobbrComponent>(typeof(WebHost));
+            builder.Register<IConfigurationValidator>(typeof(WebApiConfigurationValidator));
         }
     }
 }

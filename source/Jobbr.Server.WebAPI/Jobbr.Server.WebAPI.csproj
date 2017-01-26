@@ -88,6 +88,7 @@
     <Compile Include="JobbrBuilderExtensions.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="TraceSourceExceptionLogger.cs" />
+    <Compile Include="WebApiConfigurationValidator.cs" />
     <Compile Include="WebHost.cs" />
   </ItemGroup>
   <ItemGroup>
