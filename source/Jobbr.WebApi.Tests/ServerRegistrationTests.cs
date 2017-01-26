@@ -9,7 +9,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Jobbr.WebApi.Tests
 {
     [TestClass]
-    public class ServerTests
+    public class ServerRegistrationTests
     {
         private static string confBackendAddress;
 
@@ -100,6 +100,22 @@ namespace Jobbr.WebApi.Tests
 
                 var faultyResult = client.GetAsync(CreateUrl("api/jobs")).Result;
                 Assert.AreEqual(HttpStatusCode.OK, faultyResult.StatusCode);
+            }
+        }
+
+        [TestMethod]
+        public void RegisteredAsComponent_WithoutConfiguration_DoesStart()
+        {
+            var builder = new JobbrBuilder();
+            builder.AddWebApi();
+
+            var server = builder.Create();
+
+            server.Start();
+
+            using (server)
+            {
+                Assert.AreEqual(JobbrState.Running, server.State, "Server should be possible to start with default configuration");
             }
         }
     }
