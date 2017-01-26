@@ -1,11 +1,8 @@
+using Jobbr.ComponentModel.Registration;
+
 namespace Jobbr.Server.WebAPI
 {
-    public interface IJobbrWebApiConfiguration
-    {
-        string BackendAddress { get; }
-    }
-
-    public class JobbrWebApiConfiguration : IJobbrWebApiConfiguration
+    public class JobbrWebApiConfiguration : IFeatureConfiguration
     {
         public string BackendAddress { get; set; }
     }

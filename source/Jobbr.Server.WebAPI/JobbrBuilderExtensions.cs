@@ -17,7 +17,7 @@ namespace Jobbr.Server.WebAPI
 
         public static void AddWebApi(IJobbrBuilder builder, JobbrWebApiConfiguration config)
         {
-            builder.Add<IJobbrWebApiConfiguration>(config);
+            builder.Add<JobbrWebApiConfiguration>(config);
 
             builder.Register<IJobbrComponent>(typeof(WebHost));
         }
