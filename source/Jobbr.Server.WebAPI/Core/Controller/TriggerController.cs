@@ -3,10 +3,10 @@ using System.Net;
 using System.Web.Http;
 using Jobbr.ComponentModel.Management;
 using Jobbr.ComponentModel.Management.Model;
-using Jobbr.Server.WebAPI.Mapping;
+using Jobbr.Server.WebAPI.Core.Mapping;
 using Jobbr.WebAPI.Common.Models;
 
-namespace Jobbr.Server.WebAPI.Controller
+namespace Jobbr.Server.WebAPI.Core.Controller
 {
     public class TriggerController : ApiController
     {

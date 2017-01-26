@@ -1,11 +1,11 @@
 using System;
 using Jobbr.ComponentModel.Registration;
-using Jobbr.Server.WebAPI.App_Packages.LibLog._3._1;
+using Jobbr.Server.WebAPI.Logging;
 using Microsoft.Owin.Hosting;
 using Microsoft.Owin.Hosting.Services;
 using Microsoft.Owin.Hosting.Starter;
 
-namespace Jobbr.Server.WebAPI
+namespace Jobbr.Server.WebAPI.Core
 {
     /// <summary>
     /// The web host.

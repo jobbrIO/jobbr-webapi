@@ -4,7 +4,8 @@ using System.Linq;
 using System.Web.Http;
 using System.Web.Http.ExceptionHandling;
 using Jobbr.ComponentModel.Registration;
-using Jobbr.Server.WebAPI.App_Packages.LibLog._3._1;
+using Jobbr.Server.WebAPI.Core;
+using Jobbr.Server.WebAPI.Logging;
 using Jobbr.WebAPI.Common.Models;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
@@ -14,7 +15,7 @@ namespace Jobbr.Server.WebAPI
 {
     public class Startup
     {
-        private static readonly ILog Logger = LogProvider.For<WebHost>();
+        private static readonly ILog Logger = LogProvider.For<Startup>();
 
         /// <summary>
         /// The dependency resolver from the JobbrServer which needs to be passed through the OWIN stack to WebAPI

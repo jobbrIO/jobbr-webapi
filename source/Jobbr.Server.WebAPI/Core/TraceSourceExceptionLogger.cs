@@ -1,11 +1,11 @@
 using System.Threading;
 using System.Threading.Tasks;
 using System.Web.Http.ExceptionHandling;
-using Jobbr.Server.WebAPI.App_Packages.LibLog._3._1;
+using Jobbr.Server.WebAPI.Logging;
 
-namespace Jobbr.Server.WebAPI
+namespace Jobbr.Server.WebAPI.Core
 {
-    public class TraceSourceExceptionLogger : IExceptionLogger
+    internal class TraceSourceExceptionLogger : IExceptionLogger
     {
         private readonly ILog logger;
 

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -9,7 +8,7 @@ using Jobbr.ComponentModel.Management.Model;
 using Jobbr.WebAPI.Common.Models;
 using Newtonsoft.Json;
 
-namespace Jobbr.Server.WebAPI.Controller
+namespace Jobbr.Server.WebAPI.Core.Controller
 {
     public class JobRunController : ApiController
     {
