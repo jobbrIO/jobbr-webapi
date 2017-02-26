@@ -81,7 +81,7 @@ namespace Jobbr.Server.WebAPI.Core.Controller
                 return this.NotFound();
             }
 
-            var fileStream = this.jobManagementService.GetArtefactAsStream(jobRun, filename);
+            var fileStream = this.jobManagementService.GetArtefactAsStream(jobRun.UniqueId, filename);
 
             HttpResponseMessage result = new HttpResponseMessage(HttpStatusCode.OK);
 
@@ -96,7 +96,7 @@ namespace Jobbr.Server.WebAPI.Core.Controller
             var jobParameter = jobRun.JobParameters != null ? JsonConvert.DeserializeObject(jobRun.JobParameters) : null;
             var instanceParameter = jobRun.InstanceParameters != null ? JsonConvert.DeserializeObject(jobRun.InstanceParameters) : null;
 
-            var files = this.jobManagementService.GetArtefactForJob(jobRun);
+            var files = this.jobManagementService.GetArtefactForJob(jobRun.UniqueId);
             var filesList = files.Select(fileInfo => new JobRunArtefactDto() { Filename = fileInfo.Filename, Size = fileInfo.Size, }).ToList();
 
             var job = this.queryService.GetJobById(jobRun.JobId);

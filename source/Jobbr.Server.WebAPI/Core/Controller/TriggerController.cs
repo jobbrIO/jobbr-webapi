@@ -71,7 +71,7 @@ namespace Jobbr.Server.WebAPI.Core.Controller
             if (scheduledTriggerDto != null && scheduledTriggerDto.StartDateTimeUtc >= DateTime.UtcNow && scheduledTriggerDto.StartDateTimeUtc != ((ScheduledTrigger)currentTrigger).StartDateTimeUtc)
             {
                 ((ScheduledTrigger)currentTrigger).StartDateTimeUtc = scheduledTriggerDto.StartDateTimeUtc;
-                this.jobManagementService.UpdatetriggerStartTime(currentTrigger.Id, scheduledTriggerDto.StartDateTimeUtc);
+                this.jobManagementService.UpdateTriggerStartTime(currentTrigger.Id, scheduledTriggerDto.StartDateTimeUtc);
 
                 hadChanges = true;
             }
