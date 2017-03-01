@@ -1,4 +1,4 @@
-# Jobbr Web API Extension
+# Jobbr Web API Extension [![Build status](https://ci.appveyor.com/api/projects/status/akvsehv0wvwbo08a?svg=true)](https://ci.appveyor.com/project/Jobbr/jobbr-webapi)
 Adds Rest-style api to a Jobbr-Server and a strong typed .NET Client
 
 ## Server Extension
