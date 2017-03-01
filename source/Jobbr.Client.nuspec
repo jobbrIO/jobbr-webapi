@@ -1,0 +1,20 @@
+﻿<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>Jobbr.Client</id>
+    <version>$version$</version>
+    <authors>Jobbr</authors>
+    <owners>Jobbr</owners>
+    <projectUrl>http://github.com/jobbrIO/jobbr-webapi</projectUrl>
+    <licenseUrl>https://raw.githubusercontent.com/jobbrIO/jobbr-webapi/develop/LICENSE</licenseUrl>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
+    <description>Jobbr is a .NET JobServer</description>
+    <copyright>Copyright 2017</copyright>
+    <dependencies>
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="..\ilmerged\Jobbr.Client.dll" target="lib\net45"/>
+    <file src="..\ilmerged\Jobbr.Client.pdb" target="lib\net45"/>
+  </files>
+</package>

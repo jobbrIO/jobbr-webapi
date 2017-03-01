@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Submodules", "Submodules", "{F59260A4-5DDC-479B-BF94-AF8D3687F443}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jobbr.Server.WebAPI", "Jobbr.Server.WebAPI\Jobbr.Server.WebAPI.csproj", "{B158F9AD-5480-4415-9BCE-8D8663C3F3C0}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jobbr.WebAPI.Common", "Jobbr.WebAPI.Common\Jobbr.WebAPI.Common.csproj", "{A2477520-351E-4429-8F75-BE728382C2A5}"
@@ -13,25 +11,14 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jobbr.Client", "Jobbr.Clien
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jobbr.WebApi.Tests", "Jobbr.WebApi.Tests\Jobbr.WebApi.Tests.csproj", "{CB3FE911-7034-471C-A2D7-CB89842423FC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jobbr.ComponentModel.Management", "submodules\jobbr-cm-management\source\Jobbr.ComponentModel.Management\Jobbr.ComponentModel.Management.csproj", "{C83448F5-759D-4322-ACFE-B447D1ABF9EC}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jobbr.ComponentModel.Registration", "submodules\jobbr-cm-registration\source\Jobbr.ComponentModel.Registration\Jobbr.ComponentModel.Registration.csproj", "{DA63448E-F6CD-4519-9284-09028659AD28}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Server", "Server", "{BF87C330-1634-4295-9F6C-37AB4DC948A9}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jobbr.Server", "submodules\jobbr-server\source\Jobbr.Server\Jobbr.Server.csproj", "{A45F729D-8629-4C7A-96B8-29EAA8D52919}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Submodules", "Submodules", "{EE0CFF84-60B3-4F40-92E1-96E6050CCB78}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jobbr.ComponentModel.Registration", "submodules\jobbr-server\source\submodules\jobbr-cm-registration\source\Jobbr.ComponentModel.Registration\Jobbr.ComponentModel.Registration.csproj", "{0718496B-04F3-4197-9ED6-F2ECB73ECC03}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jobbr.ComponentModel.Management", "submodules\jobbr-server\source\submodules\jobbr-cm-management\source\Jobbr.ComponentModel.Management\Jobbr.ComponentModel.Management.csproj", "{44C1E5B0-5802-48FA-910E-17665587979D}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jobbr.ComponentModel.ArtefactStorage", "submodules\jobbr-server\source\submodules\jobbr-cm-artefactstorage\source\Jobbr.ComponentModel.ArtefactStorage\Jobbr.ComponentModel.ArtefactStorage.csproj", "{183F7730-D805-405C-92B4-84BB151C2371}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jobbr.ComponentModel.JobStorage", "submodules\jobbr-server\source\submodules\jobbr-cm-jobstorage\source\Jobbr.ComponentModel.JobStorage\Jobbr.ComponentModel.JobStorage.csproj", "{375FFCCA-E278-4744-96DD-D4AB92186C66}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jobbr.ComponentModel.Execution", "submodules\jobbr-server\source\submodules\jobbr-cm-execution\source\Jobbr.ComponentModel.Execution\Jobbr.ComponentModel.Execution.csproj", "{F3083433-365E-4A70-A76F-78F27AEFB7B4}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "build", "build", "{DE622AEC-8921-456F-8E2E-0A459F9BDA28}"
+	ProjectSection(SolutionItems) = preProject
+		..\appveyor.yml = ..\appveyor.yml
+		..\GitVersion.yml = ..\GitVersion.yml
+		..\internalize_exclude.txt = ..\internalize_exclude.txt
+		Jobbr.Client.nuspec = Jobbr.Client.nuspec
+		Jobbr.Server.WebAPI.nuspec = Jobbr.Server.WebAPI.nuspec
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -55,52 +42,8 @@ Global
 		{CB3FE911-7034-471C-A2D7-CB89842423FC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CB3FE911-7034-471C-A2D7-CB89842423FC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CB3FE911-7034-471C-A2D7-CB89842423FC}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C83448F5-759D-4322-ACFE-B447D1ABF9EC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C83448F5-759D-4322-ACFE-B447D1ABF9EC}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C83448F5-759D-4322-ACFE-B447D1ABF9EC}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C83448F5-759D-4322-ACFE-B447D1ABF9EC}.Release|Any CPU.Build.0 = Release|Any CPU
-		{DA63448E-F6CD-4519-9284-09028659AD28}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{DA63448E-F6CD-4519-9284-09028659AD28}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{DA63448E-F6CD-4519-9284-09028659AD28}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{DA63448E-F6CD-4519-9284-09028659AD28}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A45F729D-8629-4C7A-96B8-29EAA8D52919}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A45F729D-8629-4C7A-96B8-29EAA8D52919}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A45F729D-8629-4C7A-96B8-29EAA8D52919}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A45F729D-8629-4C7A-96B8-29EAA8D52919}.Release|Any CPU.Build.0 = Release|Any CPU
-		{0718496B-04F3-4197-9ED6-F2ECB73ECC03}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0718496B-04F3-4197-9ED6-F2ECB73ECC03}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{0718496B-04F3-4197-9ED6-F2ECB73ECC03}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0718496B-04F3-4197-9ED6-F2ECB73ECC03}.Release|Any CPU.Build.0 = Release|Any CPU
-		{44C1E5B0-5802-48FA-910E-17665587979D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{44C1E5B0-5802-48FA-910E-17665587979D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{44C1E5B0-5802-48FA-910E-17665587979D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{44C1E5B0-5802-48FA-910E-17665587979D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{183F7730-D805-405C-92B4-84BB151C2371}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{183F7730-D805-405C-92B4-84BB151C2371}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{183F7730-D805-405C-92B4-84BB151C2371}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{183F7730-D805-405C-92B4-84BB151C2371}.Release|Any CPU.Build.0 = Release|Any CPU
-		{375FFCCA-E278-4744-96DD-D4AB92186C66}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{375FFCCA-E278-4744-96DD-D4AB92186C66}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{375FFCCA-E278-4744-96DD-D4AB92186C66}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{375FFCCA-E278-4744-96DD-D4AB92186C66}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F3083433-365E-4A70-A76F-78F27AEFB7B4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F3083433-365E-4A70-A76F-78F27AEFB7B4}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F3083433-365E-4A70-A76F-78F27AEFB7B4}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F3083433-365E-4A70-A76F-78F27AEFB7B4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(NestedProjects) = preSolution
-		{C83448F5-759D-4322-ACFE-B447D1ABF9EC} = {F59260A4-5DDC-479B-BF94-AF8D3687F443}
-		{DA63448E-F6CD-4519-9284-09028659AD28} = {F59260A4-5DDC-479B-BF94-AF8D3687F443}
-		{BF87C330-1634-4295-9F6C-37AB4DC948A9} = {F59260A4-5DDC-479B-BF94-AF8D3687F443}
-		{A45F729D-8629-4C7A-96B8-29EAA8D52919} = {BF87C330-1634-4295-9F6C-37AB4DC948A9}
-		{EE0CFF84-60B3-4F40-92E1-96E6050CCB78} = {BF87C330-1634-4295-9F6C-37AB4DC948A9}
-		{0718496B-04F3-4197-9ED6-F2ECB73ECC03} = {EE0CFF84-60B3-4F40-92E1-96E6050CCB78}
-		{44C1E5B0-5802-48FA-910E-17665587979D} = {EE0CFF84-60B3-4F40-92E1-96E6050CCB78}
-		{183F7730-D805-405C-92B4-84BB151C2371} = {EE0CFF84-60B3-4F40-92E1-96E6050CCB78}
-		{375FFCCA-E278-4744-96DD-D4AB92186C66} = {EE0CFF84-60B3-4F40-92E1-96E6050CCB78}
-		{F3083433-365E-4A70-A76F-78F27AEFB7B4} = {EE0CFF84-60B3-4F40-92E1-96E6050CCB78}
 	EndGlobalSection
 EndGlobal
