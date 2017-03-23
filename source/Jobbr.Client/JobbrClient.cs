@@ -75,7 +75,7 @@ namespace Jobbr.Client
         public List<JobRunDto> GetJobRunsByTriggerId(long triggerId)
         {
             // Get the JobRun by this triggerId
-            var url = string.Format("jobruns/?triggerId={0}", triggerId);
+            var url = string.Format("jobruns/{0}", triggerId);
 
             var requestResult = this.httpClient.GetAsync(url).Result;
 
