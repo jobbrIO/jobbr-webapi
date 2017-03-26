@@ -41,7 +41,7 @@ namespace Jobbr.Server.WebAPI.Core.Controller
         [Route("api/jobRuns/")]
         public IHttpActionResult GetJonRunsByUserId(long userId)
         {
-            var jobRuns = this.queryService.GetJobRunsByUserOrderByIdDesc(userId);
+            var jobRuns = this.queryService.GetJobRunsByUserIdOrderByIdDesc(userId);
 
             var jobRunDtos = jobRuns.Select(this.ConvertToDto);
 
@@ -63,7 +63,7 @@ namespace Jobbr.Server.WebAPI.Core.Controller
         [Route("api/jobRuns/")]
         public IHttpActionResult GetJonRunsByUserName(string userName)
         {
-            var jobRuns = this.queryService.GetJobRunsByUserNameOrderOrderByIdDesc(userName);
+            var jobRuns = this.queryService.GetJobRunsByUserNameOrderByIdDesc(userName);
 
             var jobRunDtos = jobRuns.Select(this.ConvertToDto);
 
@@ -81,7 +81,7 @@ namespace Jobbr.Server.WebAPI.Core.Controller
                 return this.NotFound();
             }
 
-            var fileStream = this.jobManagementService.GetArtefactAsStream(jobRun.UniqueId, filename);
+            var fileStream = this.jobManagementService.GetArtefactAsStream(jobRun.Id, filename);
 
             HttpResponseMessage result = new HttpResponseMessage(HttpStatusCode.OK);
 
@@ -96,7 +96,7 @@ namespace Jobbr.Server.WebAPI.Core.Controller
             var jobParameter = jobRun.JobParameters != null ? JsonConvert.DeserializeObject(jobRun.JobParameters) : null;
             var instanceParameter = jobRun.InstanceParameters != null ? JsonConvert.DeserializeObject(jobRun.InstanceParameters) : null;
 
-            var files = this.jobManagementService.GetArtefactForJob(jobRun.UniqueId);
+            var files = this.jobManagementService.GetArtefactForJob(jobRun.Id);
             var filesList = files.Select(fileInfo => new JobRunArtefactDto() { Filename = fileInfo.Filename, Size = fileInfo.Size, }).ToList();
 
             var job = this.queryService.GetJobById(jobRun.JobId);
