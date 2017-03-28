@@ -73,44 +73,47 @@ Take the following Endpoint
 
 With a sample return value
 
-	[
-		{
-			"id": 1,
-			"uniquename": "MyJob1",
-			"title": "My First Job",
-			"type": "MinimalJob",
-			"parameters": { "param1" : "test" },
-			"createdDateTimeUtc": "2015-03-04T17:40:00"
-		},
-		{
-			"id": 3,
-			"uniquename": "MyJob2",
-			"title": "Second Job",
-			"type": "ParameterizedlJob",
-			"parameters": { "param1" : "test" },
-			"createdDateTimeUtc": "2015-03-10T00:00:00"
-		},
-		{
-			"id": 7,
-			"uniquename": "MyJob3",
-			"title": "Third Job",
-			"type": "ProgressJob",
-			"createdDateTimeUtc": "2015-03-10T00:00:00"
-		}
-	]
-
-### Add Job
-Only the ``UniqueName`` and ``Type`` are required.
-
-	POST http://localhost:8765/api/jobs
-
+```json
+[
 	{
+		"id": 1,
 		"uniquename": "MyJob1",
 		"title": "My First Job",
 		"type": "MinimalJob",
 		"parameters": { "param1" : "test" },
 		"createdDateTimeUtc": "2015-03-04T17:40:00"
+	},
+	{
+		"id": 3,
+		"uniquename": "MyJob2",
+		"title": "Second Job",
+		"type": "ParameterizedlJob",
+		"parameters": { "param1" : "test" },
+		"createdDateTimeUtc": "2015-03-10T00:00:00"
+	},
+	{
+		"id": 7,
+		"uniquename": "MyJob3",
+		"title": "Third Job",
+		"type": "ProgressJob",
+		"createdDateTimeUtc": "2015-03-10T00:00:00"
 	}
+]
+```
+### Add Job
+Only the ``UniqueName`` and ``Type`` are required.
+
+	POST http://localhost:8765/api/jobs
+
+```json
+{
+	"uniquename": "MyJob1",
+	"title": "My First Job",
+	"type": "MinimalJob",
+	"parameters": { "param1" : "test" },
+	"createdDateTimeUtc": "2015-03-04T17:40:00"
+}
+```
 
 ### Trigger a Job to run (JobRun)
 A job can be triggered by using the following Endpoint (JobId or UniqueId is required)
@@ -125,21 +128,22 @@ There are 3 different modes and please note that
 
 #### 1. Instant
 
+```json
 {
 	"triggerType": "instant",
 	"isActive": true,
 	"userId": 12,
 	"parameters": { "Param1": "test", "Param2" : 42 }
 }
-
+```
 #### 2. Scheduled
 
 ```json
 {
 	"triggerType": "scheduled",
-	"startDateTimeUtc": "2015-03-12 11:00"
+	"startDateTimeUtc": "2015-03-12 11:00",
 	"isActive": true,
-	"userName": "test"
+	"userName": "test",
 	"parameters": { "Param1": "test", "Param2" : 42 }
 }
 ``` 
@@ -149,11 +153,11 @@ A definition is a cron definition as specified on wikipedia [http://en.wikipedia
 ```json
 {
 	"triggerType": "recurring",
-	"startDateTimeUtc": "2015-03-12 11:00
-	"endDateTimeUtc": "2015-03-19 18:00"
+	"startDateTimeUtc": "2015-03-12 11:00",
+	"endDateTimeUtc": "2015-03-19 18:00",
 	"definition: "* 15 * * *",
 	"isActive": true,
-	"userName": "test"
+	"userName": "test",
 	"parameters": { "Param1": "test", "Param2" : 42 }
 }
 ``` 
@@ -228,7 +232,7 @@ using Jobbr.WebAPI.Common.Models;
 
 // ...
 
-var jobbrClient = new JobbrClient("http://localhost:1337");
+var jobbrClient = new JobbrClient("http://localhost:8765/api");
 
 var allJobs = jobbrClient.GetAllJobs();
 
