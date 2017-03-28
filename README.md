@@ -155,7 +155,7 @@ A definition is a cron definition as specified on wikipedia [http://en.wikipedia
 	"triggerType": "recurring",
 	"startDateTimeUtc": "2015-03-12 11:00",
 	"endDateTimeUtc": "2015-03-19 18:00",
-	"definition: "* 15 * * *",
+	"definition": "* 15 * * *",
 	"isActive": true,
 	"userName": "test",
 	"parameters": { "Param1": "test", "Param2" : 42 }
