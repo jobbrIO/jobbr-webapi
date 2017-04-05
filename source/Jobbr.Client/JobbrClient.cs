@@ -11,12 +11,12 @@ namespace Jobbr.Client
 {
     public class JobbrClient
     {
-        protected HttpClient httpClient;
+        protected HttpClient HttpClient;
 
         public JobbrClient(string backend)
         {
             this.Backend = backend + (backend.EndsWith("/") ? string.Empty  : "/") + "api/";
-            this.httpClient = new HttpClient { BaseAddress = new Uri(this.Backend) };
+            this.HttpClient = new HttpClient { BaseAddress = new Uri(this.Backend) };
         }
 
         public string Backend { get; }
@@ -26,7 +26,7 @@ namespace Jobbr.Client
             const string url = "jobs/";
 
             var request = new HttpRequestMessage(HttpMethod.Get, url);
-            var response = this.httpClient.SendAsync(request).Result;
+            var response = this.HttpClient.SendAsync(request).Result;
 
             if (response.StatusCode == HttpStatusCode.OK)
             {
@@ -42,34 +42,33 @@ namespace Jobbr.Client
 
         public T TriggerJob<T>(long jobId, T triggerDto) where T : JobTriggerDtoBase
         {
-            var url = $"jobs/{jobId}/trigger";
+            var url = $"jobs/{jobId}/triggers/{triggerDto.Id}";
             return this.PostTrigger(triggerDto, url);
         }
 
         public T TriggerJob<T>(string uniqueName, T triggerDto) where T : JobTriggerDtoBase
         {
-            var url = $"jobs/{uniqueName}/trigger";
+            var url = $"jobs/{uniqueName}/triggers/{triggerDto.Id}";
             return this.PostTrigger(triggerDto, url);
         }
 
-        public T UpdateTrigger<T>(T triggerDto) where T : JobTriggerDtoBase
+        public T UpdateTrigger<T>(long jobId, T triggerDto) where T : JobTriggerDtoBase
         {
-            var url = $"triggers/{triggerDto.Id}";
+            var url = $"jobs/{jobId}/triggers/{triggerDto.Id}";
             return this.PatchTrigger(triggerDto, url);
         }
 
-        public T GetTriggerById<T>(long id) where T : JobTriggerDtoBase
+        public T GetTriggerById<T>(long jobId, long triggerId) where T : JobTriggerDtoBase
         {
-            var url = $"triggers/{id}";
+            var url = $"jobs/{jobId}/triggers/{triggerId}";
             return this.GetTrigger<T>(url);
         }
 
-        public List<JobRunDto> GetJobRunsByTriggerId(long triggerId)
+        public List<JobRunDto> GetJobRunsByTriggerId(long jobId, long triggerId)
         {
-            // Get the JobRun by this triggerId
-            var url = $"jobruns/{triggerId}";
+            var url = $"jobruns/?jobId={jobId}&triggerId={triggerId}";
 
-            var requestResult = this.httpClient.GetAsync(url).Result;
+            var requestResult = this.HttpClient.GetAsync(url).Result;
 
             if (requestResult.StatusCode == HttpStatusCode.OK)
             {
@@ -85,10 +84,9 @@ namespace Jobbr.Client
 
         public JobRunDto GetJobRunById(long jobRunId)
         {
-            // Get the JobRun by this triggerId
             var url = $"jobruns/{jobRunId}";
 
-            var requestResult = this.httpClient.GetAsync(url).Result;
+            var requestResult = this.HttpClient.GetAsync(url).Result;
 
             if (requestResult.StatusCode == HttpStatusCode.OK)
             {
@@ -127,7 +125,7 @@ namespace Jobbr.Client
                 request.Content = new StringContent(json, Encoding.UTF8, "application/json");
             }
 
-            var response = this.httpClient.SendAsync(request).Result;
+            var response = this.HttpClient.SendAsync(request).Result;
 
             if (response.StatusCode == HttpStatusCode.Created || response.StatusCode == HttpStatusCode.OK)
             {

@@ -22,8 +22,8 @@ namespace Jobbr.Server.WebAPI.Core.Controller
         }
 
         [HttpGet]
-        [Route("api/jobRuns/{jobRunId}")]
-        public IHttpActionResult GetJonRun(long jobRunId)
+        [Route("api/jobruns/{jobRunId}")]
+        public IHttpActionResult GetJobRuns(long jobRunId)
         {
             var jobRun = this.queryService.GetJobRunById(jobRunId);
 
@@ -38,8 +38,8 @@ namespace Jobbr.Server.WebAPI.Core.Controller
         }
 
         [HttpGet]
-        [Route("api/jobRuns/")]
-        public IHttpActionResult GetJonRunsByUserId(string userId)
+        [Route("api/jobruns/")]
+        public IHttpActionResult GetJobRunsByUserId(string userId)
         {
             var jobRuns = this.queryService.GetJobRunsByUserIdOrderByIdDesc(userId);
 
@@ -49,8 +49,8 @@ namespace Jobbr.Server.WebAPI.Core.Controller
         }
 
         [HttpGet]
-        [Route("api/jobRuns/")]
-        public IHttpActionResult GetJonRunsByTriggerId(long jobId, long triggerId)
+        [Route("api/jobruns/")]
+        public IHttpActionResult GetJobRunsByTrigger(long jobId, long triggerId)
         {
             var jobRuns = this.queryService.GetJobRunsByTriggerId(jobId, triggerId);
 
@@ -60,8 +60,8 @@ namespace Jobbr.Server.WebAPI.Core.Controller
         }
 
         [HttpGet]
-        [Route("api/jobRuns/")]
-        public IHttpActionResult GetJonRunsByUserName(string userDisplayName)
+        [Route("api/jobruns/")]
+        public IHttpActionResult GetJobRunsByUserDisplayName(string userDisplayName)
         {
             var jobRuns = this.queryService.GetJobRunsByUserDisplayNameOrderByIdDesc(userDisplayName);
 
@@ -71,7 +71,7 @@ namespace Jobbr.Server.WebAPI.Core.Controller
         }
 
         [HttpGet]
-        [Route("api/jobRuns/{jobRunId}/artefacts/{filename}")]
+        [Route("api/jobruns/{jobRunId}/artefacts/{filename}")]
         public IHttpActionResult GetArtefact(long jobRunId, string filename)
         {
             var jobRun = this.queryService.GetJobRunById(jobRunId);
