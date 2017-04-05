@@ -20,10 +20,10 @@ namespace Jobbr.Server.WebAPI.Core.Controller
         }
 
         [HttpGet]
-        [Route("api/triggers/{triggerId}")]
-        public IHttpActionResult GetTriggerById(long triggerId)
+        [Route("api/jobs/{jobId}/triggers/{triggerId}")]
+        public IHttpActionResult GetTriggerById(long jobId, long triggerId)
         {
-            var trigger = this.queryService.GetTriggerById(triggerId);
+            var trigger = this.queryService.GetTriggerById(jobId, triggerId);
 
             if (trigger == null)
             {
@@ -34,10 +34,10 @@ namespace Jobbr.Server.WebAPI.Core.Controller
         }
 
         [HttpPatch]
-        [Route("api/triggers/{triggerId}")]
-        public IHttpActionResult UpdateTrigger(long triggerId, [FromBody] JobTriggerDtoBase dto)
+        [Route("api/jobs/{jobId}/triggers/{triggerId}")]
+        public IHttpActionResult UpdateTrigger(long jobId, long triggerId, [FromBody] JobTriggerDtoBase dto)
         {
-            var currentTrigger = this.queryService.GetTriggerById(triggerId);
+            var currentTrigger = this.queryService.GetTriggerById(jobId, triggerId);
 
             if (currentTrigger == null)
             {
@@ -48,13 +48,13 @@ namespace Jobbr.Server.WebAPI.Core.Controller
             if (currentTrigger.IsActive && !dto.IsActive)
             {
                 currentTrigger.IsActive = false;
-                this.jobManagementService.DisableTrigger(currentTrigger.Id);
+                this.jobManagementService.DisableTrigger(jobId, currentTrigger.Id);
                 hadChanges = true;
             }
             else if (!currentTrigger.IsActive && dto.IsActive)
             {
                 currentTrigger.IsActive = true;
-                this.jobManagementService.EnableTrigger(currentTrigger.Id);
+                this.jobManagementService.EnableTrigger(jobId, currentTrigger.Id);
                 hadChanges = true;
             }
 
@@ -62,7 +62,7 @@ namespace Jobbr.Server.WebAPI.Core.Controller
             if (recurringTriggerDto != null && !string.IsNullOrEmpty(recurringTriggerDto.Definition) && recurringTriggerDto.Definition != ((RecurringTrigger)currentTrigger).Definition)
             {
                 ((RecurringTrigger)currentTrigger).Definition = recurringTriggerDto.Definition;
-                this.jobManagementService.UpdateTriggerDefinition(currentTrigger.Id, recurringTriggerDto.Definition);
+                this.jobManagementService.UpdateTriggerDefinition(jobId, currentTrigger.Id, recurringTriggerDto.Definition);
                 
                 hadChanges = true;
             }
@@ -71,7 +71,7 @@ namespace Jobbr.Server.WebAPI.Core.Controller
             if (scheduledTriggerDto != null && scheduledTriggerDto.StartDateTimeUtc >= DateTime.UtcNow && scheduledTriggerDto.StartDateTimeUtc != ((ScheduledTrigger)currentTrigger).StartDateTimeUtc)
             {
                 ((ScheduledTrigger)currentTrigger).StartDateTimeUtc = scheduledTriggerDto.StartDateTimeUtc;
-                this.jobManagementService.UpdateTriggerStartTime(currentTrigger.Id, scheduledTriggerDto.StartDateTimeUtc);
+                this.jobManagementService.UpdateTriggerStartTime(jobId, currentTrigger.Id, scheduledTriggerDto.StartDateTimeUtc);
 
                 hadChanges = true;
             }
@@ -79,7 +79,7 @@ namespace Jobbr.Server.WebAPI.Core.Controller
             if (hadChanges)
             {
                 // Reload trigger
-                currentTrigger = this.queryService.GetTriggerById(triggerId);
+                currentTrigger = this.queryService.GetTriggerById(jobId, triggerId);
 
                 return this.Ok(TriggerMapper.ConvertToDto((dynamic)currentTrigger));
             }
@@ -158,7 +158,7 @@ namespace Jobbr.Server.WebAPI.Core.Controller
             var trigger = TriggerMapper.ConvertToTrigger(triggerDto as dynamic);
             ((IJobTrigger)trigger).JobId = job.Id;
 
-            var triggerId = this.jobManagementService.AddTrigger(trigger);
+            var triggerId = this.jobManagementService.AddTrigger(job.Id, trigger);
 
             return this.Created(string.Format("api/trigger/{0}", triggerId), TriggerMapper.ConvertToDto(trigger));
         }

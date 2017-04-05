@@ -50,7 +50,6 @@ namespace Jobbr.Server.WebAPI.Core.Mapping
             dto.Parameters = trigger.Parameters != null ? JsonConvert.DeserializeObject(trigger.Parameters) : null;
             dto.UserDisplayName = trigger.UserDisplayName;
             dto.UserId = trigger.UserId;
-            dto.UserName = trigger.UserName;
 
             return dto;
         }
@@ -62,7 +61,6 @@ namespace Jobbr.Server.WebAPI.Core.Mapping
             trigger.Parameters = JsonConvert.SerializeObject(dto.Parameters);
             trigger.UserDisplayName = dto.UserDisplayName;
             trigger.UserId = dto.UserId;
-            trigger.UserName = dto.UserName;
 
             return trigger;
         }

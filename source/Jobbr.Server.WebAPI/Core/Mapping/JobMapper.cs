@@ -8,7 +8,7 @@ namespace Jobbr.Server.WebAPI.Core.Mapping
     {
         public static JobDto Map(Job job)
         {
-            return new JobDto()
+            return new JobDto
                        {
                            Id = job.Id,
                            UniqueName = job.UniqueName,
@@ -22,12 +22,11 @@ namespace Jobbr.Server.WebAPI.Core.Mapping
 
         public static JobRunDto Map(JobRun jobRun)
         {
-            return new JobRunDto()
+            return new JobRunDto
                        {
                            JobRunId = jobRun.Id,
                            JobId = jobRun.JobId,
                            TriggerId = jobRun.TriggerId,
-                           UniqueId = jobRun.UniqueId,
                            State = jobRun.State.ToString(),
                            Progress = jobRun.Progress,
                            PlannedStartUtc = jobRun.PlannedStartDateTimeUtc,

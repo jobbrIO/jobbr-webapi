@@ -39,7 +39,7 @@ namespace Jobbr.Server.WebAPI.Core.Controller
 
         [HttpGet]
         [Route("api/jobRuns/")]
-        public IHttpActionResult GetJonRunsByUserId(long userId)
+        public IHttpActionResult GetJonRunsByUserId(string userId)
         {
             var jobRuns = this.queryService.GetJobRunsByUserIdOrderByIdDesc(userId);
 
@@ -50,9 +50,9 @@ namespace Jobbr.Server.WebAPI.Core.Controller
 
         [HttpGet]
         [Route("api/jobRuns/")]
-        public IHttpActionResult GetJonRunsByTriggerId(long triggerId)
+        public IHttpActionResult GetJonRunsByTriggerId(long jobId, long triggerId)
         {
-            var jobRuns = this.queryService.GetJobRunsByTriggerId(triggerId);
+            var jobRuns = this.queryService.GetJobRunsByTriggerId(jobId, triggerId);
 
             var jobRunDtos = jobRuns.Select(this.ConvertToDto);
 
@@ -61,9 +61,9 @@ namespace Jobbr.Server.WebAPI.Core.Controller
 
         [HttpGet]
         [Route("api/jobRuns/")]
-        public IHttpActionResult GetJonRunsByUserName(string userName)
+        public IHttpActionResult GetJonRunsByUserName(string userDisplayName)
         {
-            var jobRuns = this.queryService.GetJobRunsByUserNameOrderByIdDesc(userName);
+            var jobRuns = this.queryService.GetJobRunsByUserDisplayNameOrderByIdDesc(userDisplayName);
 
             var jobRunDtos = jobRuns.Select(this.ConvertToDto);
 
@@ -83,9 +83,11 @@ namespace Jobbr.Server.WebAPI.Core.Controller
 
             var fileStream = this.jobManagementService.GetArtefactAsStream(jobRun.Id, filename);
 
-            HttpResponseMessage result = new HttpResponseMessage(HttpStatusCode.OK);
+            var result = new HttpResponseMessage(HttpStatusCode.OK)
+            {
+                Content = new StreamContent(fileStream)
+            };
 
-            result.Content = new StreamContent(fileStream);
             result.Content.Headers.ContentType = new MediaTypeHeaderValue("application/octet-stream");
 
             return this.ResponseMessage(result);
@@ -108,7 +110,6 @@ namespace Jobbr.Server.WebAPI.Core.Controller
                               JobName = job.UniqueName,
                               JobTitle = job.UniqueName,
                               TriggerId = jobRun.TriggerId,
-                              UniqueId = jobRun.UniqueId,
                               JobParameter = jobParameter,
                               InstanceParameter = instanceParameter,
                               State = jobRun.State.ToString(),

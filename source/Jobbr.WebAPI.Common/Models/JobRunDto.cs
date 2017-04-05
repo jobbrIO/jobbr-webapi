@@ -14,8 +14,6 @@ namespace Jobbr.WebAPI.Common.Models
 
         public long JobRunId { get; set; }
 
-        public Guid UniqueId { get; set; }
-
         public object JobParameter { get; set; }
 
         public object InstanceParameter { get; set; }

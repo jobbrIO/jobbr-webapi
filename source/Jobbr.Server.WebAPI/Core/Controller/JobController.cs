@@ -28,7 +28,7 @@ namespace Jobbr.Server.WebAPI.Core.Controller
         [Route("api/jobs")]
         public IHttpActionResult AllJobs()
         {
-            return this.Ok(this.queryService.GetAllJobs().Select(JobMapper.Map));
+            return this.Ok(this.queryService.GetJobs(0, int.MaxValue).Select(JobMapper.Map));
         }
 
         [HttpGet]
@@ -64,9 +64,9 @@ namespace Jobbr.Server.WebAPI.Core.Controller
             }
 
             var job = new Job() { UniqueName = dto.UniqueName, Title = dto.Title, Type = dto.Type, Parameters = dto.Parameters != null ? JsonConvert.SerializeObject(dto.Parameters) : null, };
-            var returnJob = this.jobManagementService.AddJob(job);
+            this.jobManagementService.AddJob(job);
 
-            return this.Created("/api/jobs/" + job.Id, JobMapper.Map(returnJob));
+            return this.Created("/api/jobs/" + job.Id, JobMapper.Map(job));
         }
 
         [HttpPost]
