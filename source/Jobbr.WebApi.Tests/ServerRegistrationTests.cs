@@ -1,6 +1,5 @@
 ﻿using System.Net;
 using System.Net.Http;
-using System.Net.Sockets;
 using Jobbr.Server;
 using Jobbr.Server.Builder;
 using Jobbr.Server.WebAPI;
@@ -9,50 +8,15 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Jobbr.WebApi.Tests
 {
     [TestClass]
-    public class ServerRegistrationTests
+    public class ServerRegistrationTests : IntegrationTestBase
     {
-        private static string confBackendAddress;
-
-        private static JobbrServer GivenARunningServerWithWebApi()
-        {
-            var builder = new JobbrBuilder();
-
-            var nextTcpPort = NextFreeTcpPort();
-            confBackendAddress = $"http://localhost:{nextTcpPort}";
-
-            builder.AddWebApi(conf =>
-            {
-                conf.BackendAddress = confBackendAddress;
-            });
-
-            var server = builder.Create();
-
-            server.Start();
-
-            return server;
-        }
-
-        private static int NextFreeTcpPort()
-        {
-            var l = new TcpListener(IPAddress.Loopback, 0);
-            l.Start();
-            var port = ((IPEndPoint)l.LocalEndpoint).Port;
-            l.Stop();
-            return port;
-        }
-
-        private static string CreateUrl(string path)
-        {
-            return $"{confBackendAddress}/{path}";
-        }
-
         [TestMethod]
         public void RegisteredAsComponent_JobbrIsStarted_WebServerIsAvailable()
         {
-            using (GivenARunningServerWithWebApi())
+            using (this.GivenRunningServerWithWebApi())
             {
                 var client = new HttpClient();
-                var result = client.GetAsync(CreateUrl("api/status")).Result;
+                var result = client.GetAsync(this.CreateUrl("api/status")).Result;
 
                 Assert.AreEqual(HttpStatusCode.OK, result.StatusCode);
             }
@@ -61,10 +25,10 @@ namespace Jobbr.WebApi.Tests
         [TestMethod]
         public void RegisteredAsComponent_JobbrIsStarted_ConfigurationIsAvailable()
         {
-            using (GivenARunningServerWithWebApi())
+            using (this.GivenRunningServerWithWebApi())
             {
                 var client = new HttpClient();
-                var result = client.GetAsync(CreateUrl("api/configuration")).Result;
+                var result = client.GetAsync(this.CreateUrl("api/configuration")).Result;
 
                 var response = result.Content.ReadAsStringAsync().Result;
 
@@ -77,14 +41,14 @@ namespace Jobbr.WebApi.Tests
         [TestMethod]
         public void RegisteredAsComponent_JobbrIsStarted_ExceptionsDontAffectServer()
         {
-            using (GivenARunningServerWithWebApi())
+            using (this.GivenRunningServerWithWebApi())
             {
                 var client = new HttpClient();
 
-                var faultyResult = client.GetAsync(CreateUrl("api/fail")).Result;
+                var faultyResult = client.GetAsync(this.CreateUrl("api/fail")).Result;
                 Assert.AreEqual(HttpStatusCode.InternalServerError, faultyResult.StatusCode);
 
-                var result = client.GetAsync(CreateUrl("api/status")).Result;
+                var result = client.GetAsync(this.CreateUrl("api/status")).Result;
 
                 Assert.AreEqual(HttpStatusCode.OK, result.StatusCode);
 
@@ -94,11 +58,11 @@ namespace Jobbr.WebApi.Tests
         [TestMethod]
         public void RegisteredAsComponent_JobbrIsStarted_CanLoadSomeJobs()
         {
-            using (GivenARunningServerWithWebApi())
+            using (this.GivenRunningServerWithWebApi())
             {
                 var client = new HttpClient();
 
-                var faultyResult = client.GetAsync(CreateUrl("api/jobs")).Result;
+                var faultyResult = client.GetAsync(this.CreateUrl("api/jobs")).Result;
                 Assert.AreEqual(HttpStatusCode.OK, faultyResult.StatusCode);
             }
         }

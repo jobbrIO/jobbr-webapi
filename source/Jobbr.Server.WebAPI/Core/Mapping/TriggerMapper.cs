@@ -8,19 +8,19 @@ namespace Jobbr.Server.WebAPI.Core.Mapping
     {
         internal static ScheduledTriggerDto ConvertToDto(ScheduledTrigger trigger)
         {
-            var dto = new ScheduledTriggerDto { StartDateTimeUtc = trigger.StartDateTimeUtc, TriggerType = ScheduledTriggerDto.TypeName };
+            var dto = new ScheduledTriggerDto { StartDateTimeUtc = trigger.StartDateTimeUtc };
             return (ScheduledTriggerDto)MapCommonValues(trigger, dto);
         }
 
         internal static InstantTriggerDto ConvertToDto(InstantTrigger trigger)
         {
-            var dto = new InstantTriggerDto { DelayedMinutes = trigger.DelayedMinutes, TriggerType = InstantTriggerDto.TypeName };
+            var dto = new InstantTriggerDto { DelayedMinutes = trigger.DelayedMinutes };
             return (InstantTriggerDto)MapCommonValues(trigger, dto);
         }
 
         internal static RecurringTriggerDto ConvertToDto(RecurringTrigger trigger)
         {
-            var dto = new RecurringTriggerDto { StartDateTimeUtc = trigger.StartDateTimeUtc, EndDateTimeUtc = trigger.EndDateTimeUtc, Definition = trigger.Definition, TriggerType = RecurringTriggerDto.TypeName};
+            var dto = new RecurringTriggerDto { StartDateTimeUtc = trigger.StartDateTimeUtc, EndDateTimeUtc = trigger.EndDateTimeUtc, Definition = trigger.Definition };
             return (RecurringTriggerDto)MapCommonValues(trigger, dto);
         }
 

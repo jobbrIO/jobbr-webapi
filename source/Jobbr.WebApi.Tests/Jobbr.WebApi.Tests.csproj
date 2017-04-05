@@ -75,13 +75,24 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="ClientTests.cs" />
+    <Compile Include="ExposeStorageProvider.cs" />
+    <Compile Include="IntegrationTestBase.cs" />
     <Compile Include="ServerRegistrationTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Jobbr.Client\Jobbr.Client.csproj">
+      <Project>{79CF40B0-F063-4CA7-826B-7C92C0BE8232}</Project>
+      <Name>Jobbr.Client</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Jobbr.Server.WebAPI\Jobbr.Server.WebAPI.csproj">
       <Project>{b158f9ad-5480-4415-9bce-8d8663c3f3c0}</Project>
       <Name>Jobbr.Server.WebAPI</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Jobbr.WebAPI.Common\Jobbr.WebAPI.Common.csproj">
+      <Project>{A2477520-351E-4429-8F75-BE728382C2A5}</Project>
+      <Name>Jobbr.WebAPI.Common</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

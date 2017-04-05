@@ -95,7 +95,7 @@ namespace Jobbr.Server.WebAPI.Core.Controller
         }
 
         [HttpGet]
-        [Route("api/jobs/{uniqueName:string}/runs")]
+        [Route("api/jobs/{uniqueName}/runs")]
         public IHttpActionResult GetJobRunsForJobByUniqueName(string uniqueName)
         {
             var job = this.queryService.GetJobByUniqueName(uniqueName);

@@ -9,7 +9,7 @@ namespace Jobbr.WebAPI.Common.Models
     {
         public long Id { get; set; }
 
-        public string TriggerType { get; set; }
+        public abstract string TriggerType { get; }
 
         public bool IsActive { get; set; }
 
@@ -24,7 +24,9 @@ namespace Jobbr.WebAPI.Common.Models
 
     public class RecurringTriggerDto : JobTriggerDtoBase
     {
-        public const string TypeName = "Recurring";
+        public static string Type = "Recurring";
+
+        public override string TriggerType => Type;
 
         public DateTime? StartDateTimeUtc { get; set; }
 
@@ -35,14 +37,18 @@ namespace Jobbr.WebAPI.Common.Models
 
     public class ScheduledTriggerDto : JobTriggerDtoBase
     {
-        public const string TypeName = "Scheduled";
+        public static string Type = "Scheduled";
+
+        public override string TriggerType => Type;
 
         public DateTime StartDateTimeUtc { get; set; }
     }
 
     public class InstantTriggerDto : JobTriggerDtoBase
     {
-        public const string TypeName = "Instant";
+        public static string Type = "Instant";
+
+        public override string TriggerType => Type;
 
         public int DelayedMinutes { get; set; }
     }

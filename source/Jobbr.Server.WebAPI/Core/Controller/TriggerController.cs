@@ -102,7 +102,7 @@ namespace Jobbr.Server.WebAPI.Core.Controller
         }
 
         [HttpGet]
-        [Route("api/jobs/{uniqueName:string}/triggers")]
+        [Route("api/jobs/{uniqueName}/triggers")]
         public IHttpActionResult GetTriggersForJob(string uniqueName)
         {
             var job = this.queryService.GetJobByUniqueName(uniqueName);
@@ -130,7 +130,7 @@ namespace Jobbr.Server.WebAPI.Core.Controller
         }
 
         [HttpPost]
-        [Route("api/jobs/{uniqueName:string}/triggers")]
+        [Route("api/jobs/{uniqueName}/triggers")]
         public IHttpActionResult AddTriggerForJobUniqueName(string uniqueName, [FromBody] JobTriggerDtoBase triggerDto)
         {
             var job = this.queryService.GetJobByUniqueName(uniqueName);
@@ -158,9 +158,9 @@ namespace Jobbr.Server.WebAPI.Core.Controller
             var trigger = TriggerMapper.ConvertToTrigger(triggerDto as dynamic);
             ((IJobTrigger)trigger).JobId = job.Id;
 
-            var triggerId = this.jobManagementService.AddTrigger(job.Id, trigger);
+            this.jobManagementService.AddTrigger(job.Id, trigger);
 
-            return this.Created(string.Format("api/jobs/{0}/triggers/{1}", job.Id, triggerId), TriggerMapper.ConvertToDto(trigger));
+            return this.Created(string.Format("api/jobs/{0}/triggers/{1}", job.Id, trigger.Id), TriggerMapper.ConvertToDto(trigger));
         }
     }
 }

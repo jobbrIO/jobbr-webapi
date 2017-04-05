@@ -21,6 +21,25 @@ namespace Jobbr.Client
 
         public string Backend { get; }
 
+        public JobDto GetJob(long id)
+        {
+            var url = $"jobs/{id}";
+
+            var request = new HttpRequestMessage(HttpMethod.Get, url);
+            var response = this.HttpClient.SendAsync(request).Result;
+
+            if (response.StatusCode == HttpStatusCode.OK)
+            {
+                var contentString = response.Content.ReadAsStringAsync().Result;
+
+                var responseDto = JsonConvert.DeserializeObject<JobDto>(contentString);
+
+                return responseDto;
+            }
+
+            return null;
+        }
+
         public List<JobDto> GetAllJobs()
         {
             const string url = "jobs/";
@@ -40,13 +59,13 @@ namespace Jobbr.Client
             return null;
         }
 
-        public T TriggerJob<T>(long jobId, T triggerDto) where T : JobTriggerDtoBase
+        public T AddTrigger<T>(long jobId, T triggerDto) where T : JobTriggerDtoBase
         {
-            var url = $"jobs/{jobId}/triggers/{triggerDto.Id}";
+            var url = $"jobs/{jobId}/triggers";
             return this.PostTrigger(triggerDto, url);
         }
 
-        public T TriggerJob<T>(string uniqueName, T triggerDto) where T : JobTriggerDtoBase
+        public T AddTrigger<T>(string uniqueName, T triggerDto) where T : JobTriggerDtoBase
         {
             var url = $"jobs/{uniqueName}/triggers/{triggerDto.Id}";
             return this.PostTrigger(triggerDto, url);
@@ -111,6 +130,11 @@ namespace Jobbr.Client
         }
 
         private T GetTrigger<T>(string url) where T : class
+        {
+            return this.ExecuteDtoRequest<T>(url, null, HttpMethod.Get);
+        }
+
+        private T GetTriggers<T>(string url) where T : class
         {
             return this.ExecuteDtoRequest<T>(url, null, HttpMethod.Get);
         }

@@ -66,17 +66,17 @@ namespace Jobbr.Server.WebAPI
 
         private Type JobTriggerTypeResolver(List<Type> types, string typeValue)
         {
-            if (typeValue.ToLowerInvariant() == RecurringTriggerDto.TypeName.ToLowerInvariant())
+            if (typeValue.ToLowerInvariant() == RecurringTriggerDto.Type.ToLowerInvariant())
             {
                 return typeof(RecurringTriggerDto);
             }
 
-            if (typeValue.ToLowerInvariant() == ScheduledTriggerDto.TypeName.ToLowerInvariant())
+            if (typeValue.ToLowerInvariant() == ScheduledTriggerDto.Type.ToLowerInvariant())
             {
                 return typeof(ScheduledTriggerDto);
             }
 
-            if (typeValue.ToLowerInvariant() == InstantTriggerDto.TypeName.ToLowerInvariant())
+            if (typeValue.ToLowerInvariant() == InstantTriggerDto.Type.ToLowerInvariant())
             {
                 return typeof(InstantTriggerDto);
             }
