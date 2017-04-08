@@ -2,7 +2,7 @@ using Jobbr.ComponentModel.Management.Model;
 using Jobbr.WebAPI.Common.Models;
 using Newtonsoft.Json;
 
-namespace Jobbr.Server.WebAPI.Core.Mapping
+namespace Jobbr.Server.WebAPI.Controller.Mapping
 {
     public class TriggerMapper
     {

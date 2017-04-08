@@ -2,7 +2,7 @@
 using System.Net;
 using System.Net.Sockets;
 using Jobbr.ComponentModel.Registration;
-using Jobbr.Server.WebAPI.Core;
+using Jobbr.Server.WebAPI.Infrastructure;
 using Jobbr.Server.WebAPI.Logging;
 
 namespace Jobbr.Server.WebAPI

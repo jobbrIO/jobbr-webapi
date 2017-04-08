@@ -5,7 +5,7 @@ using Microsoft.Owin.Hosting;
 using Microsoft.Owin.Hosting.Services;
 using Microsoft.Owin.Hosting.Starter;
 
-namespace Jobbr.Server.WebAPI.Core
+namespace Jobbr.Server.WebAPI.Infrastructure
 {
     /// <summary>
     /// The web host.

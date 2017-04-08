@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using System.Web.Http.ExceptionHandling;
 using Jobbr.Server.WebAPI.Logging;
 
-namespace Jobbr.Server.WebAPI.Core
+namespace Jobbr.Server.WebAPI.Infrastructure
 {
     internal class TraceSourceExceptionLogger : IExceptionLogger
     {

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Web.Http;
 
-namespace Jobbr.Server.WebAPI.Core.Controller
+namespace Jobbr.Server.WebAPI.Controller
 {
     /// <summary>
     /// The default controller.

@@ -4,14 +4,13 @@ using System.Linq;
 using System.Web.Http;
 using System.Web.Http.ExceptionHandling;
 using Jobbr.ComponentModel.Registration;
-using Jobbr.Server.WebAPI.Core;
 using Jobbr.Server.WebAPI.Logging;
 using Jobbr.WebAPI.Common.Models;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using Owin;
 
-namespace Jobbr.Server.WebAPI
+namespace Jobbr.Server.WebAPI.Infrastructure
 {
     public class Startup
     {

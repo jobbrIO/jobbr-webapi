@@ -1,6 +1,6 @@
 ﻿using System;
 using Jobbr.ComponentModel.Registration;
-using Jobbr.Server.WebAPI.Core;
+using Jobbr.Server.WebAPI.Infrastructure;
 
 namespace Jobbr.Server.WebAPI
 {

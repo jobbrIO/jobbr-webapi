@@ -8,7 +8,7 @@ using Jobbr.ComponentModel.Management.Model;
 using Jobbr.WebAPI.Common.Models;
 using Newtonsoft.Json;
 
-namespace Jobbr.Server.WebAPI.Core.Controller
+namespace Jobbr.Server.WebAPI.Controller
 {
     public class JobRunController : ApiController
     {
