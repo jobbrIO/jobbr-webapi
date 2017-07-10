@@ -51,9 +51,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Jobbr.WebAPI.Common\Jobbr.WebAPI.Common.csproj">
+    <ProjectReference Include="..\Jobbr.Server.WebAPI.Model\Jobbr.Server.WebAPI.Model.csproj">
       <Project>{a2477520-351e-4429-8f75-be728382c2a5}</Project>
-      <Name>Jobbr.WebAPI.Common</Name>
+      <Name>Jobbr.Server.WebAPI.Model</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

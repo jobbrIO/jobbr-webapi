@@ -5,7 +5,7 @@ using System.Web.Http;
 using System.Web.Http.ExceptionHandling;
 using Jobbr.ComponentModel.Registration;
 using Jobbr.Server.WebAPI.Logging;
-using Jobbr.WebAPI.Common.Models;
+using Jobbr.Server.WebAPI.Model;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using Owin;

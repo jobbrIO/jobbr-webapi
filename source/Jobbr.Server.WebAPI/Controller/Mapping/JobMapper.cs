@@ -1,5 +1,5 @@
 using Jobbr.ComponentModel.Management.Model;
-using Jobbr.WebAPI.Common.Models;
+using Jobbr.Server.WebAPI.Model;
 using Newtonsoft.Json;
 
 namespace Jobbr.Server.WebAPI.Controller.Mapping

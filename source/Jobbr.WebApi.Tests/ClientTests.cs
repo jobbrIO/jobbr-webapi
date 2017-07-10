@@ -1,6 +1,6 @@
 ﻿using Jobbr.Client;
 using Jobbr.ComponentModel.JobStorage.Model;
-using Jobbr.WebAPI.Common.Models;
+using Jobbr.Server.WebAPI.Model;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Jobbr.WebApi.Tests

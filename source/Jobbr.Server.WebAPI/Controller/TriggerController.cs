@@ -4,7 +4,7 @@ using System.Web.Http;
 using Jobbr.ComponentModel.Management;
 using Jobbr.ComponentModel.Management.Model;
 using Jobbr.Server.WebAPI.Controller.Mapping;
-using Jobbr.WebAPI.Common.Models;
+using Jobbr.Server.WebAPI.Model;
 
 namespace Jobbr.Server.WebAPI.Controller
 {

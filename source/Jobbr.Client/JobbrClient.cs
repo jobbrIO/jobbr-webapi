@@ -3,8 +3,7 @@ using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
 using System.Text;
-
-using Jobbr.WebAPI.Common.Models;
+using Jobbr.Server.WebAPI.Model;
 using Newtonsoft.Json;
 
 namespace Jobbr.Client

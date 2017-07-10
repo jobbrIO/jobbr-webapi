@@ -1,4 +1,4 @@
-﻿namespace WebAPI.Models
+﻿namespace Jobbr.Server.WebAPI.Model
 {
     /// <summary>
     /// The job run artefact dto.
