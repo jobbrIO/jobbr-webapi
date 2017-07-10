@@ -7,64 +7,39 @@ namespace Jobbr.WebApi.Tests
     [TestClass]
     public class PackagingTests
     {
-        private readonly Asserter featureAsserter = new Asserter(Asserter.ResolvePackagesConfig("Jobbr.Server.WebApi"), Asserter.ResolveRootFile("Jobbr.Server.WebApi.nuspec"));
-        private readonly Asserter client = new Asserter(Asserter.ResolvePackagesConfig("Jobbr.Client"), Asserter.ResolveRootFile("Jobbr.Client.nuspec"));
-
         private readonly bool isPre = Assembly.GetExecutingAssembly().GetInformalVersion().Contains("-");
 
         [TestMethod]
-        public void Feature_KnownReferences_AreDeclared()
+        public void Feature_NuSpec_IsCompliant()
         {
-            this.featureAsserter.Add(new PackageExistsInBothRule("Jobbr.ComponentModel.Registration"));
+            var asserter = new Asserter(Asserter.ResolvePackagesConfig("Jobbr.Server.WebApi"), Asserter.ResolveRootFile("Jobbr.Server.WebApi.nuspec"));
 
-            var result = this.featureAsserter.Validate();
+            asserter.Add(new PackageExistsInBothRule("Jobbr.ComponentModel.Registration"));
+            asserter.Add(new PackageExistsInBothRule("Jobbr.ComponentModel.Management"));
 
-            Assert.IsTrue(result.IsSuccessful, result.Message);
-        }
-
-        [TestMethod]
-        public void Feature_PreComponentModelsPre_ExactSameVersions()
-        {
-            if (!this.isPre)
+            if (this.isPre)
             {
                 // This rule is only valid for Pre-Release versions because we only need exact match on PreRelease Versions
-                return;
+                asserter.Add(new ExactVersionMatchRule("Jobbr.ComponentModel.*"));
             }
 
-            this.featureAsserter.Add(new ExactVersionMatchRule("Jobbr.ComponentModel.*"));
+            asserter.Add(new VersionIsIncludedInRange("Jobbr.ComponentModel.*"));
+            asserter.Add(new NoMajorChangesInNuSpec("Jobbr.*"));
+            asserter.Add(new NoMajorChangesInNuSpec("Microsoft.*"));
 
-            var result = this.featureAsserter.Validate();
-
-            Assert.IsTrue(result.IsSuccessful, result.Message);
-        }
-
-        [TestMethod]
-        public void Feature_ComponentModels_InRange()
-        {
-            this.featureAsserter.Add(new VersionIsIncludedInRange("Jobbr.ComponentModel.*"));
-
-            var result = this.featureAsserter.Validate();
+            var result = asserter.Validate();
 
             Assert.IsTrue(result.IsSuccessful, result.Message);
         }
 
         [TestMethod]
-        public void Feature_AllDependencies_NoMajorVersionChangeAllowed()
+        public void Client_NuSpec_IsCompliant()
         {
-            this.featureAsserter.Add(new NoMajorChangesInNuSpec("Jobbr.*"));
-            this.featureAsserter.Add(new NoMajorChangesInNuSpec("Microsoft.*"));
+            var asserter = new Asserter(Asserter.ResolvePackagesConfig("Jobbr.Client"), Asserter.ResolveRootFile("Jobbr.Client.nuspec"));
 
-            var result = this.featureAsserter.Validate();
+            asserter.Add(new NoExternalDependenciesRule());
 
-            Assert.IsTrue(result.IsSuccessful, result.Message);
-        }
-
-        [TestMethod]
-        public void Client_KnownReferences_AreNone()
-        {
-            this.client.Add(new NoExternalDependenciesRule());
-
-            var result = this.featureAsserter.Validate();
+            var result = asserter.Validate();
 
             Assert.IsTrue(result.IsSuccessful, result.Message);
         }
