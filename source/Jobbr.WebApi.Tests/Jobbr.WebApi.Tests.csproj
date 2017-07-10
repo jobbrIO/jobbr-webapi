@@ -94,6 +94,10 @@
       <Project>{b158f9ad-5480-4415-9bce-8d8663c3f3c0}</Project>
       <Name>Jobbr.Server.WebAPI</Name>
     </ProjectReference>
+    <ProjectReference Include="..\submodules\devsupport\src\Jobbr.DevSupport.ReferencedVersionAsserter\Jobbr.DevSupport.ReferencedVersionAsserter.csproj">
+      <Project>{D7C78DBD-D440-4D0C-B9A9-AD8B7473364A}</Project>
+      <Name>Jobbr.DevSupport.ReferencedVersionAsserter</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
