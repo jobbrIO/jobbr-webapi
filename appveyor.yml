@@ -29,10 +29,10 @@ after_build:
   - cmd: mkdir ilmerged
   - cmd: ILMerge\tools\ILMerge.exe /out:ilmerged/Jobbr.Server.WebAPI.dll source/Jobbr.Server.WebAPI/bin/Release/Jobbr.Server.WebAPI.dll source/Jobbr.Server.WebAPI/bin/Release/Jobbr.Server.WebApi.Model.dll source/Jobbr.Server.WebAPI/bin/Release/Microsoft.*.dll source/Jobbr.Server.WebAPI/bin/Release/Newtonsoft.*.dll source/Jobbr.Server.WebAPI/bin/Release/System.*.dll source/Jobbr.Server.WebAPI/bin/Release/Owin.dll /target:library /targetplatform:v4,C:\Windows\Microsoft.NET\Framework64\v4.0.30319 /allowDup:HttpRequestMessageExtensions /allowDup:MediaTypeFormatterExtensions /wildcards /internalize:internalize_exclude.txt 
   - cmd: ILMerge\tools\ILMerge.exe /out:ilmerged/Jobbr.Client.dll source/Jobbr.Client/bin/Release/*.dll /target:library /targetplatform:v4,C:\Windows\Microsoft.NET\Framework64\v4.0.30319 /wildcards /internalize:internalize_exclude.txt 
-  - cmd: nuget pack source\Jobbr.Server.WebAPI.nuspec -version "%GitVersion_NuGetVersion%" -prop "target=%CONFIGURATION%"
-  - cmd: nuget pack source\Jobbr.Client.nuspec -version "%GitVersion_NuGetVersion%" -prop "target=%CONFIGURATION%"
-  - cmd: appveyor PushArtifact "Jobbr.Server.WebAPI.%GitVersion_NuGetVersion%.nupkg"
-  - cmd: appveyor PushArtifact "Jobbr.Client.%GitVersion_NuGetVersion%.nupkg"
+  - cmd: nuget pack source\Jobbr.Server.WebAPI.nuspec -version "%GitVersion_SemVer%" -prop "target=%CONFIGURATION%"
+  - cmd: nuget pack source\Jobbr.Client.nuspec -version "%GitVersion_SemVer%" -prop "target=%CONFIGURATION%"
+  - cmd: appveyor PushArtifact "Jobbr.Server.WebAPI.%GitVersion_SemVer%.nupkg"
+  - cmd: appveyor PushArtifact "Jobbr.Client.%GitVersion_SemVer%.nupkg"
 
 deploy:
 - provider: NuGet
