@@ -20,7 +20,7 @@ namespace Jobbr.Server.WebAPI.Controller
         }
 
         [HttpGet]
-        [Route("api/jobs/{jobId:long}/triggers/{triggerId:long}")]
+        [Route("jobs/{jobId:long}/triggers/{triggerId:long}")]
         public IHttpActionResult GetTriggerById(long jobId, long triggerId)
         {
             var trigger = this.queryService.GetTriggerById(jobId, triggerId);
@@ -34,7 +34,7 @@ namespace Jobbr.Server.WebAPI.Controller
         }
 
         [HttpPatch]
-        [Route("api/jobs/{jobId:long}/triggers/{triggerId:long}")]
+        [Route("jobs/{jobId:long}/triggers/{triggerId:long}")]
         public IHttpActionResult UpdateTrigger(long jobId, long triggerId, [FromBody] JobTriggerDtoBase dto)
         {
             var currentTrigger = this.queryService.GetTriggerById(jobId, triggerId);
@@ -88,7 +88,7 @@ namespace Jobbr.Server.WebAPI.Controller
         }
 
         [HttpGet]
-        [Route("api/jobs/{jobId:long}/triggers")]
+        [Route("jobs/{jobId:long}/triggers")]
         public IHttpActionResult GetTriggersForJob(long jobId)
         {
             var job = this.queryService.GetJobById(jobId);
@@ -102,7 +102,7 @@ namespace Jobbr.Server.WebAPI.Controller
         }
 
         [HttpGet]
-        [Route("api/jobs/{uniqueName}/triggers")]
+        [Route("jobs/{uniqueName}/triggers")]
         public IHttpActionResult GetTriggersForJob(string uniqueName)
         {
             var job = this.queryService.GetJobByUniqueName(uniqueName);
@@ -116,7 +116,7 @@ namespace Jobbr.Server.WebAPI.Controller
         }
 
         [HttpPost]
-        [Route("api/jobs/{jobId:long}/triggers")]
+        [Route("jobs/{jobId:long}/triggers")]
         public IHttpActionResult AddTriggerForJobId(long jobId, [FromBody] JobTriggerDtoBase triggerDto)
         {
             var job = this.queryService.GetJobById(jobId);
@@ -130,7 +130,7 @@ namespace Jobbr.Server.WebAPI.Controller
         }
 
         [HttpPost]
-        [Route("api/jobs/{uniqueName}/triggers")]
+        [Route("jobs/{uniqueName}/triggers")]
         public IHttpActionResult AddTriggerForJobUniqueName(string uniqueName, [FromBody] JobTriggerDtoBase triggerDto)
         {
             var job = this.queryService.GetJobByUniqueName(uniqueName);
@@ -160,7 +160,7 @@ namespace Jobbr.Server.WebAPI.Controller
 
             this.jobManagementService.AddTrigger(job.Id, trigger);
 
-            return this.Created(string.Format("api/jobs/{0}/triggers/{1}", job.Id, trigger.Id), TriggerMapper.ConvertToDto(trigger));
+            return this.Created(string.Format("jobs/{0}/triggers/{1}", job.Id, trigger.Id), TriggerMapper.ConvertToDto(trigger));
         }
     }
 }

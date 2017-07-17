@@ -25,14 +25,14 @@ namespace Jobbr.Server.WebAPI.Controller
         }
 
         [HttpGet]
-        [Route("api/jobs")]
+        [Route("jobs")]
         public IHttpActionResult AllJobs()
         {
             return this.Ok(this.queryService.GetJobs(0, int.MaxValue).Select(JobMapper.Map));
         }
 
         [HttpGet]
-        [Route("api/jobs/{jobId}")]
+        [Route("jobs/{jobId}")]
         public IHttpActionResult SingleJob(long jobId)
         {
             var job = this.queryService.GetJobById(jobId);
@@ -46,7 +46,7 @@ namespace Jobbr.Server.WebAPI.Controller
         }
 
         [HttpPost]
-        [Route("api/jobs")]
+        [Route("jobs")]
         public IHttpActionResult AddJob([FromBody] JobDto dto)
         {
             var identifier = dto.UniqueName;
@@ -66,11 +66,11 @@ namespace Jobbr.Server.WebAPI.Controller
             var job = new Job() { UniqueName = dto.UniqueName, Title = dto.Title, Type = dto.Type, Parameters = dto.Parameters != null ? JsonConvert.SerializeObject(dto.Parameters) : null, };
             this.jobManagementService.AddJob(job);
 
-            return this.Created("/api/jobs/" + job.Id, JobMapper.Map(job));
+            return this.Created("jobs/" + job.Id, JobMapper.Map(job));
         }
 
         [HttpPost]
-        [Route("api/jobs/{jobId:long}")]
+        [Route("jobs/{jobId:long}")]
         public IHttpActionResult UpdateJob(long jobId, [FromBody] JobDto dto)
         {
             var existingJob = this.queryService.GetJobById(jobId);
@@ -84,7 +84,7 @@ namespace Jobbr.Server.WebAPI.Controller
         }
 
         [HttpGet]
-        [Route("api/jobs/{jobId:long}/runs")]
+        [Route("jobs/{jobId:long}/runs")]
         public IHttpActionResult GetJobRunsForJobById(long jobId)
         {
             var jobRuns = this.queryService.GetJobRuns().Where(jr => jr.JobId == jobId);
@@ -95,7 +95,7 @@ namespace Jobbr.Server.WebAPI.Controller
         }
 
         [HttpGet]
-        [Route("api/jobs/{uniqueName}/runs")]
+        [Route("jobs/{uniqueName}/runs")]
         public IHttpActionResult GetJobRunsForJobByUniqueName(string uniqueName)
         {
             var job = this.queryService.GetJobByUniqueName(uniqueName);

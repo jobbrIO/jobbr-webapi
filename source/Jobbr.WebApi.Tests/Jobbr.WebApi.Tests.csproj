@@ -75,6 +75,7 @@
   <ItemGroup>
     <Compile Include="ClientTests.cs" />
     <Compile Include="ExposeStorageProvider.cs" />
+    <Compile Include="HostingUrlTests.cs" />
     <Compile Include="IntegrationTestBase.cs" />
     <Compile Include="PackagingTests.cs" />
     <Compile Include="ServerRegistrationTests.cs" />

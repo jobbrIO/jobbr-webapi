@@ -22,21 +22,21 @@ namespace Jobbr.Server.WebAPI.Controller
         /// The <see cref="IHttpActionResult"/>.
         /// </returns>
         [HttpGet]
-        [Route("api/status")]
+        [Route("status")]
         public IHttpActionResult AreYouFine()
         {
             return this.Ok("Fine");
         }
 
         [HttpGet]
-        [Route("api/configuration")]
+        [Route("configuration")]
         public IHttpActionResult GetConfiguration()
         {
             return this.Ok(this.configuration);
         }
 
         [HttpGet]
-        [Route("api/fail")]
+        [Route("fail")]
         public IHttpActionResult Fail()
         {
             throw new Exception("This has failed!");

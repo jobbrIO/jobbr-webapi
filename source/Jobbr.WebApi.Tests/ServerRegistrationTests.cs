@@ -16,7 +16,7 @@ namespace Jobbr.WebApi.Tests
             using (this.GivenRunningServerWithWebApi())
             {
                 var client = new HttpClient();
-                var result = client.GetAsync(this.CreateUrl("api/status")).Result;
+                var result = client.GetAsync(this.CreateUrl("status")).Result;
 
                 Assert.AreEqual(HttpStatusCode.OK, result.StatusCode);
             }
@@ -28,7 +28,7 @@ namespace Jobbr.WebApi.Tests
             using (this.GivenRunningServerWithWebApi())
             {
                 var client = new HttpClient();
-                var result = client.GetAsync(this.CreateUrl("api/configuration")).Result;
+                var result = client.GetAsync(this.CreateUrl("configuration")).Result;
 
                 var response = result.Content.ReadAsStringAsync().Result;
 
@@ -45,10 +45,10 @@ namespace Jobbr.WebApi.Tests
             {
                 var client = new HttpClient();
 
-                var faultyResult = client.GetAsync(this.CreateUrl("api/fail")).Result;
+                var faultyResult = client.GetAsync(this.CreateUrl("fail")).Result;
                 Assert.AreEqual(HttpStatusCode.InternalServerError, faultyResult.StatusCode);
 
-                var result = client.GetAsync(this.CreateUrl("api/status")).Result;
+                var result = client.GetAsync(this.CreateUrl("status")).Result;
 
                 Assert.AreEqual(HttpStatusCode.OK, result.StatusCode);
 
@@ -62,7 +62,7 @@ namespace Jobbr.WebApi.Tests
             {
                 var client = new HttpClient();
 
-                var faultyResult = client.GetAsync(this.CreateUrl("api/jobs")).Result;
+                var faultyResult = client.GetAsync(this.CreateUrl("jobs")).Result;
                 Assert.AreEqual(HttpStatusCode.OK, faultyResult.StatusCode);
             }
         }

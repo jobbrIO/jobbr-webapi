@@ -14,7 +14,7 @@ namespace Jobbr.Client
 
         public JobbrClient(string backend)
         {
-            this.Backend = backend + (backend.EndsWith("/") ? string.Empty  : "/") + "api/";
+            this.Backend = backend + (backend.EndsWith("/") ? string.Empty  : "/");
             this.HttpClient = new HttpClient { BaseAddress = new Uri(this.Backend) };
         }
 
@@ -37,6 +37,16 @@ namespace Jobbr.Client
             }
 
             return null;
+        }
+
+        public bool IsAvailable()
+        {
+            const string url = "status";
+
+            var request = new HttpRequestMessage(HttpMethod.Get, url);
+            var response = this.HttpClient.SendAsync(request).Result;
+
+            return response.StatusCode == HttpStatusCode.OK;
         }
 
         public List<JobDto> GetAllJobs()

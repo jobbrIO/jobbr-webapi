@@ -14,16 +14,25 @@ namespace Jobbr.WebApi.Tests
 
         public IJobStorageProvider JobStorage => ExposeStorageProvider.Instance.JobStorageProvider;
 
-        protected JobbrServer GivenRunningServerWithWebApi()
+        protected JobbrServer GivenRunningServerWithWebApi(string url = "")
         {
             var builder = new JobbrBuilder();
 
-            var nextTcpPort = NextFreeTcpPort();
-            this.BackendAddress = $"http://localhost:{nextTcpPort}";
+            string backendAddress;
+
+            if (string.IsNullOrWhiteSpace(url))
+            {
+                var nextTcpPort = NextFreeTcpPort();
+                backendAddress = $"http://localhost:{nextTcpPort}";
+            }
+            else
+            {
+                backendAddress = url;
+            }
 
             builder.AddWebApi(conf =>
             {
-                conf.BackendAddress = this.BackendAddress;
+                conf.BackendAddress = backendAddress;
             });
 
             builder.Register<IJobbrComponent>(typeof(ExposeStorageProvider));
@@ -35,7 +44,7 @@ namespace Jobbr.WebApi.Tests
             return server;
         }
 
-        private static int NextFreeTcpPort()
+        public static int NextFreeTcpPort()
         {
             var l = new TcpListener(IPAddress.Loopback, 0);
             l.Start();

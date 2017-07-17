@@ -28,7 +28,7 @@ namespace Jobbr.Server.WebAPI
                 Logger.Warn("There was no BackendAdress specified. Falling back to random port, which is not guaranteed to work in production scenarios");
                 var port = NextFreeTcpPort();
 
-                config.BackendAddress = $"http://localhost:{port}/api";
+                config.BackendAddress = $"http://localhost:{port}/";
             }
 
             return true;
