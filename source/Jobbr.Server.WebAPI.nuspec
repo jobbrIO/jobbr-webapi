@@ -12,8 +12,8 @@
     <copyright>Copyright 2017</copyright>
     <dependencies>
       <dependency id="Microsoft.Owin.Host.HttpListener" version="[3,4)"/>
-      <dependency id="Jobbr.ComponentModel.Registration" version="[1.0.0-rc1]"/>
-      <dependency id="Jobbr.ComponentModel.Management" version="[1.0.0-rc8]"/>
+      <dependency id="Jobbr.ComponentModel.Registration" version="[1.0.0]"/>
+      <dependency id="Jobbr.ComponentModel.Management" version="[1.0.0]"/>
     </dependencies>
   </metadata>
   <files>
