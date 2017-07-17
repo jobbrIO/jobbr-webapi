@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26430.15
+VisualStudioVersion = 15.0.26711.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jobbr.Server.WebAPI", "Jobbr.Server.WebAPI\Jobbr.Server.WebAPI.csproj", "{B158F9AD-5480-4415-9BCE-8D8663C3F3C0}"
 EndProject
@@ -56,5 +56,8 @@ Global
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{D7C78DBD-D440-4D0C-B9A9-AD8B7473364A} = {7C48FCEE-D52F-40FA-B545-4A6B7794CB78}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {04ED53DB-99A4-4A58-95BC-1D3828CBC201}
 	EndGlobalSection
 EndGlobal
