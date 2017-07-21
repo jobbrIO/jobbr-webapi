@@ -18,21 +18,19 @@ namespace Jobbr.WebApi.Tests
         {
             var builder = new JobbrBuilder();
 
-            string backendAddress;
-
             if (string.IsNullOrWhiteSpace(url))
             {
                 var nextTcpPort = NextFreeTcpPort();
-                backendAddress = $"http://localhost:{nextTcpPort}";
+                this.BackendAddress = $"http://localhost:{nextTcpPort}";
             }
             else
             {
-                backendAddress = url;
+                this.BackendAddress = url;
             }
 
             builder.AddWebApi(conf =>
             {
-                conf.BackendAddress = backendAddress;
+                conf.BackendAddress = this.BackendAddress;
             });
 
             builder.Register<IJobbrComponent>(typeof(ExposeStorageProvider));
