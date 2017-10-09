@@ -1,5 +1,4 @@
-﻿using System.Reflection;
-using Jobbr.DevSupport.ReferencedVersionAsserter;
+﻿using Jobbr.DevSupport.ReferencedVersionAsserter;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Jobbr.WebApi.Tests
@@ -7,8 +6,6 @@ namespace Jobbr.WebApi.Tests
     [TestClass]
     public class PackagingTests
     {
-        private readonly bool isPre = Assembly.GetExecutingAssembly().GetInformalVersion().Contains("-");
-
         [TestMethod]
         public void Feature_NuSpec_IsCompliant()
         {
