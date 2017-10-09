@@ -16,17 +16,6 @@ namespace Jobbr.WebApi.Tests
 
             asserter.Add(new PackageExistsInBothRule("Jobbr.ComponentModel.Registration"));
             asserter.Add(new PackageExistsInBothRule("Jobbr.ComponentModel.Management"));
-
-            if (this.isPre)
-            {
-                // This rule is only valid for Pre-Release versions because we only need exact match on PreRelease Versions
-                asserter.Add(new ExactVersionMatchRule("Jobbr.ComponentModel.*"));
-            }
-            else
-            {
-                asserter.Add(new AllowNonBreakingChangesRule("Jobbr.ComponentModel.*"));
-            }
-
             asserter.Add(new VersionIsIncludedInRange("Jobbr.ComponentModel.*"));
             asserter.Add(new NoMajorChangesInNuSpec("Jobbr.*"));
             asserter.Add(new NoMajorChangesInNuSpec("Microsoft.*"));
