@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
+using System.Web.Http.Cors;
 using System.Web.Http.ExceptionHandling;
 using Jobbr.ComponentModel.Registration;
 using Jobbr.Server.WebAPI.Logging;
 using Jobbr.Server.WebAPI.Model;
+using Microsoft.Owin.Cors;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using Owin;
@@ -59,8 +61,12 @@ namespace Jobbr.Server.WebAPI.Infrastructure
             var appXmlType = config.Formatters.XmlFormatter.SupportedMediaTypes.FirstOrDefault(t => t.MediaType == "application/xml");
             config.Formatters.XmlFormatter.SupportedMediaTypes.Remove(appXmlType);
 
+            // enable cors
+            config.EnableCors(new EnableCorsAttribute("*", "*", "*"));
+
             // Finally attach WebApi to the pipeline with the given configuration
             app.UseWebApi(config);
+            app.UseCors(CorsOptions.AllowAll);
         }
 
         private Type JobTriggerTypeResolver(List<Type> types, string typeValue)
