@@ -1,4 +1,5 @@
-﻿using Jobbr.Client;
+﻿using System;
+using Jobbr.Client;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Jobbr.WebApi.Tests
@@ -92,6 +93,15 @@ namespace Jobbr.WebApi.Tests
             var client = new JobbrClient(host + "/path");
 
             Assert.IsTrue(client.IsAvailable());
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(FormatException))]
+        public void ServerAddressWithoutScheme_ShouldThrowException()
+        {
+            var host = $"localhost:{NextFreeTcpPort()}";
+
+            this.GivenRunningServerWithWebApi(host + "/path/");
         }
     }
 }
