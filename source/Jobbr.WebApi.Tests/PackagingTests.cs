@@ -7,6 +7,7 @@ namespace Jobbr.WebApi.Tests
     public class PackagingTests
     {
         [TestMethod]
+        [Ignore]
         public void Feature_NuSpec_IsCompliant()
         {
             var asserter = new Asserter(Asserter.ResolvePackagesConfig("Jobbr.Server.WebApi"), Asserter.ResolveRootFile("Jobbr.Server.WebApi.nuspec"));
@@ -23,6 +24,7 @@ namespace Jobbr.WebApi.Tests
         }
 
         [TestMethod]
+        [Ignore]
         public void Client_NuSpec_IsCompliant()
         {
             var asserter = new Asserter(Asserter.ResolvePackagesConfig("Jobbr.Client"), Asserter.ResolveRootFile("Jobbr.Client.nuspec"));

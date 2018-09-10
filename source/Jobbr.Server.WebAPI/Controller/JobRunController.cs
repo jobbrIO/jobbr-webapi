@@ -1,12 +1,11 @@
-﻿using System.Linq;
+﻿using System;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Web.Http;
 using Jobbr.ComponentModel.Management;
 using Jobbr.ComponentModel.Management.Model;
-using Jobbr.Server.WebAPI.Model;
-using Newtonsoft.Json;
+using Jobbr.Server.WebAPI.Controller.Mapping;
 
 namespace Jobbr.Server.WebAPI.Controller
 {
@@ -32,42 +31,56 @@ namespace Jobbr.Server.WebAPI.Controller
                 return this.NotFound();
             }
 
-            var dto = this.ConvertToDto(jobRun);
+            var artefacts = this.jobManagementService.GetArtefactForJob(jobRunId);
 
-            return this.Ok(dto);
+            return this.Ok(jobRun.ToDto(artefacts));
         }
 
         [HttpGet]
-        [Route("jobruns/")]
-        public IHttpActionResult GetJobRunsByUserId(string userId)
+        [Route("jobruns")]
+        public IHttpActionResult GetJobRuns(int page = 1, int pageSize = 50, string jobTypeFilter = null, string jobUniqueNameFilter = null, string query = null, string sort = null, string state = null, string userDisplayName = null)
         {
-            var jobRuns = this.queryService.GetJobRunsByUserIdOrderByIdDesc(userId);
+            PagedResult<JobRun> jobRuns;
 
-            var jobRunDtos = jobRuns.Select(this.ConvertToDto);
+            if (string.IsNullOrWhiteSpace(state) == false)
+            {
+                var success = Enum.TryParse(state, true, out JobRunStates enumValue);
 
-            return this.Ok(jobRunDtos);
+                if (success == false)
+                {
+                    return this.BadRequest($"Unknown state: {state}");
+                }
+
+                jobRuns = this.queryService.GetJobRunsByState(enumValue, page, pageSize, jobTypeFilter, jobUniqueNameFilter, query, sort?.Split(','));
+            }
+            else if (string.IsNullOrWhiteSpace(userDisplayName) == false)
+            {
+                jobRuns = this.queryService.GetJobRunsByUserDisplayName(userDisplayName, page, pageSize, jobTypeFilter, jobUniqueNameFilter, sort?.Split(','));
+            }
+            else
+            {
+                jobRuns = this.queryService.GetJobRuns(page, pageSize, jobTypeFilter, jobUniqueNameFilter, query, sort?.Split(','));
+            }
+
+            return this.Ok(jobRuns.ToPagedResult());
         }
 
         [HttpGet]
-        [Route("jobruns/")]
-        public IHttpActionResult GetJobRunsByTrigger(long jobId, long triggerId)
+        [Route("users/{userId}/jobruns/")]
+        public IHttpActionResult GetJobRunsByUserId(string userId, int page = 1, int pageSize = 50, string jobTypeFilter = null, string jobUniqueNameFilter = null, string sort = null)
         {
-            var jobRuns = this.queryService.GetJobRunsByTriggerId(jobId, triggerId);
+            var jobRuns = this.queryService.GetJobRunsByUserId(userId, page, pageSize, jobTypeFilter, jobUniqueNameFilter, sort?.Split(','));
 
-            var jobRunDtos = jobRuns.Select(this.ConvertToDto);
-
-            return this.Ok(jobRunDtos);
+            return this.Ok(jobRuns.ToPagedResult());
         }
 
         [HttpGet]
-        [Route("jobruns/")]
-        public IHttpActionResult GetJobRunsByUserDisplayName(string userDisplayName)
+        [Route("jobs/{jobId}/triggers/{triggerId}/jobruns")]
+        public IHttpActionResult GetJobRunsByTrigger(long jobId, long triggerId, int page = 1, int pageSize = 50, string sort = null)
         {
-            var jobRuns = this.queryService.GetJobRunsByUserDisplayNameOrderByIdDesc(userDisplayName);
+            var jobRuns = this.queryService.GetJobRunsByTriggerId(jobId, triggerId, page, pageSize, sort?.Split(','));
 
-            var jobRunDtos = jobRuns.Select(this.ConvertToDto);
-
-            return this.Ok(jobRunDtos);
+            return this.Ok(jobRuns.ToPagedResult());
         }
 
         [HttpGet]
@@ -91,36 +104,6 @@ namespace Jobbr.Server.WebAPI.Controller
             result.Content.Headers.ContentType = new MediaTypeHeaderValue("application/octet-stream");
 
             return this.ResponseMessage(result);
-        }
-    
-        private JobRunDto ConvertToDto(JobRun jobRun)
-        {
-            var jobParameter = jobRun.JobParameters != null ? JsonConvert.DeserializeObject(jobRun.JobParameters) : null;
-            var instanceParameter = jobRun.InstanceParameters != null ? JsonConvert.DeserializeObject(jobRun.InstanceParameters) : null;
-
-            var files = this.jobManagementService.GetArtefactForJob(jobRun.Id);
-            var filesList = files.Select(fileInfo => new JobRunArtefactDto() { Filename = fileInfo.Filename, Size = fileInfo.Size, }).ToList();
-
-            var job = this.queryService.GetJobById(jobRun.JobId);
-
-            var dto = new JobRunDto()
-                          {
-                              JobRunId = jobRun.Id,
-                              JobId = jobRun.JobId,
-                              JobName = job.UniqueName,
-                              JobTitle = job.UniqueName,
-                              TriggerId = jobRun.TriggerId,
-                              JobParameter = jobParameter,
-                              InstanceParameter = instanceParameter,
-                              State = jobRun.State.ToString(),
-                              Progress = jobRun.Progress,
-                              PlannedStartUtc = jobRun.PlannedStartDateTimeUtc,
-                              AuctualStartUtc = jobRun.ActualStartDateTimeUtc,
-                              EstimatedEndtUtc = jobRun.EstimatedEndDateTimeUtc,
-                              AuctualEndUtc = jobRun.ActualEndDateTimeUtc,
-                              Artefacts = filesList.Any() ? filesList : null
-                          };
-            return dto;
         }
     }
 }

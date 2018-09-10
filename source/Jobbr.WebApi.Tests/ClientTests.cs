@@ -1,4 +1,5 @@
-﻿using Jobbr.Client;
+﻿using System.Linq;
+using Jobbr.Client;
 using Jobbr.ComponentModel.JobStorage.Model;
 using Jobbr.Server.WebAPI.Model;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -26,21 +27,21 @@ namespace Jobbr.WebApi.Tests
         }
 
         [TestMethod]
-        public void RetrievingAllJobs()
+        public void Query_Jobs_Total_Items()
         {
             using (this.GivenRunningServerWithWebApi())
             {
                 var client = new JobbrClient(this.BackendAddress);
 
-                this.JobStorage.AddJob(new Job());
-                this.JobStorage.AddJob(new Job());
-                this.JobStorage.AddJob(new Job());
-                this.JobStorage.AddJob(new Job());
-                this.JobStorage.AddJob(new Job());
+                this.JobStorage.AddJob(new Job { Title = "title1", Type = "Some.Type1", UniqueName = "unique1" });
+                this.JobStorage.AddJob(new Job { Title = "title2", Type = "Some.Type2", UniqueName = "unique2" });
+                this.JobStorage.AddJob(new Job { Title = "title3", Type = "Some.Type3", UniqueName = "unique3" });
+                this.JobStorage.AddJob(new Job { Title = "title4", Type = "Some.Type4", UniqueName = "unique4" });
+                this.JobStorage.AddJob(new Job { Title = "title5", Type = "Some.Type5", UniqueName = "unique5" });
 
-                var jobs = client.GetAllJobs();
+                var result = client.QueryJobs();
 
-                Assert.AreEqual(5, jobs.Count);
+                Assert.AreEqual(5, result.TotalItems);
             }
         }
 
@@ -168,15 +169,15 @@ namespace Jobbr.WebApi.Tests
                 var trigger = new RecurringTrigger();
                 this.JobStorage.AddTrigger(job.Id, trigger);
 
-                var jobRun = new JobRun {JobId = job.Id, TriggerId = trigger.Id};
+                var jobRun = new JobRun { Job = new Job { Id = job.Id }, Trigger = new RecurringTrigger { Id = trigger.Id } };
                 this.JobStorage.AddJobRun(jobRun);
 
                 var jobRunDto = client.GetJobRunById(jobRun.Id);
 
                 Assert.IsNotNull(jobRunDto);
                 Assert.AreEqual(jobRun.Id, jobRunDto.JobRunId);
-                Assert.AreEqual(jobRun.JobId, jobRunDto.JobId);
-                Assert.AreEqual(jobRun.TriggerId, jobRunDto.TriggerId);
+                Assert.AreEqual(jobRun.Job.Id, jobRunDto.JobId);
+                Assert.AreEqual(jobRun.Trigger.Id, jobRunDto.TriggerId);
             }
         }
 
@@ -193,15 +194,43 @@ namespace Jobbr.WebApi.Tests
                 var trigger = new RecurringTrigger();
                 this.JobStorage.AddTrigger(job.Id, trigger);
 
-                var jobRun = new JobRun { JobId = job.Id, TriggerId = trigger.Id };
+                var jobRun = new JobRun { Job = new Job { Id = job.Id }, Trigger = new RecurringTrigger { Id = trigger.Id } };
                 this.JobStorage.AddJobRun(jobRun);
 
-                var jobRun2 = new JobRun { JobId = job.Id, TriggerId = trigger.Id };
+                var jobRun2 = new JobRun { Job = new Job { Id = job.Id }, Trigger = new RecurringTrigger { Id = trigger.Id } };
                 this.JobStorage.AddJobRun(jobRun2);
 
                 var jobRuns = client.GetJobRunsByTriggerId(job.Id, trigger.Id);
 
-                Assert.AreEqual(2, jobRuns.Count);
+                Assert.AreEqual(2, jobRuns.TotalItems);
+            }
+        }
+
+        [TestMethod]
+        public void Get_JobRuns_By_State()
+        {
+            using (this.GivenRunningServerWithWebApi())
+            {
+                var client = new JobbrClient(this.BackendAddress);
+
+                var job = new Job();
+                this.JobStorage.AddJob(job);
+
+                var trigger = new RecurringTrigger();
+                this.JobStorage.AddTrigger(job.Id, trigger);
+
+                var jobRun = new JobRun { Job = new Job { Id = job.Id }, Trigger = new RecurringTrigger { Id = trigger.Id }, State = JobRunStates.Completed };
+                this.JobStorage.AddJobRun(jobRun);
+
+                var jobRun2 = new JobRun { Job = new Job { Id = job.Id }, Trigger = new RecurringTrigger { Id = trigger.Id }, State = JobRunStates.Completed };
+                this.JobStorage.AddJobRun(jobRun2);
+
+                var jobRun3 = new JobRun { Job = new Job { Id = job.Id }, Trigger = new RecurringTrigger { Id = trigger.Id }, State = JobRunStates.Failed };
+                this.JobStorage.AddJobRun(jobRun3);
+
+                var jobRuns = client.QueryJobRunsByState("Completed");
+
+                Assert.AreEqual(2, jobRuns.TotalItems);
             }
         }
 
@@ -262,6 +291,10 @@ namespace Jobbr.WebApi.Tests
 
                 Assert.IsNotNull(triggerDto);
                 Assert.IsTrue(triggerDto.IsActive);
+
+                var trigger2 = this.JobStorage.GetTriggerById(job.Id, trigger.Id);
+
+                Assert.IsTrue(trigger2.IsActive);
             }
         }
     }

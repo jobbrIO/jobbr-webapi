@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
 using System.Text;
@@ -10,12 +9,12 @@ namespace Jobbr.Client
 {
     public class JobbrClient
     {
-        protected HttpClient HttpClient;
+        private readonly HttpClient httpClient;
 
         public JobbrClient(string backend)
         {
             this.Backend = backend + (backend.EndsWith("/") ? string.Empty  : "/");
-            this.HttpClient = new HttpClient { BaseAddress = new Uri(this.Backend) };
+            this.httpClient = new HttpClient { BaseAddress = new Uri(this.Backend) };
         }
 
         public string Backend { get; }
@@ -25,7 +24,7 @@ namespace Jobbr.Client
             var url = $"jobs/{id}";
 
             var request = new HttpRequestMessage(HttpMethod.Get, url);
-            var response = this.HttpClient.SendAsync(request).Result;
+            var response = this.httpClient.SendAsync(request).Result;
 
             if (response.StatusCode == HttpStatusCode.OK)
             {
@@ -44,23 +43,80 @@ namespace Jobbr.Client
             const string url = "status";
 
             var request = new HttpRequestMessage(HttpMethod.Get, url);
-            var response = this.HttpClient.SendAsync(request).Result;
+            var response = this.httpClient.SendAsync(request).Result;
 
             return response.StatusCode == HttpStatusCode.OK;
         }
 
-        public List<JobDto> GetAllJobs()
+        public PagedResultDto<JobDto> QueryJobs(int page = 1, int pageSize = 50, string jobTypeFilter = null, string jobUniqueNameFilter = null, string query = null, string sort = null)
         {
-            const string url = "jobs/";
+            var url = $"jobs?page={page}&pageSize={pageSize}&jobTypeFilter={jobTypeFilter}&jobUniqueNameFilter={jobUniqueNameFilter}&query={query}&sort={sort}";
 
             var request = new HttpRequestMessage(HttpMethod.Get, url);
-            var response = this.HttpClient.SendAsync(request).Result;
+            var response = this.httpClient.SendAsync(request).Result;
 
             if (response.StatusCode == HttpStatusCode.OK)
             {
                 var contentString = response.Content.ReadAsStringAsync().Result;
 
-                var responseDto = JsonConvert.DeserializeObject<List<JobDto>>(contentString);
+                var responseDto = JsonConvert.DeserializeObject<PagedResultDto<JobDto>>(contentString);
+
+                return responseDto;
+            }
+
+            return null;
+        }
+
+        public PagedResultDto<JobRunDto> QueryJobRuns(int page = 1, int pageSize = 50, string jobTypeFilter = null, string jobUniqueNameFilter = null, string query = null, string sort = null)
+        {
+            var url = $"jobRuns?page={page}&pageSize={pageSize}&jobTypeFilter={jobTypeFilter}&jobUniqueNameFilter={jobUniqueNameFilter}&query={query}&sort={sort}";
+
+            var request = new HttpRequestMessage(HttpMethod.Get, url);
+            var response = this.httpClient.SendAsync(request).Result;
+
+            if (response.StatusCode == HttpStatusCode.OK)
+            {
+                var contentString = response.Content.ReadAsStringAsync().Result;
+
+                var responseDto = JsonConvert.DeserializeObject<PagedResultDto<JobRunDto>>(contentString);
+
+                return responseDto;
+            }
+
+            return null;
+        }
+
+        public PagedResultDto<JobRunDto> QueryJobRunsByState(string state, int page = 1, int pageSize = 50, string jobTypeFilter = null, string jobUniqueNameFilter = null, string query = null, string sort = null)
+        {
+            var url = $"jobRuns?page={page}&pageSize={pageSize}&jobTypeFilter={jobTypeFilter}&jobUniqueNameFilter={jobUniqueNameFilter}&query={query}&sort={sort}&state={state}";
+
+            var request = new HttpRequestMessage(HttpMethod.Get, url);
+            var response = this.httpClient.SendAsync(request).Result;
+
+            if (response.StatusCode == HttpStatusCode.OK)
+            {
+                var contentString = response.Content.ReadAsStringAsync().Result;
+
+                var responseDto = JsonConvert.DeserializeObject<PagedResultDto<JobRunDto>>(contentString);
+
+                return responseDto;
+            }
+
+            return null;
+        }
+
+        public PagedResultDto<JobRunDto> QueryJobRunsByUserId(string userId, int page = 1, int pageSize = 50, string jobTypeFilter = null, string jobUniqueNameFilter = null, string sort = null)
+        {
+            var url = $"users/{userId}/jobruns/?page={page}&pageSize={pageSize}&jobTypeFilter={jobTypeFilter}&jobUniqueNameFilter={jobUniqueNameFilter}&sort={sort}";
+
+            var request = new HttpRequestMessage(HttpMethod.Get, url);
+            var response = this.httpClient.SendAsync(request).Result;
+
+            if (response.StatusCode == HttpStatusCode.OK)
+            {
+                var contentString = response.Content.ReadAsStringAsync().Result;
+
+                var responseDto = JsonConvert.DeserializeObject<PagedResultDto<JobRunDto>>(contentString);
 
                 return responseDto;
             }
@@ -92,17 +148,17 @@ namespace Jobbr.Client
             return this.GetTrigger<T>(url);
         }
 
-        public List<JobRunDto> GetJobRunsByTriggerId(long jobId, long triggerId)
+        public PagedResultDto<JobRunDto> GetJobRunsByTriggerId(long jobId, long triggerId, int page = 1, int pageSize = 50, string sort = null)
         {
-            var url = $"jobruns/?jobId={jobId}&triggerId={triggerId}";
+            var url = $"jobs/{jobId}/triggers/{triggerId}/jobruns?page={page}&pageSize={pageSize}&sort={sort}";
 
-            var requestResult = this.HttpClient.GetAsync(url).Result;
+            var requestResult = this.httpClient.GetAsync(url).Result;
 
             if (requestResult.StatusCode == HttpStatusCode.OK)
             {
                 var json = requestResult.Content.ReadAsStringAsync().Result;
 
-                var runs = JsonConvert.DeserializeObject<List<JobRunDto>>(json);
+                var runs = JsonConvert.DeserializeObject<PagedResultDto<JobRunDto>>(json);
 
                 return runs;
             }
@@ -114,7 +170,7 @@ namespace Jobbr.Client
         {
             var url = $"jobruns/{jobRunId}";
 
-            var requestResult = this.HttpClient.GetAsync(url).Result;
+            var requestResult = this.httpClient.GetAsync(url).Result;
 
             if (requestResult.StatusCode == HttpStatusCode.OK)
             {
@@ -158,7 +214,7 @@ namespace Jobbr.Client
                 request.Content = new StringContent(json, Encoding.UTF8, "application/json");
             }
 
-            var response = this.HttpClient.SendAsync(request).Result;
+            var response = this.httpClient.SendAsync(request).Result;
 
             if (response.StatusCode == HttpStatusCode.Created || response.StatusCode == HttpStatusCode.OK)
             {

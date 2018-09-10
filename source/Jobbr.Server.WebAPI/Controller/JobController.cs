@@ -26,21 +26,21 @@ namespace Jobbr.Server.WebAPI.Controller
 
         [HttpGet]
         [Route("jobs")]
-        public IHttpActionResult AllJobs()
+        public IHttpActionResult AllJobs(int page = 1, int pageSize = 50, string jobTypeFilter = null, string jobUniqueNameFilter = null, string query = null, string sort = null)
         {
-            return this.Ok(this.queryService.GetJobs(0, int.MaxValue).Select(JobMapper.Map));
+            return this.Ok(this.queryService.GetJobs(page, pageSize, jobTypeFilter, jobUniqueNameFilter, query, sort?.Split(',')).ToPagedResult());
         }
 
         [HttpGet]
         [Route("jobs/{jobId}")]
-        public IHttpActionResult SingleJob(long jobId)
+        public IHttpActionResult TriggersByJob(long jobId, int page = 1, int pageSize = 200)
         {
             var job = this.queryService.GetJobById(jobId);
 
-            var triggers = this.queryService.GetTriggersByJobId(jobId);
-            
-            var jobDto = JobMapper.Map(job);
-            jobDto.Trigger = triggers.Select(t => TriggerMapper.ConvertToDto(t as dynamic)).Cast<JobTriggerDtoBase>().ToList();
+            var pagedResult = this.queryService.GetTriggersByJobId(jobId, page, pageSize);
+
+            var jobDto = job.ToDto();
+            jobDto.Trigger = pagedResult.Items.Select(t => TriggerMapper.ConvertToDto(t as dynamic)).Cast<JobTriggerDtoBase>().ToList();
 
             return this.Ok(jobDto);
         }
@@ -53,7 +53,7 @@ namespace Jobbr.Server.WebAPI.Controller
 
             if (string.IsNullOrEmpty(dto.UniqueName))
             {
-                return this.StatusCode(HttpStatusCode.NotAcceptable);
+                return this.StatusCode(HttpStatusCode.NotFound);
             }
 
             var existingJob = this.queryService.GetJobByUniqueName(identifier);
@@ -63,10 +63,10 @@ namespace Jobbr.Server.WebAPI.Controller
                 return this.Conflict();
             }
 
-            var job = new Job() { UniqueName = dto.UniqueName, Title = dto.Title, Type = dto.Type, Parameters = dto.Parameters != null ? JsonConvert.SerializeObject(dto.Parameters) : null, };
+            var job = new Job { UniqueName = dto.UniqueName, Title = dto.Title, Type = dto.Type, Parameters = dto.Parameters != null ? JsonConvert.SerializeObject(dto.Parameters) : null, };
             this.jobManagementService.AddJob(job);
 
-            return this.Created("jobs/" + job.Id, JobMapper.Map(job));
+            return this.Created("jobs/" + job.Id, job.ToDto());
         }
 
         [HttpPost]
@@ -84,27 +84,21 @@ namespace Jobbr.Server.WebAPI.Controller
         }
 
         [HttpGet]
-        [Route("jobs/{jobId:long}/runs")]
-        public IHttpActionResult GetJobRunsForJobById(long jobId)
+        [Route("jobs/{jobId:int}/runs")]
+        public IHttpActionResult GetJobRunsForJobById(int jobId, int page = 1, int pageSize = 50, string sort = null)
         {
-            var jobRuns = this.queryService.GetJobRuns().Where(jr => jr.JobId == jobId);
-
-            var list = jobRuns.Select(JobMapper.Map).ToList();
-
-            return this.Ok(list);
+            return this.Ok(this.queryService.GetJobRunsByJobId(jobId, page, pageSize, sort?.Split(',')).ToPagedResult());
         }
 
         [HttpGet]
         [Route("jobs/{uniqueName}/runs")]
-        public IHttpActionResult GetJobRunsForJobByUniqueName(string uniqueName)
+        public IHttpActionResult GetJobRunsForJobByUniqueName(string uniqueName, int page = 1, int pageSize = 50, string sort = null)
         {
             var job = this.queryService.GetJobByUniqueName(uniqueName);
 
-            var jobRuns = this.queryService.GetJobRuns().Where(jr => jr.JobId == job.Id);
+            var jobRuns = this.queryService.GetJobRunsByJobId((int)job.Id, page, pageSize, sort?.Split(','));
 
-            var list = jobRuns.Select(JobMapper.Map).ToList();
-
-            return this.Ok(list);
+            return this.Ok(jobRuns.ToPagedResult());
         }
     }
 }
