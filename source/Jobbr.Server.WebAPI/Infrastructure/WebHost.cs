@@ -46,20 +46,14 @@ namespace Jobbr.Server.WebAPI.Infrastructure
         /// </summary>
         public void Start()
         {
-            if (string.IsNullOrWhiteSpace(this.configuration.BackendAddress))
-            {
-                throw new ArgumentException("Unable to start WebServer when no BackendUrl is specified");
-            }
-
-
+            this.AssertBackendAddressIsValid();
+            
             var services = (ServiceProvider)ServicesFactory.Create();
             var options = new StartOptions()
-                              {
-                                  Urls = {
-                                            this.configuration.BackendAddress 
-                                         }, 
-                                  AppStartup = typeof(Startup).FullName
-                              };
+            {
+                Urls = { this.configuration.BackendAddress },
+                AppStartup = typeof(Startup).FullName
+            };
             // Pass through the IJobbrServiceProvider to allow Startup-Classes to let them inject this dependency
             services.Add(typeof(IJobbrServiceProvider), () => this.dependencyResolver);
 
@@ -82,6 +76,20 @@ namespace Jobbr.Server.WebAPI.Infrastructure
         {
             this.webHost.Dispose();
             this.webHost = null;
+        }
+
+        private void AssertBackendAddressIsValid()
+        {
+            if (string.IsNullOrWhiteSpace(this.configuration.BackendAddress))
+            {
+                throw new ArgumentException("Unable to start WebServer when no BackendUrl is specified.");
+            }
+            var uri = new Uri(this.configuration.BackendAddress);
+            if (uri.Scheme != Uri.UriSchemeHttp &&
+                uri.Scheme != Uri.UriSchemeHttps)
+            {
+                throw new FormatException("No valid UriScheme was given. Please provide a scheme like http(s)");
+            }
         }
     }
 }
