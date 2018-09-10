@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
+using Jobbr.Server.WebAPI.Logging;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json.Serialization;
@@ -15,6 +17,8 @@ namespace Jobbr.Server.WebAPI.Infrastructure
     /// </typeparam>
     public class JsonTypeConverter<TType> : JsonConverter
     {
+        private static readonly ILog Logger = LogProvider.For<JsonTypeConverter<TType>>();
+
         /// <summary>
         /// The cached types.
         /// </summary>
@@ -82,9 +86,23 @@ namespace Jobbr.Server.WebAPI.Infrastructure
 
         private static List<Type> GetTypesFromAllAssemblies()
         {
-            if (possibleTypes == null)
+            try
             {
-                possibleTypes = AppDomain.CurrentDomain.GetAssemblies().SelectMany(a => a.GetTypes()).Where(t => t.IsSubclassOf(typeof(TType)) || typeof(TType).IsAssignableFrom(t)).ToList();
+                if (possibleTypes == null)
+                {
+                    possibleTypes = AppDomain.CurrentDomain.GetAssemblies().SelectMany(a => a.GetTypes()).Where(t => t.IsSubclassOf(typeof(TType)) || typeof(TType).IsAssignableFrom(t)).ToList();
+                }
+            }
+            catch (ReflectionTypeLoadException e)
+            {
+                Logger.ErrorException(e.Message, e);
+
+                foreach (var loaderException in e.LoaderExceptions)
+                {
+                    Logger.ErrorException(loaderException.Message, loaderException);
+                }
+
+                throw;
             }
 
             return possibleTypes;
