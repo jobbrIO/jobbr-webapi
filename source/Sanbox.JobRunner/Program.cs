@@ -2,7 +2,6 @@
 using System.IO;
 using Jobbr.Runtime;
 using Jobbr.Runtime.ForkedExecution;
-using Sanbox.JobRunner.Jobs;
 using Sandbox.JobRunner.Jobs;
 
 namespace Sanbox.JobRunner
@@ -17,9 +16,7 @@ namespace Sanbox.JobRunner
                 var jobAssemblyToQueryJobs = typeof(ProgressJob).Assembly;
 
                 // Set the default assembly to query for jobtypes
-                var runtime = new ForkedRuntime(new RuntimeConfiguration {JobTypeSearchAssembly = jobAssemblyToQueryJobs});
-
-                //SpinWait.SpinUntil(() => false, TimeSpan.FromSeconds(30));
+                var runtime = new ForkedRuntime(new RuntimeConfiguration {JobTypeSearchAssemblies = new[] { jobAssemblyToQueryJobs } });
 
                 // Pass the arguments of the forked execution to the runtime
                 runtime.Run(args);
