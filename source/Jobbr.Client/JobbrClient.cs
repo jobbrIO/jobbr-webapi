@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Runtime.Serialization;
 using System.Text;
 using Jobbr.Server.WebAPI.Model;
 using Newtonsoft.Json;
@@ -89,6 +91,25 @@ namespace Jobbr.Client
         public PagedResultDto<JobRunDto> QueryJobRunsByState(string state, int page = 1, int pageSize = 50, string jobTypeFilter = null, string jobUniqueNameFilter = null, string query = null, string sort = null)
         {
             var url = $"jobRuns?page={page}&pageSize={pageSize}&jobTypeFilter={jobTypeFilter}&jobUniqueNameFilter={jobUniqueNameFilter}&query={query}&sort={sort}&state={state}";
+
+            var request = new HttpRequestMessage(HttpMethod.Get, url);
+            var response = this.httpClient.SendAsync(request).Result;
+
+            if (response.StatusCode == HttpStatusCode.OK)
+            {
+                var contentString = response.Content.ReadAsStringAsync().Result;
+
+                var responseDto = JsonConvert.DeserializeObject<PagedResultDto<JobRunDto>>(contentString);
+
+                return responseDto;
+            }
+
+            return null;
+        }
+
+        public PagedResultDto<JobRunDto> QueryJobRunsByStates(string states, int page = 1, int pageSize = 50, string jobTypeFilter = null, string jobUniqueNameFilter = null, string query = null, string sort = null)
+        {
+            var url = $"jobRuns?page={page}&pageSize={pageSize}&jobTypeFilter={jobTypeFilter}&jobUniqueNameFilter={jobUniqueNameFilter}&query={query}&sort={sort}&states={states}";
 
             var request = new HttpRequestMessage(HttpMethod.Get, url);
             var response = this.httpClient.SendAsync(request).Result;

@@ -235,6 +235,45 @@ namespace Jobbr.WebApi.Tests
         }
 
         [TestMethod]
+        public void Get_JobRuns_By_States()
+        {
+            using (this.GivenRunningServerWithWebApi())
+            {
+                var client = new JobbrClient(this.BackendAddress);
+
+                var job = new Job();
+                this.JobStorage.AddJob(job);
+
+                var trigger = new RecurringTrigger();
+                this.JobStorage.AddTrigger(job.Id, trigger);
+
+                var jobRun = new JobRun { Job = new Job { Id = job.Id }, Trigger = new RecurringTrigger { Id = trigger.Id }, State = JobRunStates.Completed };
+                this.JobStorage.AddJobRun(jobRun);
+
+                var jobRun2 = new JobRun { Job = new Job { Id = job.Id }, Trigger = new RecurringTrigger { Id = trigger.Id }, State = JobRunStates.Completed };
+                this.JobStorage.AddJobRun(jobRun2);
+
+                var jobRun3 = new JobRun { Job = new Job { Id = job.Id }, Trigger = new RecurringTrigger { Id = trigger.Id }, State = JobRunStates.Failed };
+                this.JobStorage.AddJobRun(jobRun3);
+
+                var jobRun4 = new JobRun { Job = new Job { Id = job.Id }, Trigger = new RecurringTrigger { Id = trigger.Id }, State = JobRunStates.Connected };
+                this.JobStorage.AddJobRun(jobRun4);
+
+                var jobRuns = client.QueryJobRunsByStates("Completed,Connected");
+
+                Assert.AreEqual(3, jobRuns.TotalItems);
+
+                jobRuns = client.QueryJobRunsByStates("Completed,Connected,Failed");
+
+                Assert.AreEqual(4, jobRuns.TotalItems);
+
+                jobRuns = client.QueryJobRunsByStates("Failed");
+
+                Assert.AreEqual(1, jobRuns.TotalItems);
+            }
+        }
+
+        [TestMethod]
         public void UpdateInstantTrigger()
         {
             using (this.GivenRunningServerWithWebApi())

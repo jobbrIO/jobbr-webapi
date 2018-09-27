@@ -39,7 +39,7 @@ namespace Jobbr.Server.WebAPI.Controller
 
         [HttpGet]
         [Route("jobruns")]
-        public IHttpActionResult GetJobRuns(int page = 1, int pageSize = 50, string jobTypeFilter = null, string jobUniqueNameFilter = null, string query = null, string sort = null, string state = null, string[] states = null, string userDisplayName = null)
+        public IHttpActionResult GetJobRuns(int page = 1, int pageSize = 50, string jobTypeFilter = null, string jobUniqueNameFilter = null, string query = null, string sort = null, string state = null, string states = null, string userDisplayName = null)
         {
             PagedResult<JobRun> jobRuns;
 
@@ -54,9 +54,9 @@ namespace Jobbr.Server.WebAPI.Controller
 
                 jobRuns = this.queryService.GetJobRunsByState(enumValue, page, pageSize, jobTypeFilter, jobUniqueNameFilter, query, sort?.Split(','));
             }
-            else if (states != null)
+            else if (string.IsNullOrWhiteSpace(states) == false)
             {
-                var stateAsEnums = states.Select(s =>
+                var stateAsEnums = states.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries).Select(s =>
                 {
                     var success = Enum.TryParse(s, true, out JobRunStates enumValue);
 
