@@ -44,47 +44,35 @@ namespace Jobbr.Server.WebAPI.Controller
                 return this.NotFound();
             }
 
-            bool hadChanges = false;
             if (currentTrigger.IsActive && !dto.IsActive)
             {
                 currentTrigger.IsActive = false;
                 this.jobManagementService.DisableTrigger(jobId, currentTrigger.Id);
-                hadChanges = true;
             }
             else if (!currentTrigger.IsActive && dto.IsActive)
             {
                 currentTrigger.IsActive = true;
                 this.jobManagementService.EnableTrigger(jobId, currentTrigger.Id);
-                hadChanges = true;
             }
 
-            var recurringTriggerDto = dto as RecurringTriggerDto;
-            if (recurringTriggerDto != null && !string.IsNullOrEmpty(recurringTriggerDto.Definition) && recurringTriggerDto.Definition != ((RecurringTrigger)currentTrigger).Definition)
+            if (dto is RecurringTriggerDto recurringTriggerDto)
             {
-                ((RecurringTrigger)currentTrigger).Definition = recurringTriggerDto.Definition;
-                this.jobManagementService.UpdateTriggerDefinition(jobId, currentTrigger.Id, recurringTriggerDto.Definition);
-                
-                hadChanges = true;
-            }
+                var trigger = TriggerMapper.ConvertToTrigger(recurringTriggerDto);
+                trigger.Id = triggerId;
+                trigger.JobId = jobId;
 
-            var scheduledTriggerDto = dto as ScheduledTriggerDto;
-            if (scheduledTriggerDto != null && scheduledTriggerDto.StartDateTimeUtc >= DateTime.UtcNow && scheduledTriggerDto.StartDateTimeUtc != ((ScheduledTrigger)currentTrigger).StartDateTimeUtc)
+                this.jobManagementService.Update(trigger);
+            }
+            else if (dto is ScheduledTriggerDto scheduledTriggerDto)
             {
-                ((ScheduledTrigger)currentTrigger).StartDateTimeUtc = scheduledTriggerDto.StartDateTimeUtc;
-                this.jobManagementService.UpdateTriggerStartTime(jobId, currentTrigger.Id, scheduledTriggerDto.StartDateTimeUtc);
+                var trigger = TriggerMapper.ConvertToTrigger(scheduledTriggerDto);
+                trigger.Id = trigger.Id;
+                trigger.JobId = trigger.JobId;
 
-                hadChanges = true;
+                this.jobManagementService.Update(trigger);
             }
 
-            if (hadChanges)
-            {
-                // Reload trigger
-                currentTrigger = this.queryService.GetTriggerById(jobId, triggerId);
-
-                return this.Ok(TriggerMapper.ConvertToDto((dynamic)currentTrigger));
-            }
-            
-            return this.StatusCode(HttpStatusCode.NotModified);
+            return this.Ok(dto);
         }
 
         [HttpGet]

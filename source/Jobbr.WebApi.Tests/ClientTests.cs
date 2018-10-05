@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using Jobbr.Client;
+﻿using Jobbr.Client;
 using Jobbr.ComponentModel.JobStorage.Model;
 using Jobbr.Server.WebAPI.Model;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
