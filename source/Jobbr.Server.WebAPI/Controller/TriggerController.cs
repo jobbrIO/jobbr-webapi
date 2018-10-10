@@ -66,8 +66,8 @@ namespace Jobbr.Server.WebAPI.Controller
             else if (dto is ScheduledTriggerDto scheduledTriggerDto)
             {
                 var trigger = TriggerMapper.ConvertToTrigger(scheduledTriggerDto);
-                trigger.Id = trigger.Id;
-                trigger.JobId = trigger.JobId;
+                trigger.Id = triggerId;
+                trigger.JobId = jobId;
 
                 this.jobManagementService.Update(trigger);
             }
@@ -86,7 +86,9 @@ namespace Jobbr.Server.WebAPI.Controller
                 return this.NotFound();
             }
 
-            return this.Ok(this.queryService.GetTriggersByJobId(jobId, page, pageSize));
+            var triggers = this.queryService.GetTriggersByJobId(jobId, page, pageSize);
+            
+            return this.Ok(triggers.ToPagedResult());
         }
 
         [HttpGet]

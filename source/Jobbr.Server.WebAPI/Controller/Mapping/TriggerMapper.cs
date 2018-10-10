@@ -1,10 +1,12 @@
+using System.Linq;
+using Jobbr.ComponentModel.Management;
 using Jobbr.ComponentModel.Management.Model;
 using Jobbr.Server.WebAPI.Model;
 using Newtonsoft.Json;
 
 namespace Jobbr.Server.WebAPI.Controller.Mapping
 {
-    public class TriggerMapper
+    public static class TriggerMapper
     {
         internal static ScheduledTriggerDto ConvertToDto(ScheduledTrigger trigger)
         {
@@ -63,6 +65,17 @@ namespace Jobbr.Server.WebAPI.Controller.Mapping
             trigger.UserId = dto.UserId;
 
             return trigger;
+        }
+
+        internal static PagedResultDto<JobTriggerDtoBase> ToPagedResult(this PagedResult<IJobTrigger> data)
+        {
+            return new PagedResultDto<JobTriggerDtoBase>
+            {
+                Page = data.Page,
+                PageSize = data.PageSize,
+                Items = data.Items.Select(t => ConvertToDto((dynamic)t)).Cast<JobTriggerDtoBase>().ToList(),
+                TotalItems = data.TotalItems
+            };
         }
     }
 }
