@@ -47,5 +47,7 @@ namespace Jobbr.Server.WebAPI.Model
         public string UserDisplayName { get; set; }
 
         public string Definition { get; set; }
+
+        public bool Deleted { get; set; }
     }
 }

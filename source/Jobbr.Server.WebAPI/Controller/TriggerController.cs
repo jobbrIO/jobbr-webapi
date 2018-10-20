@@ -77,7 +77,7 @@ namespace Jobbr.Server.WebAPI.Controller
 
         [HttpGet]
         [Route("jobs/{jobId:long}/triggers")]
-        public IHttpActionResult GetTriggersForJob(long jobId, int page = 1, int pageSize = 200)
+        public IHttpActionResult GetTriggersForJob(long jobId, int page = 1, int pageSize = 200, bool showDeleted = false)
         {
             var job = this.queryService.GetJobById(jobId);
 
@@ -86,14 +86,14 @@ namespace Jobbr.Server.WebAPI.Controller
                 return this.NotFound();
             }
 
-            var triggers = this.queryService.GetTriggersByJobId(jobId, page, pageSize);
+            var triggers = this.queryService.GetTriggersByJobId(jobId, page, pageSize, showDeleted);
             
             return this.Ok(triggers.ToPagedResult());
         }
 
         [HttpGet]
         [Route("jobs/{uniqueName}/triggers")]
-        public IHttpActionResult GetTriggersForJob(string uniqueName, int page = 1, int pageSize = 200)
+        public IHttpActionResult GetTriggersForJob(string uniqueName, int page = 1, int pageSize = 200, bool showDeleted = false)
         {
             var job = this.queryService.GetJobByUniqueName(uniqueName);
 
@@ -102,7 +102,7 @@ namespace Jobbr.Server.WebAPI.Controller
                 return this.NotFound();
             }
 
-            return this.Ok(this.queryService.GetTriggersByJobId(job.Id, page, pageSize));
+            return this.Ok(this.queryService.GetTriggersByJobId(job.Id, page, pageSize, showDeleted));
         }
 
         [HttpPost]

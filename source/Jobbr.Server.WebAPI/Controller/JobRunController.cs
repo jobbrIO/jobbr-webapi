@@ -52,11 +52,11 @@ namespace Jobbr.Server.WebAPI.Controller
                     return this.BadRequest($"Unknown state: {state}");
                 }
 
-                jobRuns = this.queryService.GetJobRunsByState(enumValue, page, pageSize, jobTypeFilter, jobUniqueNameFilter, query, sort?.Split(','));
+                jobRuns = this.queryService.GetJobRunsByState(enumValue, page, pageSize, jobTypeFilter, jobUniqueNameFilter, query, false, sort?.Split(','));
             }
             else if (string.IsNullOrWhiteSpace(states) == false)
             {
-                var stateAsEnums = states.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries).Select(s =>
+                var stateAsEnums = states.Split(new[] {','}, StringSplitOptions.RemoveEmptyEntries).Select(s =>
                 {
                     var success = Enum.TryParse(s, true, out JobRunStates enumValue);
 
@@ -68,15 +68,15 @@ namespace Jobbr.Server.WebAPI.Controller
                     return enumValue;
                 }).ToArray();
 
-                jobRuns = this.queryService.GetJobRunsByStates(stateAsEnums, page, pageSize, jobTypeFilter, jobUniqueNameFilter, query, sort?.Split(','));
+                jobRuns = this.queryService.GetJobRunsByStates(stateAsEnums, page, pageSize, jobTypeFilter, jobUniqueNameFilter, query, false, sort?.Split(','));
             }
             else if (string.IsNullOrWhiteSpace(userDisplayName) == false)
             {
-                jobRuns = this.queryService.GetJobRunsByUserDisplayName(userDisplayName, page, pageSize, jobTypeFilter, jobUniqueNameFilter, sort?.Split(','));
+                jobRuns = this.queryService.GetJobRunsByUserDisplayName(userDisplayName, page, pageSize, jobTypeFilter, jobUniqueNameFilter, false, sort?.Split(','));
             }
             else
             {
-                jobRuns = this.queryService.GetJobRuns(page, pageSize, jobTypeFilter, jobUniqueNameFilter, query, sort?.Split(','));
+                jobRuns = this.queryService.GetJobRuns(page, pageSize, jobTypeFilter, jobUniqueNameFilter, query, false, sort?.Split(','));
             }
 
             return this.Ok(jobRuns.ToPagedResult());
@@ -86,7 +86,7 @@ namespace Jobbr.Server.WebAPI.Controller
         [Route("users/{userId}/jobruns/")]
         public IHttpActionResult GetJobRunsByUserId(string userId, int page = 1, int pageSize = 50, string jobTypeFilter = null, string jobUniqueNameFilter = null, string sort = null)
         {
-            var jobRuns = this.queryService.GetJobRunsByUserId(userId, page, pageSize, jobTypeFilter, jobUniqueNameFilter, sort?.Split(','));
+            var jobRuns = this.queryService.GetJobRunsByUserId(userId, page, pageSize, jobTypeFilter, jobUniqueNameFilter, false, sort?.Split(','));
 
             return this.Ok(jobRuns.ToPagedResult());
         }
@@ -95,7 +95,7 @@ namespace Jobbr.Server.WebAPI.Controller
         [Route("jobs/{jobId}/triggers/{triggerId}/jobruns")]
         public IHttpActionResult GetJobRunsByTrigger(long jobId, long triggerId, int page = 1, int pageSize = 50, string sort = null)
         {
-            var jobRuns = this.queryService.GetJobRunsByTriggerId(jobId, triggerId, page, pageSize, sort?.Split(','));
+            var jobRuns = this.queryService.GetJobRunsByTriggerId(jobId, triggerId, page, pageSize, false, sort?.Split(','));
 
             return this.Ok(jobRuns.ToPagedResult());
         }
@@ -121,6 +121,15 @@ namespace Jobbr.Server.WebAPI.Controller
             result.Content.Headers.ContentType = new MediaTypeHeaderValue("application/octet-stream");
 
             return this.ResponseMessage(result);
+        }
+
+        [HttpDelete]
+        [Route("jobruns/{jobRunId}")]
+        public IHttpActionResult SoftDeleteJobRun(long jobRunId)
+        {
+            this.jobManagementService.DeleteJobRun(jobRunId);
+
+            return this.Ok();
         }
     }
 }

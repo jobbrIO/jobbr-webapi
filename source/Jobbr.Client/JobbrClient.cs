@@ -205,6 +205,15 @@ namespace Jobbr.Client
             return null;
         }
 
+        public bool DeleteJobRun(long jobRunId)
+        {
+            var url = $"jobruns/{jobRunId}";
+
+            var requestResult = this.httpClient.DeleteAsync(url).Result;
+
+            return requestResult.StatusCode == HttpStatusCode.OK;
+        }
+
         private T PostTrigger<T>(T triggerDto, string url) where T : JobTriggerDtoBase
         {
             return this.ExecuteDtoRequest(url, triggerDto, HttpMethod.Post);

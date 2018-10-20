@@ -28,7 +28,7 @@ namespace Jobbr.Server.WebAPI.Controller.Mapping
 
         internal static RecurringTrigger ConvertToTrigger(RecurringTriggerDto dto)
         {
-            var trigger = new RecurringTrigger() { Definition = dto.Definition, StartDateTimeUtc = dto.StartDateTimeUtc, EndDateTimeUtc = dto.EndDateTimeUtc };
+            var trigger = new RecurringTrigger { Definition = dto.Definition, StartDateTimeUtc = dto.StartDateTimeUtc, EndDateTimeUtc = dto.EndDateTimeUtc };
             return (RecurringTrigger)MapCommonValues(dto, trigger);
         }
 
@@ -40,7 +40,7 @@ namespace Jobbr.Server.WebAPI.Controller.Mapping
 
         internal static InstantTrigger ConvertToTrigger(InstantTriggerDto dto)
         {
-            var trigger = new InstantTrigger() { DelayedMinutes = dto.DelayedMinutes };
+            var trigger = new InstantTrigger { DelayedMinutes = dto.DelayedMinutes };
             return (InstantTrigger)MapCommonValues(dto, trigger);
         }
 
@@ -52,6 +52,7 @@ namespace Jobbr.Server.WebAPI.Controller.Mapping
             dto.Parameters = trigger.Parameters != null ? JsonConvert.DeserializeObject(trigger.Parameters) : null;
             dto.UserDisplayName = trigger.UserDisplayName;
             dto.UserId = trigger.UserId;
+            dto.Deleted = trigger.Deleted;
 
             return dto;
         }
@@ -63,6 +64,7 @@ namespace Jobbr.Server.WebAPI.Controller.Mapping
             trigger.Parameters = JsonConvert.SerializeObject(dto.Parameters);
             trigger.UserDisplayName = dto.UserDisplayName;
             trigger.UserId = dto.UserId;
+            trigger.Deleted = dto.Deleted;
 
             return trigger;
         }

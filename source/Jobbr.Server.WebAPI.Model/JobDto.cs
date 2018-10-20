@@ -20,5 +20,7 @@ namespace Jobbr.Server.WebAPI.Model
         public DateTime? UpdatedDateTimeUtc { get; set; }
 
         public List<JobTriggerDtoBase> Trigger { get; set; } 
+
+        public bool Deleted { get; set; }
     }
 }

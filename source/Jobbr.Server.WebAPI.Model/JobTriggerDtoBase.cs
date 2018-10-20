@@ -20,6 +20,8 @@ namespace Jobbr.Server.WebAPI.Model
         public string UserId { get; set; }
 
         public string UserDisplayName { get; set; }
+
+        public bool Deleted { get; set; }
     }
 
     public class RecurringTriggerDto : JobTriggerDtoBase
