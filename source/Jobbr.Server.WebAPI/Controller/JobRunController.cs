@@ -23,7 +23,7 @@ namespace Jobbr.Server.WebAPI.Controller
 
         [HttpGet]
         [Route("jobruns/{jobRunId}")]
-        public IHttpActionResult GetJobRuns(long jobRunId)
+        public IHttpActionResult GetJobRun(long jobRunId)
         {
             var jobRun = this.queryService.GetJobRunById(jobRunId);
 
@@ -39,7 +39,7 @@ namespace Jobbr.Server.WebAPI.Controller
 
         [HttpGet]
         [Route("jobruns")]
-        public IHttpActionResult GetJobRuns(int page = 1, int pageSize = 50, string jobTypeFilter = null, string jobUniqueNameFilter = null, string query = null, string sort = null, string state = null, string states = null, string userDisplayName = null)
+        public IHttpActionResult GetJobRuns(int page = 1, int pageSize = 50, string jobTypeFilter = null, string jobUniqueNameFilter = null, string query = null, string sort = null, string state = null, string states = null, string userDisplayName = null, bool showDeleted = false)
         {
             PagedResult<JobRun> jobRuns;
 
@@ -52,7 +52,7 @@ namespace Jobbr.Server.WebAPI.Controller
                     return this.BadRequest($"Unknown state: {state}");
                 }
 
-                jobRuns = this.queryService.GetJobRunsByState(enumValue, page, pageSize, jobTypeFilter, jobUniqueNameFilter, query, false, sort?.Split(','));
+                jobRuns = this.queryService.GetJobRunsByState(enumValue, page, pageSize, jobTypeFilter, jobUniqueNameFilter, query, showDeleted, sort?.Split(','));
             }
             else if (string.IsNullOrWhiteSpace(states) == false)
             {
@@ -68,15 +68,15 @@ namespace Jobbr.Server.WebAPI.Controller
                     return enumValue;
                 }).ToArray();
 
-                jobRuns = this.queryService.GetJobRunsByStates(stateAsEnums, page, pageSize, jobTypeFilter, jobUniqueNameFilter, query, false, sort?.Split(','));
+                jobRuns = this.queryService.GetJobRunsByStates(stateAsEnums, page, pageSize, jobTypeFilter, jobUniqueNameFilter, query, showDeleted, sort?.Split(','));
             }
             else if (string.IsNullOrWhiteSpace(userDisplayName) == false)
             {
-                jobRuns = this.queryService.GetJobRunsByUserDisplayName(userDisplayName, page, pageSize, jobTypeFilter, jobUniqueNameFilter, false, sort?.Split(','));
+                jobRuns = this.queryService.GetJobRunsByUserDisplayName(userDisplayName, page, pageSize, jobTypeFilter, jobUniqueNameFilter, showDeleted, sort?.Split(','));
             }
             else
             {
-                jobRuns = this.queryService.GetJobRuns(page, pageSize, jobTypeFilter, jobUniqueNameFilter, query, false, sort?.Split(','));
+                jobRuns = this.queryService.GetJobRuns(page, pageSize, jobTypeFilter, jobUniqueNameFilter, query, showDeleted, sort?.Split(','));
             }
 
             return this.Ok(jobRuns.ToPagedResult());
@@ -84,18 +84,18 @@ namespace Jobbr.Server.WebAPI.Controller
 
         [HttpGet]
         [Route("users/{userId}/jobruns/")]
-        public IHttpActionResult GetJobRunsByUserId(string userId, int page = 1, int pageSize = 50, string jobTypeFilter = null, string jobUniqueNameFilter = null, string sort = null)
+        public IHttpActionResult GetJobRunsByUserId(string userId, int page = 1, int pageSize = 50, string jobTypeFilter = null, string jobUniqueNameFilter = null, string sort = null, bool showDeleted = false)
         {
-            var jobRuns = this.queryService.GetJobRunsByUserId(userId, page, pageSize, jobTypeFilter, jobUniqueNameFilter, false, sort?.Split(','));
+            var jobRuns = this.queryService.GetJobRunsByUserId(userId, page, pageSize, jobTypeFilter, jobUniqueNameFilter, showDeleted, sort?.Split(','));
 
             return this.Ok(jobRuns.ToPagedResult());
         }
 
         [HttpGet]
         [Route("jobs/{jobId}/triggers/{triggerId}/jobruns")]
-        public IHttpActionResult GetJobRunsByTrigger(long jobId, long triggerId, int page = 1, int pageSize = 50, string sort = null)
+        public IHttpActionResult GetJobRunsByTrigger(long jobId, long triggerId, int page = 1, int pageSize = 50, string sort = null, bool showDeleted = false)
         {
-            var jobRuns = this.queryService.GetJobRunsByTriggerId(jobId, triggerId, page, pageSize, false, sort?.Split(','));
+            var jobRuns = this.queryService.GetJobRunsByTriggerId(jobId, triggerId, page, pageSize, showDeleted, sort?.Split(','));
 
             return this.Ok(jobRuns.ToPagedResult());
         }
