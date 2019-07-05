@@ -17,5 +17,7 @@
   <files>
     <file src="Jobbr.Client\bin\Release\Jobbr.Client.dll" target="lib\net45"/>
     <file src="Jobbr.Client\bin\Release\Jobbr.Client.pdb" target="lib\net45"/>
+    <file src="Jobbr.Client\bin\Release\Jobbr.Server.WebAPI.Model.dll" target="lib\net45"/>
+    <file src="Jobbr.Client\bin\Release\Jobbr.Server.WebAPI.Model.pdb" target="lib\net45"/>
   </files>
 </package>
