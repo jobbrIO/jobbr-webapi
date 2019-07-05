@@ -15,7 +15,7 @@
     </dependencies>
   </metadata>
   <files>
-    <file src="..\ilmerged\Jobbr.Client.dll" target="lib\net45"/>
-    <file src="..\ilmerged\Jobbr.Client.pdb" target="lib\net45"/>
+    <file src="Jobbr.Client\bin\Release\Jobbr.Client.dll" target="lib\net45"/>
+    <file src="Jobbr.Client\bin\Release\Jobbr.Client.pdb" target="lib\net45"/>
   </files>
 </package>
