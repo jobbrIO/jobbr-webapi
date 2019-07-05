@@ -14,11 +14,11 @@
     <dependencies>
       <dependency id="Microsoft.Owin.Host.HttpListener" version="[3,4)"/>
       <dependency id="Jobbr.ComponentModel.Registration" version="[1,1.1)"/>
-      <dependency id="Jobbr.ComponentModel.Management" version="[1.5,1.6)"/>
+      <dependency id="Jobbr.ComponentModel.Management" version="[1.6,1.7)"/>
     </dependencies>
   </metadata>
   <files>
-    <file src="..\ilmerged\Jobbr.Server.WebAPI.dll" target="lib\net45"/>
-    <file src="..\ilmerged\Jobbr.Server.WebAPI.pdb" target="lib\net45"/>
+    <file src="Jobbr.Server.WebAPI\bin\Release\Jobbr.Server.WebAPI.dll" target="lib\net45"/>
+    <file src="Jobbr.Server.WebAPI\bin\Release\Jobbr.Server.WebAPI.pdb" target="lib\net45"/>
   </files>
 </package>
