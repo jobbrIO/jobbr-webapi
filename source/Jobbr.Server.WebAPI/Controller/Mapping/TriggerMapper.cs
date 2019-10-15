@@ -26,7 +26,7 @@ namespace Jobbr.Server.WebAPI.Controller.Mapping
 
         internal static RecurringTrigger ConvertToTrigger(RecurringTriggerDto dto)
         {
-            var trigger = new RecurringTrigger() { Definition = dto.Definition, StartDateTimeUtc = dto.StartDateTimeUtc, EndDateTimeUtc = dto.EndDateTimeUtc };
+            var trigger = new RecurringTrigger { Definition = dto.Definition, StartDateTimeUtc = dto.StartDateTimeUtc, EndDateTimeUtc = dto.EndDateTimeUtc };
             return (RecurringTrigger)MapCommonValues(dto, trigger);
         }
 
@@ -38,7 +38,7 @@ namespace Jobbr.Server.WebAPI.Controller.Mapping
 
         internal static InstantTrigger ConvertToTrigger(InstantTriggerDto dto)
         {
-            var trigger = new InstantTrigger() { DelayedMinutes = dto.DelayedMinutes };
+            var trigger = new InstantTrigger { DelayedMinutes = dto.DelayedMinutes };
             return (InstantTrigger)MapCommonValues(dto, trigger);
         }
 

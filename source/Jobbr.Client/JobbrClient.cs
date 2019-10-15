@@ -153,7 +153,7 @@ namespace Jobbr.Client
 
         public T AddTrigger<T>(string uniqueName, T triggerDto) where T : JobTriggerDtoBase
         {
-            var url = $"jobs/{uniqueName}/triggers/{triggerDto.Id}";
+            var url = $"jobs/{uniqueName}/triggers";
             return this.PostTrigger(triggerDto, url);
         }
 
