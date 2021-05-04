@@ -1,21 +1,19 @@
 ﻿using System;
-using System.Linq;
 using System.Net;
 using System.Net.Http;
-using System.Runtime.Serialization;
 using System.Text;
 using Jobbr.Server.WebAPI.Model;
 using Newtonsoft.Json;
 
 namespace Jobbr.Client
 {
-    public class JobbrClient
+    public class JobbrClient : IJobbrClient
     {
         private readonly HttpClient httpClient;
 
         public JobbrClient(string backend)
         {
-            this.Backend = backend + (backend.EndsWith("/") ? string.Empty  : "/");
+            this.Backend = backend + (backend.EndsWith("/") ? string.Empty : "/");
             this.httpClient = new HttpClient { BaseAddress = new Uri(this.Backend) };
         }
 
@@ -234,7 +232,7 @@ namespace Jobbr.Client
             return this.ExecuteDtoRequest<T>(url, null, HttpMethod.Get);
         }
 
-        private T ExecuteDtoRequest<T>(string url, T dto, HttpMethod httpMethod) where T: class
+        private T ExecuteDtoRequest<T>(string url, T dto, HttpMethod httpMethod) where T : class
         {
             var json = dto != null ? JsonConvert.SerializeObject(dto) : string.Empty;
             var request = new HttpRequestMessage(httpMethod, url);
