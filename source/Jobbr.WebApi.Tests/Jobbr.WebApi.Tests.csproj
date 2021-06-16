@@ -1,133 +1,41 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{CB3FE911-7034-471C-A2D7-CB89842423FC}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Jobbr.WebApi.Tests</RootNamespace>
-    <AssemblyName>Jobbr.WebApi.Tests</AssemblyName>
-    <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
+    <TargetFramework>net462</TargetFramework>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
-    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
     <ReferencePath>$(ProgramFiles)\Common Files\microsoft shared\VSTT\$(VisualStudioVersion)\UITestExtensionPackages</ReferencePath>
     <IsCodedUITest>False</IsCodedUITest>
     <TestProjectType>UnitTest</TestProjectType>
-    <TargetFrameworkProfile />
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <OutputPath>bin\$(Configuration)\</OutputPath>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
   <ItemGroup>
-    <Reference Include="Jobbr.ComponentModel.ArtefactStorage, Version=1.0.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Jobbr.ComponentModel.ArtefactStorage.1.0.1\lib\net462\Jobbr.ComponentModel.ArtefactStorage.dll</HintPath>
-    </Reference>
-    <Reference Include="Jobbr.ComponentModel.Execution, Version=1.0.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Jobbr.ComponentModel.Execution.1.0.1\lib\net462\Jobbr.ComponentModel.Execution.dll</HintPath>
-    </Reference>
-    <Reference Include="Jobbr.ComponentModel.JobStorage, Version=1.4.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Jobbr.ComponentModel.JobStorage.1.4.0\lib\net462\Jobbr.ComponentModel.JobStorage.dll</HintPath>
-    </Reference>
-    <Reference Include="Jobbr.ComponentModel.Management, Version=1.6.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Jobbr.ComponentModel.Management.1.6.0\lib\net462\Jobbr.ComponentModel.Management.dll</HintPath>
-    </Reference>
-    <Reference Include="Jobbr.ComponentModel.Registration, Version=1.0.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Jobbr.ComponentModel.Registration.1.0.1\lib\net462\Jobbr.ComponentModel.Registration.dll</HintPath>
-    </Reference>
-    <Reference Include="Jobbr.Server, Version=1.6.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Jobbr.Server.1.6.0-rc.1\lib\net462\Jobbr.Server.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Owin.Host.HttpListener, Version=3.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Owin.Host.HttpListener.3.1.0\lib\net45\Microsoft.Owin.Host.HttpListener.dll</HintPath>
-    </Reference>
-    <Reference Include="System" />
+    <PackageReference Include="Jobbr.ComponentModel.ArtefactStorage" Version="1.0.1" />
+    <PackageReference Include="Jobbr.ComponentModel.Execution" Version="1.0.1" />
+    <PackageReference Include="Jobbr.ComponentModel.JobStorage" Version="1.4.0" />
+    <PackageReference Include="Jobbr.ComponentModel.Management" Version="1.6.0" />
+    <PackageReference Include="Jobbr.ComponentModel.Registration" Version="1.0.1" />
+    <PackageReference Include="Jobbr.Server" Version="1.6.0-rc.1" />
+    <PackageReference Include="Microsoft.Owin.Host.HttpListener" Version="3.1.0" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.0.1" />
+    <PackageReference Include="MSTest.TestAdapter" Version="1.4.0" />
+    <PackageReference Include="MSTest.TestFramework" Version="1.4.0" />
+  </ItemGroup>
+  <ItemGroup>
     <Reference Include="System.Net.Http" />
   </ItemGroup>
-  <Choose>
-    <When Condition="('$(VisualStudioVersion)' == '10.0' or '$(VisualStudioVersion)' == '') and '$(TargetFrameworkVersion)' == 'v3.5'">
-      <ItemGroup>
-        <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
-      </ItemGroup>
-    </When>
-    <Otherwise>
-      <ItemGroup>
-        <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework" />
-      </ItemGroup>
-    </Otherwise>
-  </Choose>
   <ItemGroup>
-    <Compile Include="ClientTests.cs" />
-    <Compile Include="ExposeStorageProvider.cs" />
-    <Compile Include="HostingUrlTests.cs" />
-    <Compile Include="IntegrationTestBase.cs" />
-    <Compile Include="PackagingTests.cs" />
-    <Compile Include="ServerRegistrationTests.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
+    <ProjectReference Include="..\Jobbr.Client\Jobbr.Client.csproj" />
+    <ProjectReference Include="..\Jobbr.Server.WebAPI.Model\Jobbr.Server.WebAPI.Model.csproj" />
+    <ProjectReference Include="..\Jobbr.Server.WebAPI\Jobbr.Server.WebAPI.csproj" />
+    <ProjectReference Include="..\submodules\devsupport\src\Jobbr.DevSupport.ReferencedVersionAsserter\Jobbr.DevSupport.ReferencedVersionAsserter.csproj" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Jobbr.Client\Jobbr.Client.csproj">
-      <Project>{79CF40B0-F063-4CA7-826B-7C92C0BE8232}</Project>
-      <Name>Jobbr.Client</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Jobbr.Server.WebAPI.Model\Jobbr.Server.WebAPI.Model.csproj">
-      <Project>{a2477520-351e-4429-8f75-be728382c2a5}</Project>
-      <Name>Jobbr.Server.WebAPI.Model</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Jobbr.Server.WebAPI\Jobbr.Server.WebAPI.csproj">
-      <Project>{b158f9ad-5480-4415-9bce-8d8663c3f3c0}</Project>
-      <Name>Jobbr.Server.WebAPI</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\submodules\devsupport\src\Jobbr.DevSupport.ReferencedVersionAsserter\Jobbr.DevSupport.ReferencedVersionAsserter.csproj">
-      <Project>{D7C78DBD-D440-4D0C-B9A9-AD8B7473364A}</Project>
-      <Name>Jobbr.DevSupport.ReferencedVersionAsserter</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="app.config" />
-    <None Include="packages.config" />
-  </ItemGroup>
-  <Choose>
-    <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
-      <ItemGroup>
-        <Reference Include="Microsoft.VisualStudio.QualityTools.CodedUITestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-          <Private>False</Private>
-        </Reference>
-        <Reference Include="Microsoft.VisualStudio.TestTools.UITest.Common, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-          <Private>False</Private>
-        </Reference>
-        <Reference Include="Microsoft.VisualStudio.TestTools.UITest.Extension, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-          <Private>False</Private>
-        </Reference>
-        <Reference Include="Microsoft.VisualStudio.TestTools.UITesting, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-          <Private>False</Private>
-        </Reference>
-      </ItemGroup>
-    </When>
-  </Choose>
-  <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
 </Project>
