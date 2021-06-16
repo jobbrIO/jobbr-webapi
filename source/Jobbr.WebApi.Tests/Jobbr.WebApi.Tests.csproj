@@ -24,7 +24,7 @@
     <PackageReference Include="Jobbr.ComponentModel.Management" Version="1.6.0" />
     <PackageReference Include="Jobbr.ComponentModel.Registration" Version="1.0.1" />
     <PackageReference Include="Jobbr.Server" Version="1.6.0-rc.1" />
-    <PackageReference Include="Microsoft.Owin.Host.HttpListener" Version="3.1.0" />
+    <PackageReference Include="Microsoft.Owin.Host.HttpListener" Version="4.2.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.0.1" />
     <PackageReference Include="MSTest.TestAdapter" Version="1.4.0" />
     <PackageReference Include="MSTest.TestFramework" Version="1.4.0" />
