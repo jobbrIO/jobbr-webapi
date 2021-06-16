@@ -18,7 +18,7 @@
     </dependencies>
   </metadata>
   <files>
-    <file src="Jobbr.Server.WebAPI\bin\Release\Jobbr.Server.WebAPI.dll" target="lib\net45"/>
-    <file src="Jobbr.Server.WebAPI\bin\Release\Jobbr.Server.WebAPI.pdb" target="lib\net45"/>
+    <file src="Jobbr.Server.WebAPI\bin\Release\netstandard2.0\Jobbr.Server.WebAPI.dll" target="lib\netstandard20"/>
+    <file src="Jobbr.Server.WebAPI\bin\Release\netstandard2.0\Jobbr.Server.WebAPI.pdb" target="lib\netstandard20"/>
   </files>
 </package>

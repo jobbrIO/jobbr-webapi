@@ -3,7 +3,6 @@
     <ProjectGuid>{79CF40B0-F063-4CA7-826B-7C92C0BE8232}</ProjectGuid>
     <TargetFramework>netstandard2.0</TargetFramework>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-    <OutputPath>bin\$(Configuration)\</OutputPath>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
