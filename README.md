@@ -80,10 +80,12 @@ Jobbr Server is based on the following awesome libraries:
 
 # Credits
 This extension was built by the following awesome developers:
-* Michael Schnyder
-* Oliver Zürcher
-* Steven Giesel
-* Lukas Dürrenberger
+* [Michael Schnyder](https://github.com/michaelschnyder)
+* [Oliver Zürcher](https://github.com/olibanjoli)
+* [Tobias Zürcher](https://github.com/tobiaszuercher)
+* [Steven Giesel](https://github.com/linkdotnet)
+* [Lukas Dürrenberger](https://github.com/eXpl0it3r)
+* [Martin Bundschuh](https://github.com/chuma2150)
 
 [webapi-link-build]:            https://ci.appveyor.com/project/Jobbr/jobbr-webapi         
 [webapi-link-nuget]:            https://www.nuget.org/packages/Jobbr.Server.WebAPI
