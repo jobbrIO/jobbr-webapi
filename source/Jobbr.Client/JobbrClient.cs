@@ -27,11 +27,11 @@ namespace Jobbr.Client
             var url = $"jobs/{id}";
 
             var request = new HttpRequestMessage(HttpMethod.Get, url);
-            var response = await this.httpClient.SendAsync(request);
+            var response = await this.httpClient.SendAsync(request).ConfigureAwait(false);
 
             if (response.StatusCode == HttpStatusCode.OK)
             {
-                var contentString = await response.Content.ReadAsStringAsync();
+                var contentString = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
 
                 var responseDto = JsonConvert.DeserializeObject<JobDto>(contentString);
 
@@ -47,7 +47,7 @@ namespace Jobbr.Client
             const string url = "status";
 
             var request = new HttpRequestMessage(HttpMethod.Get, url);
-            var response = await this.httpClient.SendAsync(request);
+            var response = await this.httpClient.SendAsync(request).ConfigureAwait(false);
 
             return response.StatusCode == HttpStatusCode.OK;
         }
@@ -58,11 +58,11 @@ namespace Jobbr.Client
             var url = $"jobs?page={page}&pageSize={pageSize}&jobTypeFilter={jobTypeFilter}&jobUniqueNameFilter={jobUniqueNameFilter}&query={query}&sort={sort}";
 
             var request = new HttpRequestMessage(HttpMethod.Get, url);
-            var response = await this.httpClient.SendAsync(request);
+            var response = await this.httpClient.SendAsync(request).ConfigureAwait(false);
 
             if (response.StatusCode == HttpStatusCode.OK)
             {
-                var contentString = await response.Content.ReadAsStringAsync();
+                var contentString = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
 
                 var responseDto = JsonConvert.DeserializeObject<PagedResultDto<JobDto>>(contentString);
 
@@ -78,11 +78,11 @@ namespace Jobbr.Client
             var url = $"jobRuns?page={page}&pageSize={pageSize}&jobTypeFilter={jobTypeFilter}&jobUniqueNameFilter={jobUniqueNameFilter}&query={query}&sort={sort}";
 
             var request = new HttpRequestMessage(HttpMethod.Get, url);
-            var response = await this.httpClient.SendAsync(request);
+            var response = await this.httpClient.SendAsync(request).ConfigureAwait(false);
 
             if (response.StatusCode == HttpStatusCode.OK)
             {
-                var contentString = await response.Content.ReadAsStringAsync();
+                var contentString = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
 
                 var responseDto = JsonConvert.DeserializeObject<PagedResultDto<JobRunDto>>(contentString);
 
@@ -98,11 +98,11 @@ namespace Jobbr.Client
             var url = $"jobRuns?page={page}&pageSize={pageSize}&jobTypeFilter={jobTypeFilter}&jobUniqueNameFilter={jobUniqueNameFilter}&query={query}&sort={sort}&state={state}";
 
             var request = new HttpRequestMessage(HttpMethod.Get, url);
-            var response = await this .httpClient.SendAsync(request);
+            var response = await this .httpClient.SendAsync(request).ConfigureAwait(false);
 
             if (response.StatusCode == HttpStatusCode.OK)
             {
-                var contentString = await response.Content.ReadAsStringAsync();
+                var contentString = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
 
                 var responseDto = JsonConvert.DeserializeObject<PagedResultDto<JobRunDto>>(contentString);
 
@@ -118,11 +118,11 @@ namespace Jobbr.Client
             var url = $"jobRuns?page={page}&pageSize={pageSize}&jobTypeFilter={jobTypeFilter}&jobUniqueNameFilter={jobUniqueNameFilter}&query={query}&sort={sort}&states={states}";
 
             var request = new HttpRequestMessage(HttpMethod.Get, url);
-            var response = await this .httpClient.SendAsync(request);
+            var response = await this .httpClient.SendAsync(request).ConfigureAwait(false);
 
             if (response.StatusCode == HttpStatusCode.OK)
             {
-                var contentString = await response.Content.ReadAsStringAsync();
+                var contentString = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
 
                 var responseDto = JsonConvert.DeserializeObject<PagedResultDto<JobRunDto>>(contentString);
 
@@ -138,11 +138,11 @@ namespace Jobbr.Client
             var url = $"users/{userId}/jobruns/?page={page}&pageSize={pageSize}&jobTypeFilter={jobTypeFilter}&jobUniqueNameFilter={jobUniqueNameFilter}&sort={sort}";
 
             var request = new HttpRequestMessage(HttpMethod.Get, url);
-            var response = await this.httpClient.SendAsync(request);
+            var response = await this.httpClient.SendAsync(request).ConfigureAwait(false);
 
             if (response.StatusCode == HttpStatusCode.OK)
             {
-                var contentString = await response.Content.ReadAsStringAsync();
+                var contentString = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
 
                 var responseDto = JsonConvert.DeserializeObject<PagedResultDto<JobRunDto>>(contentString);
 
@@ -158,26 +158,26 @@ namespace Jobbr.Client
         public async Task<T> AddTriggerAsync<T>(long jobId, T triggerDto) where T : JobTriggerDtoBase
         {
             var url = $"jobs/{jobId}/triggers";
-            return await this.PostTriggerAsync(triggerDto, url);
+            return await this.PostTriggerAsync(triggerDto, url).ConfigureAwait(false);
         }
         public async Task<T> AddTriggerAsync<T>(string uniqueName, T triggerDto) where T : JobTriggerDtoBase
         {
             var url = $"jobs/{uniqueName}/triggers";
-            return await this.PostTriggerAsync(triggerDto, url);
+            return await this.PostTriggerAsync(triggerDto, url).ConfigureAwait(false);
         }
 
         public T UpdateTrigger<T>(long jobId, T triggerDto) where T : JobTriggerDtoBase => this.UpdateTriggerAsync<T>(jobId, triggerDto).Result;
         public async Task<T> UpdateTriggerAsync<T>(long jobId, T triggerDto) where T : JobTriggerDtoBase
         {
             var url = $"jobs/{jobId}/triggers/{triggerDto.Id}";
-            return await this.PatchTriggerAsync(triggerDto, url);
+            return await this.PatchTriggerAsync(triggerDto, url).ConfigureAwait(false);
         }
 
         public T GetTriggerById<T>(long jobId, long triggerId) where T : JobTriggerDtoBase => this.GetTriggerByIdAsync<T>(jobId, triggerId).Result;
         public async Task<T> GetTriggerByIdAsync<T>(long jobId, long triggerId) where T : JobTriggerDtoBase
         {
             var url = $"jobs/{jobId}/triggers/{triggerId}";
-            return await this.GetTrigger<T>(url);
+            return await this.GetTrigger<T>(url).ConfigureAwait(false);
         }
 
         public PagedResultDto<JobRunDto> GetJobRunsByTriggerId(long jobId, long triggerId, int page = 1, int pageSize = 50, string sort = null) => this.GetJobRunsByTriggerIdAsync(jobId, triggerId, page, pageSize, sort).Result;
@@ -185,11 +185,11 @@ namespace Jobbr.Client
         {
             var url = $"jobs/{jobId}/triggers/{triggerId}/jobruns?page={page}&pageSize={pageSize}&sort={sort}";
 
-            var requestResult = await this.httpClient.GetAsync(url);
+            var requestResult = await this.httpClient.GetAsync(url).ConfigureAwait(false);
 
             if (requestResult.StatusCode == HttpStatusCode.OK)
             {
-                var json = await requestResult.Content.ReadAsStringAsync();
+                var json = await requestResult.Content.ReadAsStringAsync().ConfigureAwait(false);
 
                 var runs = JsonConvert.DeserializeObject<PagedResultDto<JobRunDto>>(json);
 
@@ -204,11 +204,11 @@ namespace Jobbr.Client
         {
             var url = $"jobruns/{jobRunId}";
 
-            var requestResult = await this.httpClient.GetAsync(url);
+            var requestResult = await this.httpClient.GetAsync(url).ConfigureAwait(false);
 
             if (requestResult.StatusCode == HttpStatusCode.OK)
             {
-                var json = await requestResult.Content.ReadAsStringAsync();
+                var json = await requestResult.Content.ReadAsStringAsync().ConfigureAwait(false);
 
                 var run = JsonConvert.DeserializeObject<JobRunDto>(json);
 
@@ -223,24 +223,24 @@ namespace Jobbr.Client
         {
             var url = $"jobruns/{jobRunId}";
 
-            var requestResult = await this.httpClient.DeleteAsync(url);
+            var requestResult = await this.httpClient.DeleteAsync(url).ConfigureAwait(false);
 
             return requestResult.StatusCode == HttpStatusCode.OK;
         }
 
         private async Task<T> PostTriggerAsync<T>(T triggerDto, string url) where T : JobTriggerDtoBase
         {
-            return await this.ExecuteDtoRequest(url, triggerDto, HttpMethod.Post);
+            return await this.ExecuteDtoRequest(url, triggerDto, HttpMethod.Post).ConfigureAwait(false);
         }
 
         private async Task<T> PatchTriggerAsync<T>(T triggerDto, string url) where T : JobTriggerDtoBase
         {
-            return await this.ExecuteDtoRequest(url, triggerDto, new HttpMethod("PATCH"));
+            return await this.ExecuteDtoRequest(url, triggerDto, new HttpMethod("PATCH")).ConfigureAwait(false);
         }
 
         private async Task<T> GetTrigger<T>(string url) where T : class
         {
-            return await this.ExecuteDtoRequest<T>(url, null, HttpMethod.Get);
+            return await this.ExecuteDtoRequest<T>(url, null, HttpMethod.Get).ConfigureAwait(false);
         }
 
         private async Task<T> ExecuteDtoRequest<T>(string url, T dto, HttpMethod httpMethod) where T : class
@@ -253,11 +253,11 @@ namespace Jobbr.Client
                 request.Content = new StringContent(json, Encoding.UTF8, "application/json");
             }
 
-            var response = await this.httpClient.SendAsync(request);
+            var response = await this.httpClient.SendAsync(request).ConfigureAwait(false);
 
             if (response.StatusCode == HttpStatusCode.Created || response.StatusCode == HttpStatusCode.OK)
             {
-                var contentString = await response.Content.ReadAsStringAsync();
+                var contentString = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
 
                 var responseDto = JsonConvert.DeserializeObject<T>(contentString);
 
