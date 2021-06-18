@@ -169,7 +169,7 @@ namespace Jobbr.Client
         public T UpdateTrigger<T>(long jobId, T triggerDto) where T : JobTriggerDtoBase => this.UpdateTriggerAsync<T>(jobId, triggerDto).Result;
         public async Task<T> UpdateTriggerAsync<T>(long jobId, T triggerDto) where T : JobTriggerDtoBase
         {
-            var url = $"jobs/{jobId}/triggers";
+            var url = $"jobs/{jobId}/triggers/{triggerDto.Id}";
             return await this.PatchTriggerAsync(triggerDto, url).ConfigureAwait(false);
         }
 
