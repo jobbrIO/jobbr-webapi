@@ -24,7 +24,7 @@
     <PackageReference Include="Microsoft.Owin.Cors" Version="4.2.0" />
     <PackageReference Include="Microsoft.Owin.Host.HttpListener" Version="4.2.0" />
     <PackageReference Include="Microsoft.Owin.Hosting" Version="3.1.0" />
-    <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
     <PackageReference Include="Owin" Version="1.0" />
   </ItemGroup>
   <ItemGroup>
