@@ -9,16 +9,16 @@
     <licenseUrl>https://raw.githubusercontent.com/jobbrIO/jobbr-webapi/develop/LICENSE</licenseUrl>
     <requireLicenseAcceptance>true</requireLicenseAcceptance>
     <description>Adds Rest-style api to a Jobbr-Server</description>
-    <copyright>Copyright 2017</copyright>
+    <copyright>Copyright 2018</copyright>
     <iconUrl>https://github.com/jobbrIO/artwork/raw/master/build/icons/icon_detailed_256_dark.png</iconUrl>
     <dependencies>
       <dependency id="Microsoft.Owin.Host.HttpListener" version="[3,4)"/>
       <dependency id="Jobbr.ComponentModel.Registration" version="[1,1.1)"/>
-      <dependency id="Jobbr.ComponentModel.Management" version="[1.3,1.4)"/>
+      <dependency id="Jobbr.ComponentModel.Management" version="[1.6,1.7)"/>
     </dependencies>
   </metadata>
   <files>
-    <file src="..\ilmerged\Jobbr.Server.WebAPI.dll" target="lib\net45"/>
-    <file src="..\ilmerged\Jobbr.Server.WebAPI.pdb" target="lib\net45"/>
+    <file src="Jobbr.Server.WebAPI\bin\Release\netstandard2.0\Jobbr.Server.WebAPI.dll" target="lib\netstandard20"/>
+    <file src="Jobbr.Server.WebAPI\bin\Release\netstandard2.0\Jobbr.Server.WebAPI.pdb" target="lib\netstandard20"/>
   </files>
 </package>

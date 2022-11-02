@@ -15,7 +15,9 @@
     </dependencies>
   </metadata>
   <files>
-    <file src="..\ilmerged\Jobbr.Client.dll" target="lib\net45"/>
-    <file src="..\ilmerged\Jobbr.Client.pdb" target="lib\net45"/>
+    <file src="Jobbr.Client\bin\Release\netstandard2.0\Jobbr.Client.dll" target="lib\netstandard20"/>
+    <file src="Jobbr.Client\bin\Release\netstandard2.0\Jobbr.Client.pdb" target="lib\netstandard20"/>
+    <file src="Jobbr.Client\bin\Release\netstandard2.0\Jobbr.Server.WebAPI.Model.dll" target="lib\netstandard20"/>
+    <file src="Jobbr.Client\bin\Release\netstandard2.0\Jobbr.Server.WebAPI.Model.pdb" target="lib\netstandard20"/>
   </files>
 </package>

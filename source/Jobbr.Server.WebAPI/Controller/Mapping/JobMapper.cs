@@ -20,7 +20,8 @@ namespace Jobbr.Server.WebAPI.Controller.Mapping
                            Parameters = job.Parameters?.Deserialize(),
                            Type = job.Type,
                            UpdatedDateTimeUtc = job.UpdatedDateTimeUtc,
-                           CreatedDateTimeUtc = job.CreatedDateTimeUtc
+                           CreatedDateTimeUtc = job.CreatedDateTimeUtc,
+                           Deleted = job.Deleted,
                        };
         }
 
@@ -47,6 +48,7 @@ namespace Jobbr.Server.WebAPI.Controller.Mapping
                            JobParameter = jobRun.JobParameters?.Deserialize(),
                            Artefacts = artefacts?.Select(s => s.ToDto()).ToList(),
                            Definition = jobRun.Definition,
+                           Deleted = jobRun.Deleted,
                        };
         }
 

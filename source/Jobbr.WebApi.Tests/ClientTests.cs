@@ -335,5 +335,29 @@ namespace Jobbr.WebApi.Tests
                 Assert.IsTrue(trigger2.IsActive);
             }
         }
+
+        [TestMethod]
+        public void Delete_Job_Run()
+        {
+            using (this.GivenRunningServerWithWebApi())
+            {
+                var client = new JobbrClient(this.BackendAddress);
+
+                var job = new Job();
+                this.JobStorage.AddJob(job);
+
+                var trigger = new RecurringTrigger();
+                this.JobStorage.AddTrigger(job.Id, trigger);
+
+                var jobRun = new JobRun { Job = new Job { Id = job.Id }, Trigger = new RecurringTrigger { Id = trigger.Id }, State = JobRunStates.Completed };
+                this.JobStorage.AddJobRun(jobRun);
+
+                client.DeleteJobRun(jobRun.Id);
+
+                var jobRun2 = this.JobStorage.GetJobRunById(jobRun.Id);
+
+                Assert.IsTrue(jobRun2.Deleted);
+            }
+        }
     }
 }

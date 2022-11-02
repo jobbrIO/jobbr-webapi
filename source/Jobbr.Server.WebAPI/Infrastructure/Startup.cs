@@ -52,6 +52,9 @@ namespace Jobbr.Server.WebAPI.Infrastructure
             // Controllers all have attributes
             config.MapHttpAttributeRoutes();
 
+            // Prevent IE from caching GET requests
+            config.Filters.Add(new DontCacheGetRequests());
+
             // Serialization
             var jsonSerializerSettings = new JsonSerializerSettings() { ContractResolver = new CamelCasePropertyNamesContractResolver(), NullValueHandling = NullValueHandling.Ignore };
             jsonSerializerSettings.Converters.Add(new JsonTypeConverter<JobTriggerDtoBase>("TriggerType", this.JobTriggerTypeResolver));

@@ -1,10 +1,12 @@
+using System.Linq;
+using Jobbr.ComponentModel.Management;
 using Jobbr.ComponentModel.Management.Model;
 using Jobbr.Server.WebAPI.Model;
 using Newtonsoft.Json;
 
 namespace Jobbr.Server.WebAPI.Controller.Mapping
 {
-    public class TriggerMapper
+    public static class TriggerMapper
     {
         internal static ScheduledTriggerDto ConvertToDto(ScheduledTrigger trigger)
         {
@@ -26,7 +28,7 @@ namespace Jobbr.Server.WebAPI.Controller.Mapping
 
         internal static RecurringTrigger ConvertToTrigger(RecurringTriggerDto dto)
         {
-            var trigger = new RecurringTrigger() { Definition = dto.Definition, StartDateTimeUtc = dto.StartDateTimeUtc, EndDateTimeUtc = dto.EndDateTimeUtc };
+            var trigger = new RecurringTrigger { Definition = dto.Definition, StartDateTimeUtc = dto.StartDateTimeUtc, EndDateTimeUtc = dto.EndDateTimeUtc };
             return (RecurringTrigger)MapCommonValues(dto, trigger);
         }
 
@@ -38,7 +40,7 @@ namespace Jobbr.Server.WebAPI.Controller.Mapping
 
         internal static InstantTrigger ConvertToTrigger(InstantTriggerDto dto)
         {
-            var trigger = new InstantTrigger() { DelayedMinutes = dto.DelayedMinutes };
+            var trigger = new InstantTrigger { DelayedMinutes = dto.DelayedMinutes };
             return (InstantTrigger)MapCommonValues(dto, trigger);
         }
 
@@ -50,6 +52,7 @@ namespace Jobbr.Server.WebAPI.Controller.Mapping
             dto.Parameters = trigger.Parameters != null ? JsonConvert.DeserializeObject(trigger.Parameters) : null;
             dto.UserDisplayName = trigger.UserDisplayName;
             dto.UserId = trigger.UserId;
+            dto.Deleted = trigger.Deleted;
 
             return dto;
         }
@@ -61,8 +64,20 @@ namespace Jobbr.Server.WebAPI.Controller.Mapping
             trigger.Parameters = JsonConvert.SerializeObject(dto.Parameters);
             trigger.UserDisplayName = dto.UserDisplayName;
             trigger.UserId = dto.UserId;
+            trigger.Deleted = dto.Deleted;
 
             return trigger;
+        }
+
+        internal static PagedResultDto<JobTriggerDtoBase> ToPagedResult(this PagedResult<IJobTrigger> data)
+        {
+            return new PagedResultDto<JobTriggerDtoBase>
+            {
+                Page = data.Page,
+                PageSize = data.PageSize,
+                Items = data.Items.Select(t => ConvertToDto((dynamic)t)).Cast<JobTriggerDtoBase>().ToList(),
+                TotalItems = data.TotalItems
+            };
         }
     }
 }
