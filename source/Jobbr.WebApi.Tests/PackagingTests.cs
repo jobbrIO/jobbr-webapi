@@ -7,10 +7,9 @@ namespace Jobbr.WebApi.Tests
     public class PackagingTests
     {
         [TestMethod]
-        [Ignore]
         public void Feature_NuSpec_IsCompliant()
         {
-            var asserter = new Asserter(Asserter.ResolvePackagesConfig("Jobbr.Server.WebApi"), Asserter.ResolveRootFile("Jobbr.Server.WebApi.nuspec"));
+            var asserter = new Asserter(Asserter.ResolveProjectFile("Jobbr.Server.WebApi", "Jobbr.Server.WebApi.csproj"), Asserter.ResolveRootFile("Jobbr.Server.WebApi.nuspec"));
 
             asserter.Add(new PackageExistsInBothRule("Jobbr.ComponentModel.Registration"));
             asserter.Add(new PackageExistsInBothRule("Jobbr.ComponentModel.Management"));
@@ -27,7 +26,7 @@ namespace Jobbr.WebApi.Tests
         [Ignore]
         public void Client_NuSpec_IsCompliant()
         {
-            var asserter = new Asserter(Asserter.ResolvePackagesConfig("Jobbr.Client"), Asserter.ResolveRootFile("Jobbr.Client.nuspec"));
+            var asserter = new Asserter(Asserter.ResolveProjectFile("Jobbr.Client", "Jobbr.Client.csproj"), Asserter.ResolveRootFile("Jobbr.Client.nuspec"));
 
             asserter.Add(new NoExternalDependenciesRule());
 

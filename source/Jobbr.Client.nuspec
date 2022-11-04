@@ -6,18 +6,17 @@
     <authors>Jobbr</authors>
     <owners>Jobbr</owners>
     <projectUrl>http://github.com/jobbrIO/jobbr-webapi</projectUrl>
-    <licenseUrl>https://raw.githubusercontent.com/jobbrIO/jobbr-webapi/develop/LICENSE</licenseUrl>
+    <license type="expression">GPL-3.0-only</license>
     <requireLicenseAcceptance>true</requireLicenseAcceptance>
     <description>Strong typed .NET Client for Jobbr Rest API</description>
-    <copyright>Copyright 2017</copyright>
-    <iconUrl>https://github.com/jobbrIO/artwork/raw/master/build/icons/icon_detailed_256_dark.png</iconUrl>
-    <dependencies>
-    </dependencies>
+    <copyright>Copyright 2022</copyright>
+    <icon>images\icon.png</icon>
   </metadata>
   <files>
     <file src="Jobbr.Client\bin\Release\netstandard2.0\Jobbr.Client.dll" target="lib\netstandard20"/>
     <file src="Jobbr.Client\bin\Release\netstandard2.0\Jobbr.Client.pdb" target="lib\netstandard20"/>
     <file src="Jobbr.Client\bin\Release\netstandard2.0\Jobbr.Server.WebAPI.Model.dll" target="lib\netstandard20"/>
     <file src="Jobbr.Client\bin\Release\netstandard2.0\Jobbr.Server.WebAPI.Model.pdb" target="lib\netstandard20"/>
+    <file src="icon.png" target="images/"/>
   </files>
 </package>
