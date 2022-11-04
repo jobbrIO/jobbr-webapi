@@ -6,11 +6,11 @@
     <authors>Jobbr</authors>
     <owners>Jobbr</owners>
     <projectUrl>http://github.com/jobbrIO/jobbr-webapi</projectUrl>
-    <licenseUrl>https://raw.githubusercontent.com/jobbrIO/jobbr-webapi/develop/LICENSE</licenseUrl>
+    <license type="expression">GPL-3.0-only</license>
     <requireLicenseAcceptance>true</requireLicenseAcceptance>
     <description>Adds Rest-style api to a Jobbr-Server</description>
-    <copyright>Copyright 2018</copyright>
-    <iconUrl>https://github.com/jobbrIO/artwork/raw/master/build/icons/icon_detailed_256_dark.png</iconUrl>
+    <copyright>Copyright 2022</copyright>
+    <icon>images\icon.png</icon>
     <dependencies>
       <dependency id="Microsoft.Owin.Host.HttpListener" version="[3,4)"/>
       <dependency id="Jobbr.ComponentModel.Registration" version="[1,1.1)"/>
@@ -20,5 +20,6 @@
   <files>
     <file src="Jobbr.Server.WebAPI\bin\Release\netstandard2.0\Jobbr.Server.WebAPI.dll" target="lib\netstandard20"/>
     <file src="Jobbr.Server.WebAPI\bin\Release\netstandard2.0\Jobbr.Server.WebAPI.pdb" target="lib\netstandard20"/>
+    <file src="icon.png" target="images/"/>
   </files>
 </package>
