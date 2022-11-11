@@ -12,7 +12,7 @@
     <copyright>Copyright 2022</copyright>
     <icon>images\icon.png</icon>
     <dependencies>
-      <dependency id="Microsoft.Owin.Host.HttpListener" version="[3,4)"/>
+      <dependency id="Microsoft.Owin.Host.HttpListener" version="[4,5)"/>
       <dependency id="Jobbr.ComponentModel.Registration" version="[1,1.1)"/>
       <dependency id="Jobbr.ComponentModel.Management" version="[1.6,1.7)"/>
     </dependencies>
