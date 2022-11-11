@@ -20,7 +20,7 @@
     <PackageReference Include="Jobbr.ComponentModel.Management" Version="1.6.3" />
     <PackageReference Include="Jobbr.ComponentModel.Registration" Version="1.0.3" />
     <PackageReference Include="Jobbr.Execution.Forked" Version="1.1.1" />
-    <PackageReference Include="Jobbr.Server" Version="1.6.0-rc.1" />
+    <PackageReference Include="Jobbr.Server" Version="1.6.0" />
     <PackageReference Include="Jobbr.Storage.MsSql" Version="3.0.0-rc.1" />
     <PackageReference Include="Microsoft.Owin.Host.HttpListener" Version="4.2.2" />
     <PackageReference Include="ServiceStack.Common" Version="5.1.0" />

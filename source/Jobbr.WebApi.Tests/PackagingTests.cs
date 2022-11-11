@@ -23,7 +23,6 @@ namespace Jobbr.WebApi.Tests
         }
 
         [TestMethod]
-        [Ignore]
         public void Client_NuSpec_IsCompliant()
         {
             var asserter = new Asserter(Asserter.ResolveProjectFile("Jobbr.Client", "Jobbr.Client.csproj"), Asserter.ResolveRootFile("Jobbr.Client.nuspec"));
