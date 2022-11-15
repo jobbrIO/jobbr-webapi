@@ -7,10 +7,14 @@ branches:
     - /release/.*/
     - /hotfix/.*/
     - /feature/.*/
+    - /bugfix/.*/
+
+environment:
+  IGNORE_NORMALISATION_GIT_HEAD_MOVE: 1
 
 install:
   - git submodule update --init --recursive
-  - choco install gitversion.portable --version 4.0.0
+  - choco install gitversion.portable --version 5.10.3 -y
 
 assembly_info:
   patch: false
@@ -36,6 +40,6 @@ deploy:
 - provider: NuGet
   server: https://nuget.org
   api_key:
-    secure: yiJlhXbv75zWvfaAnpz+6xiOMC7sq4ZAIqLS0l4dwj6Kxwrwr1yaBqQe/Hy1+shY
+    secure: anKLNUxe1pn63rrNVCigoQVfA/fWML9gEpE1UHRLK/LDmQX4SM9WwzDx0kliHKWC
   on:
     appveyor_repo_tag: true
