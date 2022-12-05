@@ -5,15 +5,8 @@
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Costura.Fody" Version="3.3.3" />
-    <PackageReference Include="Fody" Version="4.2.1">
-      <PrivateAssets>all</PrivateAssets>
-    </PackageReference>
     <PackageReference Include="Jobbr.ComponentModel.Management" Version="1.6.3" />
     <PackageReference Include="Jobbr.ComponentModel.Registration" Version="1.0.3" />
-    <PackageReference Include="LibLog" Version="3.1.0">
-      <PrivateAssets>all</PrivateAssets>
-    </PackageReference>
     <PackageReference Include="Microsoft.AspNet.Cors" Version="5.2.9" />
     <PackageReference Include="Microsoft.AspNet.WebApi.Client" Version="5.2.9" />
     <PackageReference Include="Microsoft.AspNet.WebApi.Core" Version="5.2.9" />
@@ -28,8 +21,5 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Jobbr.Server.WebAPI.Model\Jobbr.Server.WebAPI.Model.csproj" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="FodyWeavers.xml" />
   </ItemGroup>
 </Project>
