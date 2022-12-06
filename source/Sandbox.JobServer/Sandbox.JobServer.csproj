@@ -2,7 +2,7 @@
   <PropertyGroup>
     <ProjectGuid>{28B3BFFA-26E2-4A0E-A329-B6FD729FB981}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <TargetFramework>net472</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <OutputPath>bin\$(Configuration)\</OutputPath>
@@ -14,25 +14,17 @@
     <DebugType>pdbonly</DebugType>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Jobbr.ComponentModel.ArtefactStorage" Version="1.0.1" />
-    <PackageReference Include="Jobbr.ComponentModel.Execution" Version="1.0.1" />
-    <PackageReference Include="Jobbr.ComponentModel.JobStorage" Version="1.4.0" />
     <PackageReference Include="Jobbr.ComponentModel.Management" Version="1.6.3" />
     <PackageReference Include="Jobbr.ComponentModel.Registration" Version="1.0.3" />
-    <PackageReference Include="Jobbr.Execution.Forked" Version="1.1.1" />
+    <PackageReference Include="Jobbr.Execution.Forked" Version="1.2.0" />
     <PackageReference Include="Jobbr.Server" Version="1.6.0" />
     <PackageReference Include="Jobbr.Storage.MsSql" Version="3.0.0-rc.1" />
     <PackageReference Include="Microsoft.Owin.Host.HttpListener" Version="4.2.2" />
-    <PackageReference Include="ServiceStack.Common" Version="5.1.0" />
-    <PackageReference Include="ServiceStack.Interfaces" Version="5.1.0" />
-    <PackageReference Include="ServiceStack.OrmLite" Version="5.1.0" />
-    <PackageReference Include="ServiceStack.OrmLite.SqlServer" Version="5.1.0" />
-    <PackageReference Include="ServiceStack.Text" Version="5.1.0" />
-  </ItemGroup>
-  <ItemGroup>
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Net.Http" />
+    <PackageReference Include="Microsoft.DotNet.UpgradeAssistant.Extensions.Default.Analyzers" Version="0.4.355802">
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="Jobbr.ComponentModel.ArtefactStorage" Version="1.1.1" />
+    <PackageReference Include="Jobbr.ComponentModel.Execution" Version="1.1.1" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Jobbr.Server.WebAPI\Jobbr.Server.WebAPI.csproj" />
