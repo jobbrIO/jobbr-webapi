@@ -19,9 +19,4 @@
     </PackageReference>
     <PackageReference Include="Jobbr.Runtime.ForkedExecution" Version="1.2.0" />
   </ItemGroup>
-  <ItemGroup>
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Net.Http" />
-  </ItemGroup>
 </Project>
