@@ -37,6 +37,11 @@ namespace Jobbr.Server.WebAPI.Controller
         {
             var job = this.queryService.GetJobById(jobId);
 
+            if (job == null)
+            {
+                return this.NotFound();
+            }
+
             var pagedResult = this.queryService.GetTriggersByJobId(jobId, page, pageSize, showDeleted);
 
             var jobDto = job.ToDto();
@@ -95,6 +100,11 @@ namespace Jobbr.Server.WebAPI.Controller
         public IHttpActionResult GetJobRunsForJobByUniqueName(string uniqueName, int page = 1, int pageSize = 50, bool showDeleted = false, string sort = null)
         {
             var job = this.queryService.GetJobByUniqueName(uniqueName);
+
+            if (job == null)
+            {
+                return this.NotFound();
+            }
 
             var jobRuns = this.queryService.GetJobRunsByJobId((int)job.Id, page, pageSize, showDeleted, sort?.Split(','));
 
