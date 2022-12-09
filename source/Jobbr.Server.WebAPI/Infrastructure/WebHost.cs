@@ -63,10 +63,7 @@ namespace Jobbr.Server.WebAPI.Infrastructure
                     .AllowAnyMethod()
                     .AllowAnyHeader());
             });
-
-            //for debugging 
-            builder.Services.AddScoped<JobbrWebApiConfiguration>(); 
-
+            
             builder.Services
                 .AddControllers()
                 .AddApplicationPart(typeof(WebHost).Assembly);
