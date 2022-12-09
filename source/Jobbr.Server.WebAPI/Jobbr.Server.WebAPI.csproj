@@ -6,13 +6,14 @@
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Jobbr.ComponentModel.Management" Version="1.6.3" />
-    <PackageReference Include="Jobbr.ComponentModel.Registration" Version="1.0.3" />
+    <PackageReference Include="Jobbr.ComponentModel.Registration" Version="1.0.1" />
     <PackageReference Include="Microsoft.AspNet.Cors" Version="5.2.9" />
     <PackageReference Include="Microsoft.AspNet.WebApi.Client" Version="5.2.9" />
     <PackageReference Include="Microsoft.AspNet.WebApi.Core" Version="5.2.9" />
     <PackageReference Include="Microsoft.AspNet.WebApi.Cors" Version="5.2.9" />
     <PackageReference Include="Microsoft.AspNet.WebApi.Owin" Version="5.2.9" />
     <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="7.0.0" />
     <PackageReference Include="Microsoft.Owin" Version="4.2.2" />
     <PackageReference Include="Microsoft.Owin.Cors" Version="4.2.2" />
     <PackageReference Include="Microsoft.Owin.Host.HttpListener" Version="4.2.2" />

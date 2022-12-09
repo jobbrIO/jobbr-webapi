@@ -1,17 +1,21 @@
-﻿using System;
+﻿using Jobbr.ComponentModel.Registration;
+using System;
 using System.Net;
 using System.Net.Sockets;
-using Jobbr.ComponentModel.Registration;
-using Jobbr.Server.WebAPI.Infrastructure;
-using Jobbr.Server.WebAPI.Logging;
+using Microsoft.Extensions.Logging;
 
 namespace Jobbr.Server.WebAPI
 {
     internal class WebApiConfigurationValidator : IConfigurationValidator
     {
-        private static readonly ILog Logger = LogProvider.For<WebHost>();
+        private readonly ILogger<WebApiConfigurationValidator> _logger;
 
         public Type ConfigurationType { get; set; } = typeof(JobbrWebApiConfiguration);
+
+        public WebApiConfigurationValidator(ILoggerFactory loggerFactory)
+        {
+            this._logger = loggerFactory.CreateLogger<WebApiConfigurationValidator>();
+        }
 
         public bool Validate(object configuration)
         {
@@ -25,7 +29,7 @@ namespace Jobbr.Server.WebAPI
             if (string.IsNullOrWhiteSpace(config.BackendAddress))
             {
                 // Fallback to automatic endpoint port
-                Logger.Warn("There was no BackendAdress specified. Falling back to random port, which is not guaranteed to work in production scenarios");
+                _logger.LogWarning("There was no BackendAdress specified. Falling back to random port, which is not guaranteed to work in production scenarios");
                 var port = NextFreeTcpPort();
 
                 config.BackendAddress = $"http://localhost:{port}/";

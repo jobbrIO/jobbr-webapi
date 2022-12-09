@@ -1,22 +1,23 @@
+using Microsoft.Extensions.Logging;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Web.Http.ExceptionHandling;
-using Jobbr.Server.WebAPI.Logging;
+using ILoggerFactory = Microsoft.Extensions.Logging.ILoggerFactory;
 
 namespace Jobbr.Server.WebAPI.Infrastructure
 {
     internal class TraceSourceExceptionLogger : IExceptionLogger
     {
-        private readonly ILog logger;
+        private readonly ILogger<TraceSourceExceptionLogger> _logger;
 
-        public TraceSourceExceptionLogger(ILog logger)
+        public TraceSourceExceptionLogger(ILoggerFactory loggerFactory)
         {
-            this.logger = logger;
+            _logger = loggerFactory.CreateLogger<TraceSourceExceptionLogger>();
         }
 
         public Task LogAsync(ExceptionLoggerContext context, CancellationToken cancellationToken)
         {
-            var logAsync = new Task(() => this.logger.FatalException("Unhandled Exception while processing request '{0}'", context.Exception, context.Request));
+            var logAsync = new Task(() => _logger.LogCritical("Unhandled Exception while processing request '{0}'", context.Exception, context.Request));
 
             logAsync.Start();
 

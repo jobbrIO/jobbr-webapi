@@ -1,23 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web.Http;
-using System.Web.Http.Cors;
-using System.Web.Http.ExceptionHandling;
-using Jobbr.ComponentModel.Registration;
-using Jobbr.Server.WebAPI.Logging;
+﻿using Jobbr.ComponentModel.Registration;
 using Jobbr.Server.WebAPI.Model;
+using Microsoft.Extensions.Logging;
 using Microsoft.Owin.Cors;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using Owin;
+using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Linq;
+using System.Web.Http;
+using System.Web.Http.Cors;
+using System.Web.Http.ExceptionHandling;
 
 namespace Jobbr.Server.WebAPI.Infrastructure
 {
     public class Startup
     {
-        private static readonly ILog Logger = LogProvider.For<Startup>();
-
         /// <summary>
         /// The dependency resolver from the JobbrServer which needs to be passed through the OWIN stack to WebAPI
         /// </summary>
@@ -47,7 +46,7 @@ namespace Jobbr.Server.WebAPI.Infrastructure
             config.DependencyResolver = new DependencyResolverAdapter(this.dependencyResolver);
 
             // Add trace logger for exceptions
-            config.Services.Add(typeof(IExceptionLogger), new TraceSourceExceptionLogger(Logger));
+            config.Services.Add(typeof(IExceptionLogger), new TraceSourceExceptionLogger(new LoggerFactory()));
 
             // Controllers all have attributes
             config.MapHttpAttributeRoutes();
