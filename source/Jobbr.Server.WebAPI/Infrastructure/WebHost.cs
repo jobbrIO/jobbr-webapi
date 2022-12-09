@@ -1,9 +1,9 @@
-using System;
 using Jobbr.ComponentModel.Registration;
-using Jobbr.Server.WebAPI.Logging;
+using Microsoft.Extensions.Logging;
 using Microsoft.Owin.Hosting;
 using Microsoft.Owin.Hosting.Services;
 using Microsoft.Owin.Hosting.Starter;
+using System;
 
 namespace Jobbr.Server.WebAPI.Infrastructure
 {
@@ -15,7 +15,7 @@ namespace Jobbr.Server.WebAPI.Infrastructure
         /// <summary>
         /// The logger.
         /// </summary>
-        private static readonly ILog Logger = LogProvider.For<WebHost>();
+        private readonly ILogger<WebHost> _logger;
 
         /// <summary>
         /// The dependency resolver.
@@ -35,10 +35,11 @@ namespace Jobbr.Server.WebAPI.Infrastructure
         /// <summary>
         /// Initializes a new instance of the <see cref="WebHost"/> class.
         /// </summary>
-        public WebHost(IJobbrServiceProvider dependencyResolver, JobbrWebApiConfiguration configuration)
+        public WebHost(IJobbrServiceProvider dependencyResolver, ILoggerFactory loggerFactory, JobbrWebApiConfiguration configuration)
         {
             this.dependencyResolver = dependencyResolver;
             this.configuration = configuration;
+            this._logger = loggerFactory.CreateLogger<WebHost>();
         }
 
         /// <summary>
@@ -47,7 +48,7 @@ namespace Jobbr.Server.WebAPI.Infrastructure
         public void Start()
         {
             this.AssertBackendAddressIsValid();
-            
+
             var services = (ServiceProvider)ServicesFactory.Create();
             var options = new StartOptions()
             {
@@ -60,12 +61,12 @@ namespace Jobbr.Server.WebAPI.Infrastructure
             var hostingStarter = services.GetService<IHostingStarter>();
             this.webHost = hostingStarter.Start(options);
 
-            Logger.InfoFormat($"Started OWIN-Host for WebAPI at '{this.configuration.BackendAddress}'.");
+            _logger.LogInformation($"Started OWIN-Host for WebAPI at '{this.configuration.BackendAddress}'.");
         }
 
         public void Stop()
         {
-            Logger.InfoFormat("Stopping OWIN-Host for Web-Endpoints'");
+            this._logger.LogInformation("Stopping OWIN-Host for Web-Endpoints'");
 
             this.webHost?.Dispose();
 

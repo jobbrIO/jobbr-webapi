@@ -1,11 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using Jobbr.Server.WebAPI.Logging;
+﻿using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json.Serialization;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 
 namespace Jobbr.Server.WebAPI.Infrastructure
 {
@@ -17,8 +17,7 @@ namespace Jobbr.Server.WebAPI.Infrastructure
     /// </typeparam>
     public class JsonTypeConverter<TType> : JsonConverter
     {
-        private static readonly ILog Logger = LogProvider.For<JsonTypeConverter<TType>>();
-
+        private static ILogger<JsonTypeConverter<TType>> _logger;
         /// <summary>
         /// The cached types.
         /// </summary>
@@ -95,11 +94,11 @@ namespace Jobbr.Server.WebAPI.Infrastructure
             }
             catch (ReflectionTypeLoadException e)
             {
-                Logger.ErrorException(e.Message, e);
+                _logger.LogError(e.Message, e);
 
                 foreach (var loaderException in e.LoaderExceptions)
                 {
-                    Logger.ErrorException(loaderException.Message, loaderException);
+                    _logger.LogError(loaderException.Message, loaderException);
                 }
 
                 throw;
@@ -152,7 +151,7 @@ namespace Jobbr.Server.WebAPI.Infrastructure
             {
                 throw new ArgumentException(string.Format("multiple types for typename '{0}' found!", type));
             }
-            
+
             return types.First();
         }
     }

@@ -1,11 +1,13 @@
-﻿using System;
-using Jobbr.Server.Builder;
+﻿using Jobbr.Server.Builder;
 using Jobbr.Server.ForkedExecution;
 using Jobbr.Server.JobRegistry;
 using Jobbr.Server.WebAPI;
 using Jobbr.Storage.MsSql;
 using Sanbox.JobRunner.Jobs;
+using System;
+using Microsoft.Extensions.Logging;
 using ServiceStack.OrmLite.SqlServer;
+using LoggerFactory = Microsoft.Extensions.Logging.LoggerFactory;
 
 namespace Sandbox.JobServer
 {
@@ -13,7 +15,9 @@ namespace Sandbox.JobServer
     {
         static void Main(string[] args)
         {
-            var jobbrBuilder = new JobbrBuilder();
+            using ILoggerFactory loggerFactory = LoggerFactory.Create(builder => builder.AddConsole());
+
+            var jobbrBuilder = new JobbrBuilder(loggerFactory);
 
             jobbrBuilder.AddForkedExecution(config =>
             {
@@ -23,20 +27,21 @@ namespace Sandbox.JobServer
                 config.IsRuntimeWaitingForDebugger = false;
             });
 
-            jobbrBuilder.AddJobs(repo =>
-            {
-                repo.Define("ProgressJob", "Sandbox.JobRunner.Jobs.ProgressJob")
-                    .WithTrigger("* * * * *")
-                    .WithTrigger(DateTime.UtcNow.AddSeconds(30), new RunParameter { Param1 = "foo", Param2 = 1337 });
+            jobbrBuilder.AddJobs(loggerFactory,
+                repo =>
+                {
+                    repo.Define("ProgressJob", "Sandbox.JobRunner.Jobs.ProgressJob")
+                        .WithTrigger("* * * * *")
+                        .WithTrigger(DateTime.UtcNow.AddSeconds(30), new RunParameter { Param1 = "foo", Param2 = 1337 });
 
-                repo.Define("ParameterizedJob", "Sandbox.JobRunner.Jobs.ParameterizedJob")
-                    .WithParameter(new RunParameter { Param1 = "default job param", Param2 = 1000 })
-                    .WithTrigger("* * * * *")
-                    .WithTrigger(DateTime.UtcNow.AddSeconds(30), new RunParameter { Param1 = "customized", Param2 = 5000 });
+                    repo.Define("ParameterizedJob", "Sandbox.JobRunner.Jobs.ParameterizedJob")
+                        .WithParameter(new RunParameter { Param1 = "default job param", Param2 = 1000 })
+                        .WithTrigger("* * * * *")
+                        .WithTrigger(DateTime.UtcNow.AddSeconds(30), new RunParameter { Param1 = "customized", Param2 = 5000 });
 
-                repo.Define("ArtefactJob", "Sandbox.JobRunner.Jobs.JobWithArtefacts")
-                    .WithTrigger("* * * * *");
-            });
+                    repo.Define("ArtefactJob", "Sandbox.JobRunner.Jobs.JobWithArtefacts")
+                        .WithTrigger("* * * * *");
+                });
 
             jobbrBuilder.AddWebApi(config =>
             {
@@ -46,7 +51,7 @@ namespace Sandbox.JobServer
             jobbrBuilder.AddMsSqlStorage(c =>
             {
                 c.ConnectionString = "Data Source=localhost\\sqlexpress;Initial Catalog=JobbrWebApiSandbox;Integrated Security=True";
-                c.DialectProvider = new SqlServer2017OrmLiteDialectProvider();
+                //c.DialectProvider = new SqlServer2017OrmLiteDialectProvider();
                 c.CreateTablesIfNotExists = true;
             });
 
