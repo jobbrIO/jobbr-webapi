@@ -1,18 +1,19 @@
-﻿using System;
-using System.Web.Http;
+﻿using Microsoft.AspNetCore.Mvc;
+using System;
 
 namespace Jobbr.Server.WebAPI.Controller
 {
     /// <summary>
     /// The default controller.
     /// </summary>
-    public class DefaultController : ApiController
+    [ApiController]
+    public class DefaultController : ControllerBase
     {
-        private readonly JobbrWebApiConfiguration configuration;
+        private readonly JobbrWebApiConfiguration _configuration;
 
         public DefaultController(JobbrWebApiConfiguration configuration)
         {
-            this.configuration = configuration;
+            _configuration = configuration;
         }
 
         /// <summary>
@@ -23,21 +24,21 @@ namespace Jobbr.Server.WebAPI.Controller
         /// </returns>
         [HttpGet]
         [Route("status")]
-        public IHttpActionResult AreYouFine()
+        public IActionResult AreYouFine()
         {
-            return this.Ok("Fine");
+            return Ok("Fine");
         }
 
         [HttpGet]
-        [Route("configuration")]
-        public IHttpActionResult GetConfiguration()
+        [Route("_configuration")]
+        public IActionResult GetConfiguration()
         {
-            return this.Ok(this.configuration);
+            return Ok(_configuration);
         }
 
         [HttpGet]
         [Route("fail")]
-        public IHttpActionResult Fail()
+        public IActionResult Fail()
         {
             throw new Exception("This has failed!");
         }
