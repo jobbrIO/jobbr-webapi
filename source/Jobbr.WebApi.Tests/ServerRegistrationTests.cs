@@ -96,16 +96,16 @@ namespace Jobbr.WebApi.Tests
                 BackendAddress = $"http://localhost:{NextFreeTcpPort()}"
             };
 
-            var host = new WebHost(new LoggerFactory(), new ServiceCollection(), config);
+            var sc = new ServiceCollection();
+            sc.AddScoped<JobbrWebApiConfiguration>();
+            // add the others
 
-
-            //builder.Services.AddScoped<JobbrWebApiConfiguration>(); //for debugging 
-
+            var host = new WebHost(new LoggerFactory(), sc, config);
 
             host.Start();
 
             // Act
-            var response = new HttpClient().GetAsync(config.BackendAddress + "/jobs").Result;
+            var response = new HttpClient().GetAsync(config.BackendAddress + "/status").Result;
 
             // Assert
             Assert.IsTrue(response.IsSuccessStatusCode);
