@@ -1,14 +1,13 @@
-﻿using System;
-using System.Net;
-using System.Web.Http;
-using Jobbr.ComponentModel.Management;
+﻿using Jobbr.ComponentModel.Management;
 using Jobbr.ComponentModel.Management.Model;
 using Jobbr.Server.WebAPI.Controller.Mapping;
 using Jobbr.Server.WebAPI.Model;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Jobbr.Server.WebAPI.Controller
 {
-    public class TriggerController : ApiController
+    [ApiController]
+    public class TriggerController : ControllerBase
     {
         private readonly IQueryService queryService;
         private readonly IJobManagementService jobManagementService;
@@ -21,7 +20,7 @@ namespace Jobbr.Server.WebAPI.Controller
 
         [HttpGet]
         [Route("jobs/{jobId:long}/triggers/{triggerId:long}")]
-        public IHttpActionResult GetTriggerById(long jobId, long triggerId)
+        public IActionResult GetTriggerById(long jobId, long triggerId)
         {
             var trigger = this.queryService.GetTriggerById(jobId, triggerId);
 
@@ -35,7 +34,7 @@ namespace Jobbr.Server.WebAPI.Controller
 
         [HttpPatch]
         [Route("jobs/{jobId:long}/triggers/{triggerId:long}")]
-        public IHttpActionResult UpdateTrigger(long jobId, long triggerId, [FromBody] JobTriggerDtoBase dto)
+        public IActionResult UpdateTrigger(long jobId, long triggerId, [FromBody] JobTriggerDtoBase dto)
         {
             var currentTrigger = this.queryService.GetTriggerById(jobId, triggerId);
 
@@ -77,7 +76,7 @@ namespace Jobbr.Server.WebAPI.Controller
 
         [HttpGet]
         [Route("jobs/{jobId:long}/triggers")]
-        public IHttpActionResult GetTriggersForJob(long jobId, int page = 1, int pageSize = 200, bool showDeleted = false)
+        public IActionResult GetTriggersForJob(long jobId, int page = 1, int pageSize = 200, bool showDeleted = false)
         {
             var job = this.queryService.GetJobById(jobId);
 
@@ -87,13 +86,13 @@ namespace Jobbr.Server.WebAPI.Controller
             }
 
             var triggers = this.queryService.GetTriggersByJobId(jobId, page, pageSize, showDeleted);
-            
+
             return this.Ok(triggers.ToPagedResult());
         }
 
         [HttpGet]
         [Route("jobs/{uniqueName}/triggers")]
-        public IHttpActionResult GetTriggersForJob(string uniqueName, int page = 1, int pageSize = 200, bool showDeleted = false)
+        public IActionResult GetTriggersForJob(string uniqueName, int page = 1, int pageSize = 200, bool showDeleted = false)
         {
             var job = this.queryService.GetJobByUniqueName(uniqueName);
 
@@ -107,7 +106,7 @@ namespace Jobbr.Server.WebAPI.Controller
 
         [HttpPost]
         [Route("jobs/{jobId:long}/triggers")]
-        public IHttpActionResult AddTriggerForJobId(long jobId, [FromBody] JobTriggerDtoBase triggerDto)
+        public IActionResult AddTriggerForJobId(long jobId, [FromBody] JobTriggerDtoBase triggerDto)
         {
             var job = this.queryService.GetJobById(jobId);
 
@@ -121,7 +120,7 @@ namespace Jobbr.Server.WebAPI.Controller
 
         [HttpPost]
         [Route("jobs/{uniqueName}/triggers")]
-        public IHttpActionResult AddTriggerForJobUniqueName(string uniqueName, [FromBody] JobTriggerDtoBase triggerDto)
+        public IActionResult AddTriggerForJobUniqueName(string uniqueName, [FromBody] JobTriggerDtoBase triggerDto)
         {
             var job = this.queryService.GetJobByUniqueName(uniqueName);
 
@@ -133,11 +132,11 @@ namespace Jobbr.Server.WebAPI.Controller
             return this.AddTrigger(triggerDto, job);
         }
 
-        private IHttpActionResult AddTrigger(JobTriggerDtoBase triggerDto, Job job)
+        private IActionResult AddTrigger(JobTriggerDtoBase triggerDto, Job job)
         {
             if (triggerDto == null)
             {
-                return this.StatusCode(HttpStatusCode.BadRequest);
+                return this.BadRequest();
             }
 
             if (triggerDto is InstantTriggerDto)

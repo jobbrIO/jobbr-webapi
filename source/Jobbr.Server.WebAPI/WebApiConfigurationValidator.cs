@@ -14,12 +14,12 @@ namespace Jobbr.Server.WebAPI
 
         public WebApiConfigurationValidator(ILoggerFactory loggerFactory)
         {
-            this._logger = loggerFactory.CreateLogger<WebApiConfigurationValidator>();
+            _logger = loggerFactory.CreateLogger<WebApiConfigurationValidator>();
         }
 
         public bool Validate(object configuration)
         {
-            var config = configuration as JobbrWebApiConfiguration;
+            var config = (JobbrWebApiConfiguration)configuration;
 
             if (config == null)
             {

@@ -1,17 +1,11 @@
 ﻿using Jobbr.ComponentModel.Registration;
 using Jobbr.Server.WebAPI.Model;
 using Microsoft.Extensions.Logging;
-using Microsoft.Owin.Cors;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
-using Owin;
 using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Linq;
-using System.Web.Http;
-using System.Web.Http.Cors;
-using System.Web.Http.ExceptionHandling;
 
 namespace Jobbr.Server.WebAPI.Infrastructure
 {

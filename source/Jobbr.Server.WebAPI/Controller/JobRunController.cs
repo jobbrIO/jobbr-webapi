@@ -1,16 +1,17 @@
-﻿using System;
+﻿using Jobbr.ComponentModel.Management;
+using Jobbr.ComponentModel.Management.Model;
+using Jobbr.Server.WebAPI.Controller.Mapping;
+using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Web.Http;
-using Jobbr.ComponentModel.Management;
-using Jobbr.ComponentModel.Management.Model;
-using Jobbr.Server.WebAPI.Controller.Mapping;
 
 namespace Jobbr.Server.WebAPI.Controller
 {
-    public class JobRunController : ApiController
+    [ApiController]
+    public class JobRunController : ControllerBase
     {
         private readonly IQueryService queryService;
         private readonly IJobManagementService jobManagementService;
@@ -23,7 +24,7 @@ namespace Jobbr.Server.WebAPI.Controller
 
         [HttpGet]
         [Route("jobruns/{jobRunId}")]
-        public IHttpActionResult GetJobRun(long jobRunId)
+        public IActionResult GetJobRun(long jobRunId)
         {
             var jobRun = this.queryService.GetJobRunById(jobRunId);
 
@@ -39,7 +40,7 @@ namespace Jobbr.Server.WebAPI.Controller
 
         [HttpGet]
         [Route("jobruns")]
-        public IHttpActionResult GetJobRuns(int page = 1, int pageSize = 50, string jobTypeFilter = null, string jobUniqueNameFilter = null, string query = null, string sort = null, string state = null, string states = null, string userDisplayName = null, bool showDeleted = false)
+        public IActionResult GetJobRuns(int page = 1, int pageSize = 50, string jobTypeFilter = null, string jobUniqueNameFilter = null, string query = null, string sort = null, string state = null, string states = null, string userDisplayName = null, bool showDeleted = false)
         {
             PagedResult<JobRun> jobRuns;
 
@@ -56,7 +57,7 @@ namespace Jobbr.Server.WebAPI.Controller
             }
             else if (string.IsNullOrWhiteSpace(states) == false)
             {
-                var stateAsEnums = states.Split(new[] {','}, StringSplitOptions.RemoveEmptyEntries).Select(s =>
+                var stateAsEnums = states.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries).Select(s =>
                 {
                     var success = Enum.TryParse(s, true, out JobRunStates enumValue);
 
@@ -84,7 +85,7 @@ namespace Jobbr.Server.WebAPI.Controller
 
         [HttpGet]
         [Route("users/{userId}/jobruns/")]
-        public IHttpActionResult GetJobRunsByUserId(string userId, int page = 1, int pageSize = 50, string jobTypeFilter = null, string jobUniqueNameFilter = null, string sort = null, bool showDeleted = false)
+        public IActionResult GetJobRunsByUserId(string userId, int page = 1, int pageSize = 50, string jobTypeFilter = null, string jobUniqueNameFilter = null, string sort = null, bool showDeleted = false)
         {
             var jobRuns = this.queryService.GetJobRunsByUserId(userId, page, pageSize, jobTypeFilter, jobUniqueNameFilter, showDeleted, sort?.Split(','));
 
@@ -93,7 +94,7 @@ namespace Jobbr.Server.WebAPI.Controller
 
         [HttpGet]
         [Route("jobs/{jobId}/triggers/{triggerId}/jobruns")]
-        public IHttpActionResult GetJobRunsByTrigger(long jobId, long triggerId, int page = 1, int pageSize = 50, string sort = null, bool showDeleted = false)
+        public IActionResult GetJobRunsByTrigger(long jobId, long triggerId, int page = 1, int pageSize = 50, string sort = null, bool showDeleted = false)
         {
             var jobRuns = this.queryService.GetJobRunsByTriggerId(jobId, triggerId, page, pageSize, showDeleted, sort?.Split(','));
 
@@ -102,7 +103,7 @@ namespace Jobbr.Server.WebAPI.Controller
 
         [HttpGet]
         [Route("jobruns/{jobRunId}/artefacts/{filename}")]
-        public IHttpActionResult GetArtefact(long jobRunId, string filename)
+        public IActionResult GetArtefact(long jobRunId, string filename)
         {
             var jobRun = this.queryService.GetJobRunById(jobRunId);
 
@@ -120,12 +121,12 @@ namespace Jobbr.Server.WebAPI.Controller
 
             result.Content.Headers.ContentType = new MediaTypeHeaderValue("application/octet-stream");
 
-            return this.ResponseMessage(result);
+            return this.Ok(result);
         }
 
         [HttpDelete]
         [Route("jobruns/{jobRunId}")]
-        public IHttpActionResult SoftDeleteJobRun(long jobRunId)
+        public IActionResult SoftDeleteJobRun(long jobRunId)
         {
             this.jobManagementService.DeleteJobRun(jobRunId);
 
