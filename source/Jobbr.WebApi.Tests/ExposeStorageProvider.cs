@@ -5,13 +5,13 @@ namespace Jobbr.WebApi.Tests
 {
     public class ExposeStorageProvider : IJobbrComponent
     {
-        internal readonly IJobStorageProvider JobStorageProvider;
+        internal IJobStorageProvider JobStorageProvider { get; }
 
         public static ExposeStorageProvider Instance;
 
         public ExposeStorageProvider(IJobStorageProvider jobStorageProvider)
         {
-            this.JobStorageProvider = jobStorageProvider;
+            JobStorageProvider = jobStorageProvider;
             Instance = this;
         }
         public void Dispose()

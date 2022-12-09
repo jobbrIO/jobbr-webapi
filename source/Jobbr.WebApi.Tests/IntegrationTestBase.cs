@@ -1,10 +1,11 @@
-﻿using System.Net;
-using System.Net.Sockets;
-using Jobbr.ComponentModel.JobStorage;
+﻿using Jobbr.ComponentModel.JobStorage;
 using Jobbr.ComponentModel.Registration;
 using Jobbr.Server;
 using Jobbr.Server.Builder;
 using Jobbr.Server.WebAPI;
+using Microsoft.Extensions.Logging.Abstractions;
+using System.Net;
+using System.Net.Sockets;
 
 namespace Jobbr.WebApi.Tests
 {
@@ -16,7 +17,7 @@ namespace Jobbr.WebApi.Tests
 
         protected JobbrServer GivenRunningServerWithWebApi(string url = "")
         {
-            var builder = new JobbrBuilder();
+            var builder = new JobbrBuilder(new NullLoggerFactory());
 
             if (string.IsNullOrWhiteSpace(url))
             {

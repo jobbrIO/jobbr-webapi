@@ -56,26 +56,25 @@ namespace Jobbr.Server.WebAPI.Infrastructure
             //config.Filters.Add(new DontCacheGetRequests()); 
             //add others from startup
 
-            //builder.Services.AddCors(options =>
-            //{
-            //    options.AddPolicy("CorsPolicy", config => config
-            //        .AllowAnyOrigin()
-            //        .AllowAnyMethod()
-            //        .AllowAnyHeader());
-            //});
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("CorsPolicy", config => config
+                    .AllowAnyOrigin()
+                    .AllowAnyMethod()
+                    .AllowAnyHeader());
+            });
 
-            builder.Services.AddScoped<JobbrWebApiConfiguration>(); //for debugging 
+            //for debugging 
+            builder.Services.AddScoped<JobbrWebApiConfiguration>(); 
 
             builder.Services
                 .AddControllers()
                 .AddApplicationPart(typeof(WebHost).Assembly);
 
-            builder.WebHost.UseUrls(_configuration.BackendAddress);
-
             _webApp = builder.Build();
             _webApp.MapControllers();
-            //_webApp.Add(_configuration.BackendAddress);
-            //_webApp.UseCors();
+            _webApp.Urls.Add(_configuration.BackendAddress);
+            _webApp.UseCors();
 
             Task.FromResult(_webApp.StartAsync());
 

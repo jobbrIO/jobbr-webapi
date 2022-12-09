@@ -3,17 +3,18 @@ using Jobbr.Server.ForkedExecution;
 using Jobbr.Server.JobRegistry;
 using Jobbr.Server.WebAPI;
 using Jobbr.Storage.MsSql;
-using Sanbox.JobRunner.Jobs;
-using System;
 using Microsoft.Extensions.Logging;
+using Sanbox.JobRunner.Jobs;
 using ServiceStack.OrmLite.SqlServer;
+using System;
+using System.IO;
 using LoggerFactory = Microsoft.Extensions.Logging.LoggerFactory;
 
 namespace Sandbox.JobServer
 {
-    class Program
+    public static class Program
     {
-        static void Main(string[] args)
+        public static void Main(string[] args)
         {
             using ILoggerFactory loggerFactory = LoggerFactory.Create(builder => builder.AddConsole());
 
@@ -21,7 +22,7 @@ namespace Sandbox.JobServer
 
             jobbrBuilder.AddForkedExecution(config =>
             {
-                config.JobRunDirectory = "C:/temp";
+                config.JobRunDirectory = Path.GetTempPath();
                 config.JobRunnerExecutable = "Sandbox.JobRunner.exe";
                 config.MaxConcurrentProcesses = 4;
                 config.IsRuntimeWaitingForDebugger = false;
@@ -51,7 +52,7 @@ namespace Sandbox.JobServer
             jobbrBuilder.AddMsSqlStorage(c =>
             {
                 c.ConnectionString = "Data Source=localhost\\sqlexpress;Initial Catalog=JobbrWebApiSandbox;Integrated Security=True";
-                //c.DialectProvider = new SqlServer2017OrmLiteDialectProvider();
+                c.DialectProvider = new SqlServer2017OrmLiteDialectProvider();
                 c.CreateTablesIfNotExists = true;
             });
 
