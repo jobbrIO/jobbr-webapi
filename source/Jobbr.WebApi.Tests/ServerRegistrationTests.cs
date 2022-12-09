@@ -1,9 +1,13 @@
-﻿using System.Net;
-using System.Net.Http;
-using Jobbr.Server;
+﻿using Jobbr.Server;
 using Jobbr.Server.Builder;
 using Jobbr.Server.WebAPI;
+using Jobbr.Server.WebAPI.Infrastructure;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Net;
+using System.Net.Http;
 
 namespace Jobbr.WebApi.Tests
 {
@@ -70,7 +74,7 @@ namespace Jobbr.WebApi.Tests
         [TestMethod]
         public void RegisteredAsComponent_WithoutConfiguration_DoesStart()
         {
-            var builder = new JobbrBuilder();
+            var builder = new JobbrBuilder(new NullLoggerFactory());
             builder.AddWebApi();
 
             var server = builder.Create();
@@ -81,6 +85,30 @@ namespace Jobbr.WebApi.Tests
             {
                 Assert.AreEqual(JobbrState.Running, server.State, "Server should be possible to start with default configuration");
             }
+        }
+
+        [TestMethod]
+        public void WebHostAPI_Debug()
+        {
+            // Arrange
+            var config = new JobbrWebApiConfiguration
+            {
+                BackendAddress = $"http://localhost:{NextFreeTcpPort()}"
+            };
+
+            var host = new WebHost(new LoggerFactory(), new ServiceCollection(), config);
+
+
+            //builder.Services.AddScoped<JobbrWebApiConfiguration>(); //for debugging 
+
+
+            host.Start();
+
+            // Act
+            var response = new HttpClient().GetAsync(config.BackendAddress + "/jobs").Result;
+
+            // Assert
+            Assert.IsTrue(response.IsSuccessStatusCode);
         }
     }
 }
