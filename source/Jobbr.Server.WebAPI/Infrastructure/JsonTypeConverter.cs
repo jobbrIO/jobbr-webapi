@@ -94,11 +94,11 @@ namespace Jobbr.Server.WebAPI.Infrastructure
             }
             catch (ReflectionTypeLoadException e)
             {
-                _logger.LogError(e.Message, e);
+                _logger.LogError(e, e.Message);
 
                 foreach (var loaderException in e.LoaderExceptions)
                 {
-                    _logger.LogError(loaderException.Message, loaderException);
+                    _logger.LogError(loaderException, loaderException?.Message);
                 }
 
                 throw;

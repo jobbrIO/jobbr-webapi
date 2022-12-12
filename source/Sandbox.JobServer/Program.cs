@@ -16,7 +16,9 @@ namespace Sandbox.JobServer
     {
         public static void Main(string[] args)
         {
-            using ILoggerFactory loggerFactory = LoggerFactory.Create(builder => builder.AddConsole());
+            using ILoggerFactory loggerFactory = LoggerFactory.Create(builder => builder
+                .AddFilter(level => level >= LogLevel.Debug)
+                .AddConsole());
 
             var jobbrBuilder = new JobbrBuilder(loggerFactory);
 

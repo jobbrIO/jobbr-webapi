@@ -34,7 +34,7 @@ namespace Jobbr.WebApi.Tests
                 conf.BackendAddress = this.BackendAddress;
             });
 
-            builder.Register<IJobbrComponent>(typeof(ExposeStorageProvider));
+            builder.AppendTypeToCollection<IJobbrComponent>(typeof(ExposeStorageProvider));
 
             var server = builder.Create();
 

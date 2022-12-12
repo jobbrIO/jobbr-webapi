@@ -13,29 +13,29 @@ namespace Jobbr.Server.WebAPI.Controller
     [ApiController]
     public class JobRunController : ControllerBase
     {
-        private readonly IQueryService queryService;
-        private readonly IJobManagementService jobManagementService;
+        private readonly IQueryService _queryService;
+        private readonly IJobManagementService _jobManagementService;
 
         public JobRunController(IQueryService queryService, IJobManagementService jobManagementService)
         {
-            this.queryService = queryService;
-            this.jobManagementService = jobManagementService;
+            _queryService = queryService;
+            _jobManagementService = jobManagementService;
         }
 
         [HttpGet]
         [Route("jobruns/{jobRunId}")]
         public IActionResult GetJobRun(long jobRunId)
         {
-            var jobRun = this.queryService.GetJobRunById(jobRunId);
+            var jobRun = _queryService.GetJobRunById(jobRunId);
 
             if (jobRun == null)
             {
-                return this.NotFound();
+                return NotFound();
             }
 
-            var artefacts = this.jobManagementService.GetArtefactForJob(jobRunId);
+            var artefacts = _jobManagementService.GetArtefactForJob(jobRunId);
 
-            return this.Ok(jobRun.ToDto(artefacts));
+            return Ok(jobRun.ToDto(artefacts));
         }
 
         [HttpGet]
@@ -50,10 +50,10 @@ namespace Jobbr.Server.WebAPI.Controller
 
                 if (success == false)
                 {
-                    return this.BadRequest($"Unknown state: {state}");
+                    return BadRequest($"Unknown state: {state}");
                 }
 
-                jobRuns = this.queryService.GetJobRunsByState(enumValue, page, pageSize, jobTypeFilter, jobUniqueNameFilter, query, showDeleted, sort?.Split(','));
+                jobRuns = _queryService.GetJobRunsByState(enumValue, page, pageSize, jobTypeFilter, jobUniqueNameFilter, query, showDeleted, sort?.Split(','));
             }
             else if (string.IsNullOrWhiteSpace(states) == false)
             {
@@ -69,50 +69,50 @@ namespace Jobbr.Server.WebAPI.Controller
                     return enumValue;
                 }).ToArray();
 
-                jobRuns = this.queryService.GetJobRunsByStates(stateAsEnums, page, pageSize, jobTypeFilter, jobUniqueNameFilter, query, showDeleted, sort?.Split(','));
+                jobRuns = _queryService.GetJobRunsByStates(stateAsEnums, page, pageSize, jobTypeFilter, jobUniqueNameFilter, query, showDeleted, sort?.Split(','));
             }
             else if (string.IsNullOrWhiteSpace(userDisplayName) == false)
             {
-                jobRuns = this.queryService.GetJobRunsByUserDisplayName(userDisplayName, page, pageSize, jobTypeFilter, jobUniqueNameFilter, showDeleted, sort?.Split(','));
+                jobRuns = _queryService.GetJobRunsByUserDisplayName(userDisplayName, page, pageSize, jobTypeFilter, jobUniqueNameFilter, showDeleted, sort?.Split(','));
             }
             else
             {
-                jobRuns = this.queryService.GetJobRuns(page, pageSize, jobTypeFilter, jobUniqueNameFilter, query, showDeleted, sort?.Split(','));
+                jobRuns = _queryService.GetJobRuns(page, pageSize, jobTypeFilter, jobUniqueNameFilter, query, showDeleted, sort?.Split(','));
             }
 
-            return this.Ok(jobRuns.ToPagedResult());
+            return Ok(jobRuns.ToPagedResult());
         }
 
         [HttpGet]
         [Route("users/{userId}/jobruns/")]
         public IActionResult GetJobRunsByUserId(string userId, int page = 1, int pageSize = 50, string jobTypeFilter = null, string jobUniqueNameFilter = null, string sort = null, bool showDeleted = false)
         {
-            var jobRuns = this.queryService.GetJobRunsByUserId(userId, page, pageSize, jobTypeFilter, jobUniqueNameFilter, showDeleted, sort?.Split(','));
+            var jobRuns = _queryService.GetJobRunsByUserId(userId, page, pageSize, jobTypeFilter, jobUniqueNameFilter, showDeleted, sort?.Split(','));
 
-            return this.Ok(jobRuns.ToPagedResult());
+            return Ok(jobRuns.ToPagedResult());
         }
 
         [HttpGet]
         [Route("jobs/{jobId}/triggers/{triggerId}/jobruns")]
         public IActionResult GetJobRunsByTrigger(long jobId, long triggerId, int page = 1, int pageSize = 50, string sort = null, bool showDeleted = false)
         {
-            var jobRuns = this.queryService.GetJobRunsByTriggerId(jobId, triggerId, page, pageSize, showDeleted, sort?.Split(','));
+            var jobRuns = _queryService.GetJobRunsByTriggerId(jobId, triggerId, page, pageSize, showDeleted, sort?.Split(','));
 
-            return this.Ok(jobRuns.ToPagedResult());
+            return Ok(jobRuns.ToPagedResult());
         }
 
         [HttpGet]
         [Route("jobruns/{jobRunId}/artefacts/{filename}")]
         public IActionResult GetArtefact(long jobRunId, string filename)
         {
-            var jobRun = this.queryService.GetJobRunById(jobRunId);
+            var jobRun = _queryService.GetJobRunById(jobRunId);
 
             if (jobRun == null)
             {
-                return this.NotFound();
+                return NotFound();
             }
 
-            var fileStream = this.jobManagementService.GetArtefactAsStream(jobRun.Id, filename);
+            var fileStream = _jobManagementService.GetArtefactAsStream(jobRun.Id, filename);
 
             var result = new HttpResponseMessage(HttpStatusCode.OK)
             {
@@ -121,16 +121,16 @@ namespace Jobbr.Server.WebAPI.Controller
 
             result.Content.Headers.ContentType = new MediaTypeHeaderValue("application/octet-stream");
 
-            return this.Ok(result);
+            return Ok(result);
         }
 
         [HttpDelete]
         [Route("jobruns/{jobRunId}")]
         public IActionResult SoftDeleteJobRun(long jobRunId)
         {
-            this.jobManagementService.DeleteJobRun(jobRunId);
+            _jobManagementService.DeleteJobRun(jobRunId);
 
-            return this.Ok();
+            return Ok();
         }
     }
 }
