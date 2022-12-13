@@ -19,8 +19,8 @@ namespace Jobbr.Server.WebAPI
 
             builder.Add<JobbrWebApiConfiguration>(customConfig);
 
-            builder.Register<IJobbrComponent>(typeof(WebHost));
-            builder.Register<IConfigurationValidator>(typeof(WebApiConfigurationValidator));
+            builder.RegisterForCollection<IJobbrComponent>(typeof(WebHost));
+            builder.RegisterForCollection<IConfigurationValidator>(typeof(WebApiConfigurationValidator));
         }
     }
 }

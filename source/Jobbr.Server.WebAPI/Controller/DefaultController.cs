@@ -30,7 +30,7 @@ namespace Jobbr.Server.WebAPI.Controller
         }
 
         [HttpGet]
-        [Route("_configuration")]
+        [Route("configuration")]
         public IActionResult GetConfiguration()
         {
             return Ok(_configuration);

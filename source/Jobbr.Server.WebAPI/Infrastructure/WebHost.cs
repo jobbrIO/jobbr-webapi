@@ -1,10 +1,15 @@
 using Jobbr.ComponentModel.Registration;
+using Jobbr.Server.WebAPI.Model;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
+using SimpleInjector;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Hosting;
 
 namespace Jobbr.Server.WebAPI.Infrastructure
 {
@@ -15,21 +20,19 @@ namespace Jobbr.Server.WebAPI.Infrastructure
     {
         private WebApplication _webApp;
         private readonly ILogger _logger;
-        private readonly IServiceCollection _serviceCollection;
+        private readonly InstanceProducer[] _serviceCollection;
         private readonly JobbrWebApiConfiguration _configuration;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="WebHost"/> class.
         /// </summary>
         /// <param name="loggerFactory">The logger factory.</param>
-        /// <param name="serviceCollection">The service collection.</param>
+        /// <param name="container">The service injector container.</param>
         /// <param name="configuration">Web API configuration.</param>
-        public WebHost(ILoggerFactory loggerFactory, IServiceCollection serviceCollection, JobbrWebApiConfiguration configuration)
+        public WebHost(ILoggerFactory loggerFactory, Container container, JobbrWebApiConfiguration configuration)
         {
             _logger = loggerFactory.CreateLogger<WebHost>();
-            _logger.LogDebug("Constructing new WebHost");
-
-            _serviceCollection = serviceCollection;
+            _serviceCollection = container.GetCurrentRegistrations();
             _configuration = configuration;
         }
 
@@ -38,7 +41,6 @@ namespace Jobbr.Server.WebAPI.Infrastructure
         /// </summary>
         public void Start()
         {
-            _logger.LogDebug("Starting new WebHost");
             if (_webApp != null)
             {
                 throw new InvalidOperationException("The server has already been started.");
@@ -48,13 +50,32 @@ namespace Jobbr.Server.WebAPI.Infrastructure
 
             var builder = WebApplication.CreateBuilder();
 
-            foreach (var service in _serviceCollection)
+            foreach (var instanceProducer in _serviceCollection)
             {
-                builder.Services.Add(service);
+                builder.Services.Add(new ServiceDescriptor(instanceProducer.ServiceType, instanceProducer.GetInstance()));
             }
 
-            //config.Filters.Add(new DontCacheGetRequests()); 
-            //add others from startup
+            // test
+            builder.Services.AddMvc(o =>
+            {
+                o.Filters.Add(new ResponseCacheAttribute { NoStore = true, Location = ResponseCacheLocation.None });
+            });
+
+            var jsonSerializerSettings = new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver(), NullValueHandling = NullValueHandling.Ignore };
+            jsonSerializerSettings.Converters.Add(new JsonTypeConverter<JobTriggerDtoBase>("TriggerType", JobTriggerTypeResolver));
+            JsonConvert.DefaultSettings = () => jsonSerializerSettings;
+
+            // use this when removing Newtonsoft
+            builder.Services
+                .AddControllers()
+                //.AddJsonOptions(options =>
+                //{
+                //    options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
+                //    options.JsonSerializerOptions.PropertyNameCaseInsensitive = true;
+                //    options.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
+                //    //options.JsonSerializerOptions.Converters.Add());
+                //});
+                .AddApplicationPart(typeof(WebHost).Assembly);
 
             builder.Services.AddCors(options =>
             {
@@ -63,19 +84,21 @@ namespace Jobbr.Server.WebAPI.Infrastructure
                     .AllowAnyMethod()
                     .AllowAnyHeader());
             });
-            
-            builder.Services
-                .AddControllers()
-                .AddApplicationPart(typeof(WebHost).Assembly);
 
             _webApp = builder.Build();
+
             _webApp.MapControllers();
-            _webApp.Urls.Add(_configuration.BackendAddress);
+
+            var backendAddressUri = new Uri(_configuration.BackendAddress);
+            _webApp.UsePathBase(backendAddressUri.AbsolutePath);
+            _webApp.Urls.Add(backendAddressUri.GetLeftPart(UriPartial.Authority));
+            _webApp.UseRouting();
+
             _webApp.UseCors();
 
             Task.FromResult(_webApp.StartAsync());
 
-            _logger.LogInformation($"Started web host for WebAPI at '{_configuration.BackendAddress}'.");
+            _logger.LogInformation("Started web host for WebAPI at '{backendAddress}'.", _configuration.BackendAddress);
         }
 
         public void Stop()
@@ -101,6 +124,26 @@ namespace Jobbr.Server.WebAPI.Infrastructure
             {
                 throw new FormatException("No valid UriScheme was given. Please provide a scheme like http(s)");
             }
+        }
+
+        private Type JobTriggerTypeResolver(List<Type> types, string typeValue)
+        {
+            if (typeValue.ToLowerInvariant() == RecurringTriggerDto.Type.ToLowerInvariant())
+            {
+                return typeof(RecurringTriggerDto);
+            }
+
+            if (typeValue.ToLowerInvariant() == ScheduledTriggerDto.Type.ToLowerInvariant())
+            {
+                return typeof(ScheduledTriggerDto);
+            }
+
+            if (typeValue.ToLowerInvariant() == InstantTriggerDto.Type.ToLowerInvariant())
+            {
+                return typeof(InstantTriggerDto);
+            }
+
+            return null;
         }
     }
 }
