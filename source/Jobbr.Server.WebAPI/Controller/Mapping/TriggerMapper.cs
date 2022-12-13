@@ -1,8 +1,8 @@
-using System.Linq;
 using Jobbr.ComponentModel.Management;
 using Jobbr.ComponentModel.Management.Model;
 using Jobbr.Server.WebAPI.Model;
-using Newtonsoft.Json;
+using System.Linq;
+using System.Text.Json;
 
 namespace Jobbr.Server.WebAPI.Controller.Mapping
 {
@@ -49,7 +49,7 @@ namespace Jobbr.Server.WebAPI.Controller.Mapping
             dto.Id = trigger.Id;
             dto.Comment = trigger.Comment;
             dto.IsActive = trigger.IsActive;
-            dto.Parameters = trigger.Parameters != null ? JsonConvert.DeserializeObject(trigger.Parameters) : null;
+            dto.Parameters = trigger.Parameters != null ? JsonSerializer.Deserialize<JobTriggerDtoBase>(trigger.Parameters, DefaultJsonOptions.Options) : null;
             dto.UserDisplayName = trigger.UserDisplayName;
             dto.UserId = trigger.UserId;
             dto.Deleted = trigger.Deleted;
@@ -61,7 +61,7 @@ namespace Jobbr.Server.WebAPI.Controller.Mapping
         {
             trigger.Comment = dto.Comment;
             trigger.IsActive = dto.IsActive;
-            trigger.Parameters = JsonConvert.SerializeObject(dto.Parameters);
+            trigger.Parameters = JsonSerializer.Serialize(dto.Parameters, DefaultJsonOptions.Options);
             trigger.UserDisplayName = dto.UserDisplayName;
             trigger.UserId = dto.UserId;
             trigger.Deleted = dto.Deleted;

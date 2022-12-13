@@ -4,9 +4,9 @@ using Jobbr.Server.WebAPI.Controller.Mapping;
 using Jobbr.Server.WebAPI.Model;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
 using System;
 using System.Linq;
+using System.Text.Json;
 
 namespace Jobbr.Server.WebAPI.Controller
 {
@@ -69,7 +69,7 @@ namespace Jobbr.Server.WebAPI.Controller
                 return Conflict();
             }
 
-            var job = new Job { UniqueName = dto.UniqueName, Title = dto.Title, Type = dto.Type, Parameters = dto.Parameters != null ? JsonConvert.SerializeObject(dto.Parameters) : null, };
+            var job = new Job { UniqueName = dto.UniqueName, Title = dto.Title, Type = dto.Type, Parameters = dto.Parameters != null ? JsonSerializer.Serialize(dto.Parameters) : null, };
             _jobManagementService.AddJob(job);
 
             return Created("jobs/" + job.Id, job.ToDto());
