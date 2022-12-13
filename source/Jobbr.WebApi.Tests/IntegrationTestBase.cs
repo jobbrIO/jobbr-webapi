@@ -22,19 +22,19 @@ namespace Jobbr.WebApi.Tests
             if (string.IsNullOrWhiteSpace(url))
             {
                 var nextTcpPort = NextFreeTcpPort();
-                this.BackendAddress = $"http://localhost:{nextTcpPort}";
+                BackendAddress = $"http://localhost:{nextTcpPort}";
             }
             else
             {
-                this.BackendAddress = url;
+                BackendAddress = url;
             }
 
             builder.AddWebApi(conf =>
             {
-                conf.BackendAddress = this.BackendAddress;
+                conf.BackendAddress = BackendAddress;
             });
 
-            builder.AppendTypeToCollection<IJobbrComponent>(typeof(ExposeStorageProvider));
+            builder.RegisterForCollection<IJobbrComponent>(typeof(ExposeStorageProvider));
 
             var server = builder.Create();
 
@@ -54,7 +54,7 @@ namespace Jobbr.WebApi.Tests
 
         protected string CreateUrl(string path)
         {
-            return $"{this.BackendAddress}/{path}";
+            return $"{BackendAddress}/{path}";
         }
     }
 }
