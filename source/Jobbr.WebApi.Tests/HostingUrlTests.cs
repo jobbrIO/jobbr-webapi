@@ -12,7 +12,7 @@ namespace Jobbr.WebApi.Tests
         {
             var host = $"http://localhost:{NextFreeTcpPort()}";
 
-            this.GivenRunningServerWithWebApi(host);
+            GivenRunningServerWithWebApi(host);
             var client = new JobbrClient(host);
 
             Assert.IsTrue(client.IsAvailable());
@@ -23,7 +23,7 @@ namespace Jobbr.WebApi.Tests
         {
             var host = $"http://localhost:{NextFreeTcpPort()}";
 
-            this.GivenRunningServerWithWebApi(host);
+            GivenRunningServerWithWebApi(host);
             var client = new JobbrClient(host + "/");
 
             Assert.IsTrue(client.IsAvailable());
@@ -34,7 +34,7 @@ namespace Jobbr.WebApi.Tests
         {
             var host = $"http://localhost:{NextFreeTcpPort()}";
 
-            this.GivenRunningServerWithWebApi(host + "/");
+            GivenRunningServerWithWebApi(host + "/");
             var client = new JobbrClient(host);
 
             Assert.IsTrue(client.IsAvailable());
@@ -45,7 +45,7 @@ namespace Jobbr.WebApi.Tests
         {
             var host = $"http://localhost:{NextFreeTcpPort()}";
 
-            this.GivenRunningServerWithWebApi(host + "/");
+            GivenRunningServerWithWebApi(host + "/");
             var client = new JobbrClient(host + "/");
 
             Assert.IsTrue(client.IsAvailable());
@@ -56,7 +56,7 @@ namespace Jobbr.WebApi.Tests
         {
             var host = $"http://localhost:{NextFreeTcpPort()}";
 
-            this.GivenRunningServerWithWebApi(host + "/path");
+            GivenRunningServerWithWebApi(host + "/path");
             var client = new JobbrClient(host + "/path");
 
             Assert.IsTrue(client.IsAvailable());
@@ -67,7 +67,7 @@ namespace Jobbr.WebApi.Tests
         {
             var host = $"http://localhost:{NextFreeTcpPort()}";
 
-            this.GivenRunningServerWithWebApi(host + "/path");
+            GivenRunningServerWithWebApi(host + "/path");
             var client = new JobbrClient(host + "/path/");
 
             Assert.IsTrue(client.IsAvailable());
@@ -78,7 +78,7 @@ namespace Jobbr.WebApi.Tests
         {
             var host = $"http://localhost:{NextFreeTcpPort()}";
 
-            this.GivenRunningServerWithWebApi(host + "/path/");
+            GivenRunningServerWithWebApi(host + "/path/");
             var client = new JobbrClient(host + "/path");
 
             Assert.IsTrue(client.IsAvailable());
@@ -89,7 +89,7 @@ namespace Jobbr.WebApi.Tests
         {
             var host = $"http://localhost:{NextFreeTcpPort()}";
 
-            this.GivenRunningServerWithWebApi(host + "/path/");
+            GivenRunningServerWithWebApi(host + "/path/");
             var client = new JobbrClient(host + "/path");
 
             Assert.IsTrue(client.IsAvailable());
@@ -101,7 +101,7 @@ namespace Jobbr.WebApi.Tests
         {
             var host = $"localhost:{NextFreeTcpPort()}";
 
-            this.GivenRunningServerWithWebApi(host + "/path/");
+            GivenRunningServerWithWebApi(host + "/path/");
         }
     }
 }

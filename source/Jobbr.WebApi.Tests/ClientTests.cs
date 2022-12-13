@@ -11,12 +11,12 @@ namespace Jobbr.WebApi.Tests
         [TestMethod]
         public void RetrievingJobById()
         {
-            using (this.GivenRunningServerWithWebApi())
+            using (GivenRunningServerWithWebApi())
             {
-                var client = new JobbrClient(this.BackendAddress);
+                var client = new JobbrClient(BackendAddress);
 
                 var job = new Job();
-                this.JobStorage.AddJob(job);
+                JobStorage.AddJob(job);
 
                 var jobDto = client.GetJob(job.Id);
 
@@ -28,15 +28,15 @@ namespace Jobbr.WebApi.Tests
         [TestMethod]
         public void Query_Jobs_Total_Items()
         {
-            using (this.GivenRunningServerWithWebApi())
+            using (GivenRunningServerWithWebApi())
             {
-                var client = new JobbrClient(this.BackendAddress);
+                var client = new JobbrClient(BackendAddress);
 
-                this.JobStorage.AddJob(new Job { Title = "title1", Type = "Some.Type1", UniqueName = "unique1" });
-                this.JobStorage.AddJob(new Job { Title = "title2", Type = "Some.Type2", UniqueName = "unique2" });
-                this.JobStorage.AddJob(new Job { Title = "title3", Type = "Some.Type3", UniqueName = "unique3" });
-                this.JobStorage.AddJob(new Job { Title = "title4", Type = "Some.Type4", UniqueName = "unique4" });
-                this.JobStorage.AddJob(new Job { Title = "title5", Type = "Some.Type5", UniqueName = "unique5" });
+                JobStorage.AddJob(new Job { Title = "title1", Type = "Some.Type1", UniqueName = "unique1" });
+                JobStorage.AddJob(new Job { Title = "title2", Type = "Some.Type2", UniqueName = "unique2" });
+                JobStorage.AddJob(new Job { Title = "title3", Type = "Some.Type3", UniqueName = "unique3" });
+                JobStorage.AddJob(new Job { Title = "title4", Type = "Some.Type4", UniqueName = "unique4" });
+                JobStorage.AddJob(new Job { Title = "title5", Type = "Some.Type5", UniqueName = "unique5" });
 
                 var result = client.QueryJobs();
 
@@ -47,15 +47,15 @@ namespace Jobbr.WebApi.Tests
         [TestMethod]
         public void GetInstantTrigger()
         {
-            using (this.GivenRunningServerWithWebApi())
+            using (GivenRunningServerWithWebApi())
             {
-                var client = new JobbrClient(this.BackendAddress);
+                var client = new JobbrClient(BackendAddress);
 
                 var job = new Job();
-                this.JobStorage.AddJob(job);
+                JobStorage.AddJob(job);
 
                 var trigger = new InstantTrigger();
-                this.JobStorage.AddTrigger(job.Id, trigger);
+                JobStorage.AddTrigger(job.Id, trigger);
 
                 var triggerDto = client.GetTriggerById<InstantTriggerDto>(job.Id, trigger.Id);
 
@@ -67,15 +67,15 @@ namespace Jobbr.WebApi.Tests
         [TestMethod]
         public void GetScheduledTrigger()
         {
-            using (this.GivenRunningServerWithWebApi())
+            using (GivenRunningServerWithWebApi())
             {
-                var client = new JobbrClient(this.BackendAddress);
+                var client = new JobbrClient(BackendAddress);
 
                 var job = new Job();
-                this.JobStorage.AddJob(job);
+                JobStorage.AddJob(job);
 
                 var trigger = new ScheduledTrigger();
-                this.JobStorage.AddTrigger(job.Id, trigger);
+                JobStorage.AddTrigger(job.Id, trigger);
 
                 var triggerDto = client.GetTriggerById<ScheduledTriggerDto>(job.Id, trigger.Id);
 
@@ -87,15 +87,15 @@ namespace Jobbr.WebApi.Tests
         [TestMethod]
         public void GetRecurringTrigger()
         {
-            using (this.GivenRunningServerWithWebApi())
+            using (GivenRunningServerWithWebApi())
             {
-                var client = new JobbrClient(this.BackendAddress);
+                var client = new JobbrClient(BackendAddress);
 
                 var job = new Job();
-                this.JobStorage.AddJob(job);
+                JobStorage.AddJob(job);
 
                 var trigger = new RecurringTrigger();
-                this.JobStorage.AddTrigger(job.Id, trigger);
+                JobStorage.AddTrigger(job.Id, trigger);
 
                 var triggerDto = client.GetTriggerById<RecurringTriggerDto>(job.Id, trigger.Id);
 
@@ -107,12 +107,12 @@ namespace Jobbr.WebApi.Tests
         [TestMethod]
         public void AddInstantTrigger()
         {
-            using (this.GivenRunningServerWithWebApi())
+            using (GivenRunningServerWithWebApi())
             {
-                var client = new JobbrClient(this.BackendAddress);
+                var client = new JobbrClient(BackendAddress);
 
                 var job = new Job();
-                this.JobStorage.AddJob(job);
+                JobStorage.AddJob(job);
 
                 var triggerDto = client.AddTrigger(job.Id, new InstantTriggerDto {Comment = "test"});
 
@@ -124,12 +124,12 @@ namespace Jobbr.WebApi.Tests
         [TestMethod]
         public void AddScheduledTrigger()
         {
-            using (this.GivenRunningServerWithWebApi())
+            using (GivenRunningServerWithWebApi())
             {
-                var client = new JobbrClient(this.BackendAddress);
+                var client = new JobbrClient(BackendAddress);
 
                 var job = new Job();
-                this.JobStorage.AddJob(job);
+                JobStorage.AddJob(job);
 
                 var triggerDto = client.AddTrigger(job.Id, new ScheduledTriggerDto { Comment = "test" });
 
@@ -141,12 +141,12 @@ namespace Jobbr.WebApi.Tests
         [TestMethod]
         public void AddRecurringTrigger()
         {
-            using (this.GivenRunningServerWithWebApi())
+            using (GivenRunningServerWithWebApi())
             {
-                var client = new JobbrClient(this.BackendAddress);
+                var client = new JobbrClient(BackendAddress);
 
                 var job = new Job();
-                this.JobStorage.AddJob(job);
+                JobStorage.AddJob(job);
 
                 var triggerDto = client.AddTrigger(job.Id, new RecurringTriggerDto { Comment = "test" });
                 
@@ -158,18 +158,18 @@ namespace Jobbr.WebApi.Tests
         [TestMethod]
         public void GetJobRunById()
         {
-            using (this.GivenRunningServerWithWebApi())
+            using (GivenRunningServerWithWebApi())
             {
-                var client = new JobbrClient(this.BackendAddress);
+                var client = new JobbrClient(BackendAddress);
 
                 var job = new Job();
-                this.JobStorage.AddJob(job);
+                JobStorage.AddJob(job);
 
                 var trigger = new RecurringTrigger();
-                this.JobStorage.AddTrigger(job.Id, trigger);
+                JobStorage.AddTrigger(job.Id, trigger);
 
                 var jobRun = new JobRun { Job = new Job { Id = job.Id }, Trigger = new RecurringTrigger { Id = trigger.Id } };
-                this.JobStorage.AddJobRun(jobRun);
+                JobStorage.AddJobRun(jobRun);
 
                 var jobRunDto = client.GetJobRunById(jobRun.Id);
 
@@ -183,21 +183,21 @@ namespace Jobbr.WebApi.Tests
         [TestMethod]
         public void GetJobRunsByTriggerId()
         {
-            using (this.GivenRunningServerWithWebApi())
+            using (GivenRunningServerWithWebApi())
             {
-                var client = new JobbrClient(this.BackendAddress);
+                var client = new JobbrClient(BackendAddress);
 
                 var job = new Job();
-                this.JobStorage.AddJob(job);
+                JobStorage.AddJob(job);
 
                 var trigger = new RecurringTrigger();
-                this.JobStorage.AddTrigger(job.Id, trigger);
+                JobStorage.AddTrigger(job.Id, trigger);
 
                 var jobRun = new JobRun { Job = new Job { Id = job.Id }, Trigger = new RecurringTrigger { Id = trigger.Id } };
-                this.JobStorage.AddJobRun(jobRun);
+                JobStorage.AddJobRun(jobRun);
 
                 var jobRun2 = new JobRun { Job = new Job { Id = job.Id }, Trigger = new RecurringTrigger { Id = trigger.Id } };
-                this.JobStorage.AddJobRun(jobRun2);
+                JobStorage.AddJobRun(jobRun2);
 
                 var jobRuns = client.GetJobRunsByTriggerId(job.Id, trigger.Id);
 
@@ -208,24 +208,24 @@ namespace Jobbr.WebApi.Tests
         [TestMethod]
         public void Get_JobRuns_By_State()
         {
-            using (this.GivenRunningServerWithWebApi())
+            using (GivenRunningServerWithWebApi())
             {
-                var client = new JobbrClient(this.BackendAddress);
+                var client = new JobbrClient(BackendAddress);
 
                 var job = new Job();
-                this.JobStorage.AddJob(job);
+                JobStorage.AddJob(job);
 
                 var trigger = new RecurringTrigger();
-                this.JobStorage.AddTrigger(job.Id, trigger);
+                JobStorage.AddTrigger(job.Id, trigger);
 
                 var jobRun = new JobRun { Job = new Job { Id = job.Id }, Trigger = new RecurringTrigger { Id = trigger.Id }, State = JobRunStates.Completed };
-                this.JobStorage.AddJobRun(jobRun);
+                JobStorage.AddJobRun(jobRun);
 
                 var jobRun2 = new JobRun { Job = new Job { Id = job.Id }, Trigger = new RecurringTrigger { Id = trigger.Id }, State = JobRunStates.Completed };
-                this.JobStorage.AddJobRun(jobRun2);
+                JobStorage.AddJobRun(jobRun2);
 
                 var jobRun3 = new JobRun { Job = new Job { Id = job.Id }, Trigger = new RecurringTrigger { Id = trigger.Id }, State = JobRunStates.Failed };
-                this.JobStorage.AddJobRun(jobRun3);
+                JobStorage.AddJobRun(jobRun3);
 
                 var jobRuns = client.QueryJobRunsByState("Completed");
 
@@ -236,27 +236,27 @@ namespace Jobbr.WebApi.Tests
         [TestMethod]
         public void Get_JobRuns_By_States()
         {
-            using (this.GivenRunningServerWithWebApi())
+            using (GivenRunningServerWithWebApi())
             {
-                var client = new JobbrClient(this.BackendAddress);
+                var client = new JobbrClient(BackendAddress);
 
                 var job = new Job();
-                this.JobStorage.AddJob(job);
+                JobStorage.AddJob(job);
 
                 var trigger = new RecurringTrigger();
-                this.JobStorage.AddTrigger(job.Id, trigger);
+                JobStorage.AddTrigger(job.Id, trigger);
 
                 var jobRun = new JobRun { Job = new Job { Id = job.Id }, Trigger = new RecurringTrigger { Id = trigger.Id }, State = JobRunStates.Completed };
-                this.JobStorage.AddJobRun(jobRun);
+                JobStorage.AddJobRun(jobRun);
 
                 var jobRun2 = new JobRun { Job = new Job { Id = job.Id }, Trigger = new RecurringTrigger { Id = trigger.Id }, State = JobRunStates.Completed };
-                this.JobStorage.AddJobRun(jobRun2);
+                JobStorage.AddJobRun(jobRun2);
 
                 var jobRun3 = new JobRun { Job = new Job { Id = job.Id }, Trigger = new RecurringTrigger { Id = trigger.Id }, State = JobRunStates.Failed };
-                this.JobStorage.AddJobRun(jobRun3);
+                JobStorage.AddJobRun(jobRun3);
 
                 var jobRun4 = new JobRun { Job = new Job { Id = job.Id }, Trigger = new RecurringTrigger { Id = trigger.Id }, State = JobRunStates.Connected };
-                this.JobStorage.AddJobRun(jobRun4);
+                JobStorage.AddJobRun(jobRun4);
 
                 var jobRuns = client.QueryJobRunsByStates("Completed,Connected");
 
@@ -275,15 +275,15 @@ namespace Jobbr.WebApi.Tests
         [TestMethod]
         public void UpdateInstantTrigger()
         {
-            using (this.GivenRunningServerWithWebApi())
+            using (GivenRunningServerWithWebApi())
             {
-                var client = new JobbrClient(this.BackendAddress);
+                var client = new JobbrClient(BackendAddress);
 
                 var job = new Job();
-                this.JobStorage.AddJob(job);
+                JobStorage.AddJob(job);
 
                 var trigger = new InstantTrigger();
-                this.JobStorage.AddTrigger(job.Id, trigger);
+                JobStorage.AddTrigger(job.Id, trigger);
 
                 var triggerDto = client.UpdateTrigger(job.Id, new InstantTriggerDto { Id = trigger.Id, IsActive = true });
 
@@ -295,15 +295,15 @@ namespace Jobbr.WebApi.Tests
         [TestMethod]
         public void UpdateScheduledTrigger()
         {
-            using (this.GivenRunningServerWithWebApi())
+            using (GivenRunningServerWithWebApi())
             {
-                var client = new JobbrClient(this.BackendAddress);
+                var client = new JobbrClient(BackendAddress);
 
                 var job = new Job();
-                this.JobStorage.AddJob(job);
+                JobStorage.AddJob(job);
 
                 var trigger = new ScheduledTrigger();
-                this.JobStorage.AddTrigger(job.Id, trigger);
+                JobStorage.AddTrigger(job.Id, trigger);
 
                 var triggerDto = client.UpdateTrigger(job.Id, new ScheduledTriggerDto { Id = trigger.Id, IsActive = true });
 
@@ -315,22 +315,22 @@ namespace Jobbr.WebApi.Tests
         [TestMethod]
         public void UpdateRecurringTrigger()
         {
-            using (this.GivenRunningServerWithWebApi())
+            using (GivenRunningServerWithWebApi())
             {
-                var client = new JobbrClient(this.BackendAddress);
+                var client = new JobbrClient(BackendAddress);
 
                 var job = new Job();
-                this.JobStorage.AddJob(job);
+                JobStorage.AddJob(job);
 
                 var trigger = new RecurringTrigger();
-                this.JobStorage.AddTrigger(job.Id, trigger);
+                JobStorage.AddTrigger(job.Id, trigger);
 
                 var triggerDto = client.UpdateTrigger(job.Id, new RecurringTriggerDto { Id = trigger.Id, IsActive = true });
 
                 Assert.IsNotNull(triggerDto);
                 Assert.IsTrue(triggerDto.IsActive);
 
-                var trigger2 = this.JobStorage.GetTriggerById(job.Id, trigger.Id);
+                var trigger2 = JobStorage.GetTriggerById(job.Id, trigger.Id);
 
                 Assert.IsTrue(trigger2.IsActive);
             }
@@ -339,22 +339,22 @@ namespace Jobbr.WebApi.Tests
         [TestMethod]
         public void Delete_Job_Run()
         {
-            using (this.GivenRunningServerWithWebApi())
+            using (GivenRunningServerWithWebApi())
             {
-                var client = new JobbrClient(this.BackendAddress);
+                var client = new JobbrClient(BackendAddress);
 
                 var job = new Job();
-                this.JobStorage.AddJob(job);
+                JobStorage.AddJob(job);
 
                 var trigger = new RecurringTrigger();
-                this.JobStorage.AddTrigger(job.Id, trigger);
+                JobStorage.AddTrigger(job.Id, trigger);
 
                 var jobRun = new JobRun { Job = new Job { Id = job.Id }, Trigger = new RecurringTrigger { Id = trigger.Id }, State = JobRunStates.Completed };
-                this.JobStorage.AddJobRun(jobRun);
+                JobStorage.AddJobRun(jobRun);
 
                 client.DeleteJobRun(jobRun.Id);
 
-                var jobRun2 = this.JobStorage.GetJobRunById(jobRun.Id);
+                var jobRun2 = JobStorage.GetJobRunById(jobRun.Id);
 
                 Assert.IsTrue(jobRun2.Deleted);
             }
