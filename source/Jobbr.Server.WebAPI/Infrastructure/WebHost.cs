@@ -61,20 +61,22 @@ namespace Jobbr.Server.WebAPI.Infrastructure
                 o.Filters.Add(new ResponseCacheAttribute { NoStore = true, Location = ResponseCacheLocation.None });
             });
 
-            var jsonSerializerSettings = new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver(), NullValueHandling = NullValueHandling.Ignore };
-            jsonSerializerSettings.Converters.Add(new JsonTypeConverter<JobTriggerDtoBase>("TriggerType", JobTriggerTypeResolver));
-            JsonConvert.DefaultSettings = () => jsonSerializerSettings;
-
-            // use this when removing Newtonsoft
             builder.Services
                 .AddControllers()
+                .AddNewtonsoftJson(o =>
+                {
+                    o.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+                    o.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;
+                    o.SerializerSettings.Converters.Add(new JsonTypeConverter<JobTriggerDtoBase>("TriggerType", JobTriggerTypeResolver));
+                })
+                // use this when removing Newtonsoft
                 //.AddJsonOptions(options =>
                 //{
                 //    options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
                 //    options.JsonSerializerOptions.PropertyNameCaseInsensitive = true;
                 //    options.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
-                //    //options.JsonSerializerOptions.Converters.Add());
-                //});
+                //    options.JsonSerializerOptions.Converters.Add(coe);
+                //})
                 .AddApplicationPart(typeof(WebHost).Assembly);
 
             builder.Services.AddCors(options =>
