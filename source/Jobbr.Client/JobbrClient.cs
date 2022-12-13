@@ -1,10 +1,11 @@
 ﻿using Jobbr.Server.WebAPI.Model;
-using Newtonsoft.Json;
 using System;
 using System.Net;
 using System.Net.Http;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
+using static Jobbr.Server.WebAPI.Model.DefaultJsonOptions;
 
 namespace Jobbr.Client
 {
@@ -32,7 +33,7 @@ namespace Jobbr.Client
             {
                 var contentString = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
 
-                var responseDto = JsonConvert.DeserializeObject<JobDto>(contentString);
+                var responseDto = JsonSerializer.Deserialize<JobDto>(contentString, Options);
 
                 return responseDto;
             }
@@ -63,7 +64,7 @@ namespace Jobbr.Client
             {
                 var contentString = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
 
-                var responseDto = JsonConvert.DeserializeObject<PagedResultDto<JobDto>>(contentString);
+                var responseDto = JsonSerializer.Deserialize<PagedResultDto<JobDto>>(contentString, Options);
 
                 return responseDto;
             }
@@ -83,7 +84,7 @@ namespace Jobbr.Client
             {
                 var contentString = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
 
-                var responseDto = JsonConvert.DeserializeObject<PagedResultDto<JobRunDto>>(contentString);
+                var responseDto = JsonSerializer.Deserialize<PagedResultDto<JobRunDto>>(contentString, Options);
 
                 return responseDto;
             }
@@ -103,7 +104,7 @@ namespace Jobbr.Client
             {
                 var contentString = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
 
-                var responseDto = JsonConvert.DeserializeObject<PagedResultDto<JobRunDto>>(contentString);
+                var responseDto = JsonSerializer.Deserialize<PagedResultDto<JobRunDto>>(contentString, Options);
 
                 return responseDto;
             }
@@ -123,7 +124,7 @@ namespace Jobbr.Client
             {
                 var contentString = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
 
-                var responseDto = JsonConvert.DeserializeObject<PagedResultDto<JobRunDto>>(contentString);
+                var responseDto = JsonSerializer.Deserialize<PagedResultDto<JobRunDto>>(contentString, Options);
 
                 return responseDto;
             }
@@ -143,7 +144,7 @@ namespace Jobbr.Client
             {
                 var contentString = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
 
-                var responseDto = JsonConvert.DeserializeObject<PagedResultDto<JobRunDto>>(contentString);
+                var responseDto = JsonSerializer.Deserialize<PagedResultDto<JobRunDto>>(contentString, Options);
 
                 return responseDto;
             }
@@ -190,7 +191,7 @@ namespace Jobbr.Client
             {
                 var json = await requestResult.Content.ReadAsStringAsync().ConfigureAwait(false);
 
-                var runs = JsonConvert.DeserializeObject<PagedResultDto<JobRunDto>>(json);
+                var runs = JsonSerializer.Deserialize<PagedResultDto<JobRunDto>>(json, Options);
 
                 return runs;
             }
@@ -209,7 +210,7 @@ namespace Jobbr.Client
             {
                 var json = await requestResult.Content.ReadAsStringAsync().ConfigureAwait(false);
 
-                var run = JsonConvert.DeserializeObject<JobRunDto>(json);
+                var run = JsonSerializer.Deserialize<JobRunDto>(json, Options);
 
                 return run;
             }
@@ -244,7 +245,7 @@ namespace Jobbr.Client
 
         private async Task<T> ExecuteDtoRequest<T>(string url, T dto, HttpMethod httpMethod) where T : class
         {
-            var json = dto != null ? JsonConvert.SerializeObject(dto) : string.Empty;
+            var json = dto != null ? JsonSerializer.Serialize(dto, Options) : string.Empty;
             var request = new HttpRequestMessage(httpMethod, url);
 
             if (httpMethod != HttpMethod.Get)
@@ -258,7 +259,7 @@ namespace Jobbr.Client
             {
                 var contentString = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
 
-                var responseDto = JsonConvert.DeserializeObject<T>(contentString);
+                var responseDto = JsonSerializer.Deserialize<T>(contentString, Options);
 
                 return responseDto;
             }

@@ -4,8 +4,6 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
 using SimpleInjector;
 using System;
 using System.Collections.Generic;
@@ -55,7 +53,7 @@ namespace Jobbr.Server.WebAPI.Infrastructure
                 builder.Services.Add(new ServiceDescriptor(instanceProducer.ServiceType, instanceProducer.GetInstance()));
             }
 
-            // test
+            // test or add DontCacheGetRequests
             builder.Services.AddMvc(o =>
             {
                 o.Filters.Add(new ResponseCacheAttribute { NoStore = true, Location = ResponseCacheLocation.None });
@@ -63,19 +61,12 @@ namespace Jobbr.Server.WebAPI.Infrastructure
 
             builder.Services
                 .AddControllers()
-                .AddNewtonsoftJson(o =>
-                {
-                    o.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
-                    o.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;
-                    o.SerializerSettings.Converters.Add(new JsonTypeConverter<JobTriggerDtoBase>("TriggerType", JobTriggerTypeResolver));
-                })
-                // use this when removing Newtonsoft
                 //.AddJsonOptions(options =>
                 //{
                 //    options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
                 //    options.JsonSerializerOptions.PropertyNameCaseInsensitive = true;
                 //    options.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
-                //    options.JsonSerializerOptions.Converters.Add(coe);
+                //    options.JsonSerializerOptions.Converters.Add(new JsonTypeConverter<JobTriggerDtoBase>("TriggerType", JobTriggerTypeResolver));
                 //})
                 .AddApplicationPart(typeof(WebHost).Assembly);
 

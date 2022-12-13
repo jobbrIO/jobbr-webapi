@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json;
 
 namespace Jobbr.Server.WebAPI.Infrastructure
 {
@@ -8,7 +8,7 @@ namespace Jobbr.Server.WebAPI.Infrastructure
         {
             if (string.IsNullOrWhiteSpace(json) == false)
             {
-                return JsonConvert.DeserializeObject(json);
+                return JsonSerializer.Deserialize<object>(json);
             }
 
             return null;
