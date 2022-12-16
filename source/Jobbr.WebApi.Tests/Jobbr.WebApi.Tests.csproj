@@ -20,8 +20,8 @@
   <ItemGroup>
     <PackageReference Include="Jobbr.Server" Version="3.0.0-rc.4" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.4.0" />
-    <PackageReference Include="MSTest.TestAdapter" Version="2.2.10" />
-    <PackageReference Include="MSTest.TestFramework" Version="2.2.10" />
+    <PackageReference Include="MSTest.TestAdapter" Version="3.0.0" />
+    <PackageReference Include="MSTest.TestFramework" Version="3.0.0" />
 
     <PackageReference Include="Jobbr.ComponentModel.Management" Version="3.0.0-rc.1" />
     <PackageReference Include="Jobbr.ComponentModel.JobStorage" Version="3.0.0-rc.1" />

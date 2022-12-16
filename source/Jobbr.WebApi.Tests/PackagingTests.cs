@@ -15,7 +15,6 @@ namespace Jobbr.WebApi.Tests
             asserter.Add(new PackageExistsInBothRule("Jobbr.ComponentModel.Management"));
             asserter.Add(new VersionIsIncludedInRange("Jobbr.ComponentModel.*"));
             asserter.Add(new NoMajorChangesInNuSpec("Jobbr.*"));
-            asserter.Add(new NoMajorChangesInNuSpec("Microsoft.*"));
 
             var result = asserter.Validate();
 
