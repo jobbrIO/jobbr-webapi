@@ -18,7 +18,7 @@
   </PropertyGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
   <ItemGroup>
-    <PackageReference Include="Jobbr.Server" Version="3.0.0-rc.4" />
+    <PackageReference Include="Jobbr.Server" Version="3.0.0-rc.5" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.4.0" />
     <PackageReference Include="MSTest.TestAdapter" Version="3.0.0" />
     <PackageReference Include="MSTest.TestFramework" Version="3.0.0" />
