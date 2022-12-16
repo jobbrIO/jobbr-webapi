@@ -20,24 +20,21 @@ namespace Jobbr.Server.WebAPI.Controller
         /// The are you fine.
         /// </summary>
         /// <returns>
-        /// The <see cref="IHttpActionResult"/>.
+        /// The <see cref="IActionResult"/>.
         /// </returns>
-        [HttpGet]
-        [Route("status")]
+        [HttpGet("status")]
         public IActionResult AreYouFine()
         {
             return Ok("Fine");
         }
 
-        [HttpGet]
-        [Route("configuration")]
+        [HttpGet("configuration")]
         public IActionResult GetConfiguration()
         {
             return Ok(_configuration);
         }
 
-        [HttpGet]
-        [Route("fail")]
+        [HttpGet("fail")]
         public IActionResult Fail()
         {
             throw new Exception("This has failed!");

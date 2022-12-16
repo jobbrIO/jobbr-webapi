@@ -11,12 +11,12 @@ namespace Jobbr.Client
 {
     public class JobbrClient : IJobbrClient
     {
-        private readonly HttpClient httpClient;
+        private readonly HttpClient _httpClient;
 
         public JobbrClient(string backend)
         {
             Backend = backend + (backend.EndsWith("/") ? string.Empty : "/");
-            httpClient = new HttpClient { BaseAddress = new Uri(Backend) };
+            _httpClient = new HttpClient { BaseAddress = new Uri(Backend) };
         }
 
         public string Backend { get; }
@@ -27,7 +27,7 @@ namespace Jobbr.Client
             var url = $"jobs/{id}";
 
             var request = new HttpRequestMessage(HttpMethod.Get, url);
-            var response = await httpClient.SendAsync(request).ConfigureAwait(false);
+            var response = await _httpClient.SendAsync(request).ConfigureAwait(false);
 
             if (response.StatusCode == HttpStatusCode.OK)
             {
@@ -47,7 +47,7 @@ namespace Jobbr.Client
             const string url = "status";
 
             var request = new HttpRequestMessage(HttpMethod.Get, url);
-            var response = await httpClient.SendAsync(request).ConfigureAwait(false);
+            var response = await _httpClient.SendAsync(request).ConfigureAwait(false);
 
             return response.StatusCode == HttpStatusCode.OK;
         }
@@ -58,7 +58,7 @@ namespace Jobbr.Client
             var url = $"jobs?page={page}&pageSize={pageSize}&jobTypeFilter={jobTypeFilter}&jobUniqueNameFilter={jobUniqueNameFilter}&query={query}&sort={sort}";
 
             var request = new HttpRequestMessage(HttpMethod.Get, url);
-            var response = await httpClient.SendAsync(request).ConfigureAwait(false);
+            var response = await _httpClient.SendAsync(request).ConfigureAwait(false);
 
             if (response.StatusCode == HttpStatusCode.OK)
             {
@@ -78,7 +78,7 @@ namespace Jobbr.Client
             var url = $"jobRuns?page={page}&pageSize={pageSize}&jobTypeFilter={jobTypeFilter}&jobUniqueNameFilter={jobUniqueNameFilter}&query={query}&sort={sort}";
 
             var request = new HttpRequestMessage(HttpMethod.Get, url);
-            var response = await httpClient.SendAsync(request).ConfigureAwait(false);
+            var response = await _httpClient.SendAsync(request).ConfigureAwait(false);
 
             if (response.StatusCode == HttpStatusCode.OK)
             {
@@ -98,7 +98,7 @@ namespace Jobbr.Client
             var url = $"jobRuns?page={page}&pageSize={pageSize}&jobTypeFilter={jobTypeFilter}&jobUniqueNameFilter={jobUniqueNameFilter}&query={query}&sort={sort}&state={state}";
 
             var request = new HttpRequestMessage(HttpMethod.Get, url);
-            var response = await httpClient.SendAsync(request).ConfigureAwait(false);
+            var response = await _httpClient.SendAsync(request).ConfigureAwait(false);
 
             if (response.StatusCode == HttpStatusCode.OK)
             {
@@ -118,7 +118,7 @@ namespace Jobbr.Client
             var url = $"jobRuns?page={page}&pageSize={pageSize}&jobTypeFilter={jobTypeFilter}&jobUniqueNameFilter={jobUniqueNameFilter}&query={query}&sort={sort}&states={states}";
 
             var request = new HttpRequestMessage(HttpMethod.Get, url);
-            var response = await httpClient.SendAsync(request).ConfigureAwait(false);
+            var response = await _httpClient.SendAsync(request).ConfigureAwait(false);
 
             if (response.StatusCode == HttpStatusCode.OK)
             {
@@ -138,7 +138,7 @@ namespace Jobbr.Client
             var url = $"users/{userId}/jobruns/?page={page}&pageSize={pageSize}&jobTypeFilter={jobTypeFilter}&jobUniqueNameFilter={jobUniqueNameFilter}&sort={sort}";
 
             var request = new HttpRequestMessage(HttpMethod.Get, url);
-            var response = await httpClient.SendAsync(request).ConfigureAwait(false);
+            var response = await _httpClient.SendAsync(request).ConfigureAwait(false);
 
             if (response.StatusCode == HttpStatusCode.OK)
             {
@@ -185,7 +185,7 @@ namespace Jobbr.Client
         {
             var url = $"jobs/{jobId}/triggers/{triggerId}/jobruns?page={page}&pageSize={pageSize}&sort={sort}";
 
-            var requestResult = await httpClient.GetAsync(url).ConfigureAwait(false);
+            var requestResult = await _httpClient.GetAsync(url).ConfigureAwait(false);
 
             if (requestResult.StatusCode == HttpStatusCode.OK)
             {
@@ -204,7 +204,7 @@ namespace Jobbr.Client
         {
             var url = $"jobruns/{jobRunId}";
 
-            var requestResult = await httpClient.GetAsync(url).ConfigureAwait(false);
+            var requestResult = await _httpClient.GetAsync(url).ConfigureAwait(false);
 
             if (requestResult.StatusCode == HttpStatusCode.OK)
             {
@@ -223,7 +223,7 @@ namespace Jobbr.Client
         {
             var url = $"jobruns/{jobRunId}";
 
-            var requestResult = await httpClient.DeleteAsync(url).ConfigureAwait(false);
+            var requestResult = await _httpClient.DeleteAsync(url).ConfigureAwait(false);
 
             return requestResult.StatusCode == HttpStatusCode.OK;
         }
@@ -253,7 +253,7 @@ namespace Jobbr.Client
                 request.Content = new StringContent(json, Encoding.UTF8, "application/json");
             }
 
-            var response = await httpClient.SendAsync(request).ConfigureAwait(false);
+            var response = await _httpClient.SendAsync(request).ConfigureAwait(false);
 
             if (response.StatusCode == HttpStatusCode.Created || response.StatusCode == HttpStatusCode.OK)
             {

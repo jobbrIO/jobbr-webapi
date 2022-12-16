@@ -29,6 +29,6 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Jobbr.Server.WebAPI\Jobbr.Server.WebAPI.csproj" />
-    <ProjectReference Include="..\Sanbox.JobRunner\Sandbox.JobRunner.csproj" />
+    <ProjectReference Include="..\Sandbox.JobRunner\Sandbox.JobRunner.csproj" />
   </ItemGroup>
 </Project>

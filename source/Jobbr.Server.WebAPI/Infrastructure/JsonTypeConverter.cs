@@ -129,7 +129,7 @@ namespace Jobbr.Server.WebAPI.Infrastructure
 
             if (type == null)
             {
-                throw new ArgumentException($"Cannot create object for empty type {typeValue}");
+                throw new ArgumentException($"Cannot create object for empty type {typeValue}", nameof(typeValue));
             }
 
             return type;
@@ -144,12 +144,12 @@ namespace Jobbr.Server.WebAPI.Infrastructure
 
             if (!types.Any())
             {
-                throw new ArgumentException($"The Message-type '{type}' is not supported!");
+                throw new ArgumentException($"The Message-type '{type}' is not supported!", nameof(type));
             }
 
             if (types.Count() > 1)
             {
-                throw new ArgumentException($"multiple types for typename '{type}' found!");
+                throw new ArgumentException($"multiple types for typename '{type}' found!", nameof(type));
             }
 
             return types.First();

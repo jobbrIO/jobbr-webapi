@@ -25,15 +25,13 @@ namespace Jobbr.Server.WebAPI.Controller
             _jobManagementService = jobManagementService;
         }
 
-        [HttpGet]
-        [Route("jobs")]
+        [HttpGet("jobs")]
         public IActionResult AllJobs(int page = 1, int pageSize = 50, string jobTypeFilter = null, string jobUniqueNameFilter = null, string query = null, bool showDeleted = false, string sort = null)
         {
             return Ok(_queryService.GetJobs(page, pageSize, jobTypeFilter, jobUniqueNameFilter, query, showDeleted, sort?.Split(',')).ToPagedResult());
         }
 
-        [HttpGet]
-        [Route("jobs/{jobId}")]
+        [HttpGet("jobs/{jobId}")]
         public IActionResult TriggersByJob(long jobId, int page = 1, int pageSize = 200, bool showDeleted = false)
         {
             var job = _queryService.GetJobById(jobId);
@@ -51,8 +49,7 @@ namespace Jobbr.Server.WebAPI.Controller
             return Ok(jobDto);
         }
 
-        [HttpPost]
-        [Route("jobs")]
+        [HttpPost("jobs")]
         public IActionResult AddJob([FromBody] JobDto dto)
         {
             var identifier = dto.UniqueName;
@@ -69,14 +66,13 @@ namespace Jobbr.Server.WebAPI.Controller
                 return Conflict();
             }
 
-            var job = new Job { UniqueName = dto.UniqueName, Title = dto.Title, Type = dto.Type, Parameters = dto.Parameters != null ? JsonSerializer.Serialize(dto.Parameters) : null, };
+            var job = new Job { UniqueName = dto.UniqueName, Title = dto.Title, Type = dto.Type, Parameters = dto.Parameters != null ? JsonSerializer.Serialize(dto.Parameters, DefaultJsonOptions.Options) : null, };
             _jobManagementService.AddJob(job);
 
             return Created("jobs/" + job.Id, job.ToDto());
         }
 
-        [HttpPost]
-        [Route("jobs/{jobId:long}")]
+        [HttpPost("jobs/{jobId:long}")]
         public IActionResult UpdateJob(long jobId, [FromBody] JobDto dto)
         {
             var existingJob = _queryService.GetJobById(jobId);
@@ -88,15 +84,13 @@ namespace Jobbr.Server.WebAPI.Controller
             return StatusCode(StatusCodes.Status500InternalServerError, new NotImplementedException());
         }
 
-        [HttpGet]
-        [Route("jobs/{jobId:int}/runs")]
+        [HttpGet("jobs/{jobId:int}/runs")]
         public IActionResult GetJobRunsForJobById(int jobId, int page = 1, int pageSize = 50, bool showDeleted = false, string sort = null)
         {
             return Ok(_queryService.GetJobRunsByJobId(jobId, page, pageSize, showDeleted, sort?.Split(',')).ToPagedResult());
         }
 
-        [HttpGet]
-        [Route("jobs/{uniqueName}/runs")]
+        [HttpGet("jobs/{uniqueName}/runs")]
         public IActionResult GetJobRunsForJobByUniqueName(string uniqueName, int page = 1, int pageSize = 50, bool showDeleted = false, string sort = null)
         {
             var job = _queryService.GetJobByUniqueName(uniqueName);

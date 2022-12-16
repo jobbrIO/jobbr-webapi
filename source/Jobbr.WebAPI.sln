@@ -28,7 +28,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "sandbox", "sandbox", "{3810
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sandbox.JobServer", "Sandbox.JobServer\Sandbox.JobServer.csproj", "{28B3BFFA-26E2-4A0E-A329-B6FD729FB981}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sandbox.JobRunner", "Sanbox.JobRunner\Sandbox.JobRunner.csproj", "{C75CE4B3-EF65-45B8-A1D2-E5D5CA6F1157}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sandbox.JobRunner", "Sandbox.JobRunner\Sandbox.JobRunner.csproj", "{C75CE4B3-EF65-45B8-A1D2-E5D5CA6F1157}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
