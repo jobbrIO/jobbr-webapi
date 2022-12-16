@@ -57,7 +57,6 @@ namespace Jobbr.Server.WebAPI.Infrastructure
                 builder.Services.Add(new ServiceDescriptor(instanceProducer.ServiceType, instanceProducer.GetInstance()));
             }
 
-            // test or add DontCacheGetRequests
             builder.Services.AddMvc(o =>
             {
                 o.Filters.Add(new ResponseCacheAttribute { NoStore = true, Location = ResponseCacheLocation.None });
