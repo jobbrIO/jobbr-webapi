@@ -1,4 +1,5 @@
 ﻿using System.Text.Json;
+using Jobbr.Server.WebAPI.Model;
 
 namespace Jobbr.Server.WebAPI.Infrastructure
 {
@@ -8,7 +9,7 @@ namespace Jobbr.Server.WebAPI.Infrastructure
         {
             if (string.IsNullOrWhiteSpace(json) == false)
             {
-                return JsonSerializer.Deserialize<object>(json);
+                return JsonSerializer.Deserialize<object>(json, DefaultJsonOptions.Options);
             }
 
             return null;

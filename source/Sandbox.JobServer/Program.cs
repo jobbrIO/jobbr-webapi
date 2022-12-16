@@ -4,7 +4,7 @@ using Jobbr.Server.JobRegistry;
 using Jobbr.Server.WebAPI;
 using Jobbr.Storage.MsSql;
 using Microsoft.Extensions.Logging;
-using Sanbox.JobRunner.Jobs;
+using Sandbox.JobRunner.Jobs;
 using ServiceStack.OrmLite.SqlServer;
 using System;
 using System.IO;
@@ -16,7 +16,7 @@ namespace Sandbox.JobServer
     {
         public static void Main(string[] args)
         {
-            using ILoggerFactory loggerFactory = LoggerFactory.Create(builder => builder
+            using var loggerFactory = LoggerFactory.Create(builder => builder
                 .AddFilter(level => level >= LogLevel.Debug)
                 .AddConsole());
 

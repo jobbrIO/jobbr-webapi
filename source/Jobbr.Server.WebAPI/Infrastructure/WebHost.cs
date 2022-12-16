@@ -66,10 +66,10 @@ namespace Jobbr.Server.WebAPI.Infrastructure
                 .AddControllers()
                 .AddJsonOptions(options =>
                 {
-                    options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
-                    options.JsonSerializerOptions.PropertyNameCaseInsensitive = true;
-                    options.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
-                    options.JsonSerializerOptions.Converters.Add(new JsonTypeConverter<JobTriggerDtoBase>(_loggerFactory, "TriggerType", this.JobTriggerTypeResolver));
+                    options.JsonSerializerOptions.PropertyNamingPolicy = DefaultJsonOptions.Options.PropertyNamingPolicy;
+                    options.JsonSerializerOptions.PropertyNameCaseInsensitive = DefaultJsonOptions.Options.PropertyNameCaseInsensitive;
+                    options.JsonSerializerOptions.DefaultIgnoreCondition = DefaultJsonOptions.Options.DefaultIgnoreCondition;
+                    options.JsonSerializerOptions.Converters.Add(new JsonTypeConverter<JobTriggerDtoBase>(_loggerFactory, "TriggerType", JobTriggerTypeResolver));
                 })
                 .AddApplicationPart(typeof(WebHost).Assembly);
 

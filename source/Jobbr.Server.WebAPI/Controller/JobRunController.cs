@@ -22,8 +22,7 @@ namespace Jobbr.Server.WebAPI.Controller
             _jobManagementService = jobManagementService;
         }
 
-        [HttpGet]
-        [Route("jobruns/{jobRunId}")]
+        [HttpGet("jobruns/{jobRunId}")]
         public IActionResult GetJobRun(long jobRunId)
         {
             var jobRun = _queryService.GetJobRunById(jobRunId);
@@ -38,8 +37,7 @@ namespace Jobbr.Server.WebAPI.Controller
             return Ok(jobRun.ToDto(artefacts));
         }
 
-        [HttpGet]
-        [Route("jobruns")]
+        [HttpGet("jobruns")]
         public IActionResult GetJobRuns(int page = 1, int pageSize = 50, string jobTypeFilter = null, string jobUniqueNameFilter = null, string query = null, string sort = null, string state = null, string states = null, string userDisplayName = null, bool showDeleted = false)
         {
             PagedResult<JobRun> jobRuns;
@@ -83,8 +81,7 @@ namespace Jobbr.Server.WebAPI.Controller
             return Ok(jobRuns.ToPagedResult());
         }
 
-        [HttpGet]
-        [Route("users/{userId}/jobruns/")]
+        [HttpGet("users/{userId}/jobruns/")]
         public IActionResult GetJobRunsByUserId(string userId, int page = 1, int pageSize = 50, string jobTypeFilter = null, string jobUniqueNameFilter = null, string sort = null, bool showDeleted = false)
         {
             var jobRuns = _queryService.GetJobRunsByUserId(userId, page, pageSize, jobTypeFilter, jobUniqueNameFilter, showDeleted, sort?.Split(','));
@@ -92,8 +89,7 @@ namespace Jobbr.Server.WebAPI.Controller
             return Ok(jobRuns.ToPagedResult());
         }
 
-        [HttpGet]
-        [Route("jobs/{jobId}/triggers/{triggerId}/jobruns")]
+        [HttpGet("jobs/{jobId}/triggers/{triggerId}/jobruns")]
         public IActionResult GetJobRunsByTrigger(long jobId, long triggerId, int page = 1, int pageSize = 50, string sort = null, bool showDeleted = false)
         {
             var jobRuns = _queryService.GetJobRunsByTriggerId(jobId, triggerId, page, pageSize, showDeleted, sort?.Split(','));
@@ -101,8 +97,7 @@ namespace Jobbr.Server.WebAPI.Controller
             return Ok(jobRuns.ToPagedResult());
         }
 
-        [HttpGet]
-        [Route("jobruns/{jobRunId}/artefacts/{filename}")]
+        [HttpGet("jobruns/{jobRunId}/artefacts/{filename}")]
         public IActionResult GetArtefact(long jobRunId, string filename)
         {
             var jobRun = _queryService.GetJobRunById(jobRunId);
@@ -124,8 +119,7 @@ namespace Jobbr.Server.WebAPI.Controller
             return Ok(result);
         }
 
-        [HttpDelete]
-        [Route("jobruns/{jobRunId}")]
+        [HttpDelete("jobruns/{jobRunId}")]
         public IActionResult SoftDeleteJobRun(long jobRunId)
         {
             _jobManagementService.DeleteJobRun(jobRunId);
