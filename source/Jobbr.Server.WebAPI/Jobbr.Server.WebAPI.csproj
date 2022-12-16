@@ -5,9 +5,6 @@
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Remove="Infrastructure\JsonTypeConverter.cs" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectCapability Include="AspNetCore" />
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
   </ItemGroup>

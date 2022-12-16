@@ -7,6 +7,8 @@ using Microsoft.Extensions.Logging;
 using SimpleInjector;
 using System;
 using System.Collections.Generic;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace Jobbr.Server.WebAPI.Infrastructure
@@ -18,6 +20,7 @@ namespace Jobbr.Server.WebAPI.Infrastructure
     {
         private WebApplication _webApp;
         private readonly ILogger _logger;
+        private readonly ILoggerFactory _loggerFactory;
         private readonly InstanceProducer[] _serviceCollection;
         private readonly JobbrWebApiConfiguration _configuration;
 
@@ -29,6 +32,7 @@ namespace Jobbr.Server.WebAPI.Infrastructure
         /// <param name="configuration">Web API configuration.</param>
         public WebHost(ILoggerFactory loggerFactory, Container container, JobbrWebApiConfiguration configuration)
         {
+            _loggerFactory = loggerFactory;
             _logger = loggerFactory.CreateLogger<WebHost>();
             _serviceCollection = container.GetCurrentRegistrations();
             _configuration = configuration;
@@ -61,13 +65,13 @@ namespace Jobbr.Server.WebAPI.Infrastructure
 
             builder.Services
                 .AddControllers()
-                //.AddJsonOptions(options =>
-                //{
-                //    options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
-                //    options.JsonSerializerOptions.PropertyNameCaseInsensitive = true;
-                //    options.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
-                //    options.JsonSerializerOptions.Converters.Add(new JsonTypeConverter<JobTriggerDtoBase>("TriggerType", JobTriggerTypeResolver));
-                //})
+                .AddJsonOptions(options =>
+                {
+                    options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
+                    options.JsonSerializerOptions.PropertyNameCaseInsensitive = true;
+                    options.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
+                    options.JsonSerializerOptions.Converters.Add(new JsonTypeConverter<JobTriggerDtoBase>(_loggerFactory, "TriggerType", this.JobTriggerTypeResolver));
+                })
                 .AddApplicationPart(typeof(WebHost).Assembly);
 
             builder.Services.AddCors(options =>
