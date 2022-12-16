@@ -5,11 +5,11 @@ namespace Jobbr.Server.WebAPI.Model
     /// <summary>
     /// The job trigger base.
     /// </summary>
-    public abstract class JobTriggerDtoBase
+    public class JobTriggerDtoBase
     {
         public long Id { get; set; }
 
-        public abstract string TriggerType { get; }
+        public virtual string TriggerType { get; }
 
         public bool IsActive { get; set; }
 
