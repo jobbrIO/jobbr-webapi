@@ -7,7 +7,7 @@ namespace Sandbox.JobRunner.Jobs
     {
         public void Run(object jobParameters, RunParameter runParameters)
         {
-            Console.WriteLine("Got the params {0} and {1}", jobParameters, runParameters);
+            Console.WriteLine($"Got the params {jobParameters} and {runParameters}");
         }
     }
 }
