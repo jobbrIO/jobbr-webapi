@@ -2,7 +2,6 @@ using Jobbr.ComponentModel.Registration;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using ServiceStack.AsyncEx;
 using SimpleInjector;
 using System;
 using System.Threading.Tasks;
@@ -77,8 +76,7 @@ namespace Jobbr.Server.WebAPI.Infrastructure
         {
             if (disposing)
             {
-                var task = _webHost.StopAsync();
-                task.WaitAndUnwrapException();
+                Task.Run(async () => await _webHost.StopAsync());
                 _webHost?.Dispose();
             }
         }
