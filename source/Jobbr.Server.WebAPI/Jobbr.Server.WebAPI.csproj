@@ -16,7 +16,6 @@
     <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.0" />
     <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="7.0.0" />
-    <PackageReference Include="ServiceStack.Common" Version="6.0.0" />
     <PackageReference Include="SimpleInjector" Version="5.4.1" />
     <PackageReference Include="SimpleInjector.Integration.ServiceCollection" Version="5.4.0" />
   </ItemGroup>
