@@ -13,10 +13,10 @@
     <icon>images\icon.png</icon>
   </metadata>
   <files>
-    <file src="Jobbr.Client\bin\Release\netstandard2.0\Jobbr.Client.dll" target="lib\netstandard20"/>
-    <file src="Jobbr.Client\bin\Release\netstandard2.0\Jobbr.Client.pdb" target="lib\netstandard20"/>
-    <file src="Jobbr.Client\bin\Release\netstandard2.0\Jobbr.Server.WebAPI.Model.dll" target="lib\netstandard20"/>
-    <file src="Jobbr.Client\bin\Release\netstandard2.0\Jobbr.Server.WebAPI.Model.pdb" target="lib\netstandard20"/>
+    <file src="Jobbr.Client\bin\Release\netstandard2.0\Jobbr.Client.dll" target="lib\netstandard2.0"/>
+    <file src="Jobbr.Client\bin\Release\netstandard2.0\Jobbr.Client.pdb" target="lib\netstandard2.0"/>
+    <file src="Jobbr.Client\bin\Release\netstandard2.0\Jobbr.Server.WebAPI.Model.dll" target="lib\netstandard2.0"/>
+    <file src="Jobbr.Client\bin\Release\netstandard2.0\Jobbr.Server.WebAPI.Model.pdb" target="lib\netstandard2.0"/>
     <file src="icon.png" target="images/"/>
   </files>
 </package>
