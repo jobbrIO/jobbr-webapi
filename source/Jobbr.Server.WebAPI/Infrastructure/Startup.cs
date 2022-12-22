@@ -34,14 +34,6 @@ namespace Jobbr.Server.WebAPI.Infrastructure
                     options.JsonSerializerOptions.DefaultIgnoreCondition = DefaultJsonOptions.Options.DefaultIgnoreCondition;
                     options.JsonSerializerOptions.Converters.Add(new JsonTypeConverter<JobTriggerDtoBase>(_loggerFactory, "TriggerType", JobTriggerTypeResolver));
                 });
-
-            services.AddCors(options =>
-            {
-                options.AddPolicy("CorsPolicy", config => config
-                    .AllowAnyOrigin()
-                    .AllowAnyMethod()
-                    .AllowAnyHeader());
-            });
         }
 
         public void Configure(IApplicationBuilder app)
@@ -50,12 +42,13 @@ namespace Jobbr.Server.WebAPI.Infrastructure
 
             app.UseRouting();
 
+            app.UseCors(options => options.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
             });
 
-            app.UseCors();
         }
 
         private Type JobTriggerTypeResolver(List<Type> types, string typeValue)
