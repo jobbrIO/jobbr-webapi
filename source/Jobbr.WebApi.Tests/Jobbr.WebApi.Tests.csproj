@@ -12,9 +12,11 @@
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugType>full</DebugType>
+    <NoWarn>1701;1702;SA1600</NoWarn>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
+    <NoWarn>1701;1702;SA1600</NoWarn>
   </PropertyGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
   <ItemGroup>
@@ -36,4 +38,7 @@
     <ProjectReference Include="..\Jobbr.Server.WebAPI\Jobbr.Server.WebAPI.csproj" />
     <ProjectReference Include="..\submodules\devsupport\src\Jobbr.DevSupport.ReferencedVersionAsserter\Jobbr.DevSupport.ReferencedVersionAsserter.csproj" />
   </ItemGroup>
+  <ImportGroup>
+    <Import Project="..\submodules\devsupport\src\Jobbr.DevSupport.StyleCopAnalyzer\Jobbr.DevSupport.StyleCopAnalyzer.targets" />
+  </ImportGroup>
 </Project>
