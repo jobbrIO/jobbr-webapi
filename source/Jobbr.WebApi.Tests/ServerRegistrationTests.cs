@@ -1,10 +1,10 @@
-﻿using Jobbr.Server;
+﻿using System.Net;
+using System.Net.Http;
+using Jobbr.Server;
 using Jobbr.Server.Builder;
 using Jobbr.Server.WebAPI;
 using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Net;
-using System.Net.Http;
 
 namespace Jobbr.WebApi.Tests
 {

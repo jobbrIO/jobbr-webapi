@@ -6,18 +6,32 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Jobbr.Server.WebAPI.Controller
 {
+    /// <summary>
+    /// Job trigger controller.
+    /// </summary>
     [ApiController]
     public class TriggerController : ControllerBase
     {
         private readonly IQueryService _queryService;
         private readonly IJobManagementService _jobManagementService;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TriggerController"/> class.
+        /// </summary>
+        /// <param name="queryService">Query service for triggers.</param>
+        /// <param name="jobManagementService">Job management service.</param>
         public TriggerController(IQueryService queryService, IJobManagementService jobManagementService)
         {
             _queryService = queryService;
             _jobManagementService = jobManagementService;
         }
 
+        /// <summary>
+        /// Get trigger by job ID.
+        /// </summary>
+        /// <param name="jobId">Job ID.</param>
+        /// <param name="triggerId">Trigger ID.</param>
+        /// <returns>Trigger DTO.</returns>
         [HttpGet("jobs/{jobId:long}/triggers/{triggerId:long}")]
         public IActionResult GetTriggerById(long jobId, long triggerId)
         {
@@ -31,6 +45,13 @@ namespace Jobbr.Server.WebAPI.Controller
             return Ok(TriggerMapper.ConvertToDto((dynamic)trigger));
         }
 
+        /// <summary>
+        /// Update job trigger.
+        /// </summary>
+        /// <param name="jobId">Job ID.</param>
+        /// <param name="triggerId">Trigger ID.</param>
+        /// <param name="dto">Information for updating.</param>
+        /// <returns>The given DTO.</returns>
         [HttpPatch("jobs/{jobId:long}/triggers/{triggerId:long}")]
         public IActionResult UpdateTrigger(long jobId, long triggerId, [FromBody] JobTriggerDtoBase dto)
         {
@@ -72,6 +93,14 @@ namespace Jobbr.Server.WebAPI.Controller
             return Ok(dto);
         }
 
+        /// <summary>
+        /// Get job triggers with job ID.
+        /// </summary>
+        /// <param name="jobId">Job ID.</param>
+        /// <param name="page">Page number.</param>
+        /// <param name="pageSize">Page size.</param>
+        /// <param name="showDeleted">If deleted triggers should be shown.</param>
+        /// <returns>Triggers as a paged result.</returns>
         [HttpGet("jobs/{jobId:long}/triggers")]
         public IActionResult GetTriggersForJob(long jobId, int page = 1, int pageSize = 200, bool showDeleted = false)
         {
@@ -87,6 +116,14 @@ namespace Jobbr.Server.WebAPI.Controller
             return Ok(triggers.ToPagedResult());
         }
 
+        /// <summary>
+        /// Get job triggers with unique name.
+        /// </summary>
+        /// <param name="uniqueName">Unique name.</param>
+        /// <param name="page">Page number.</param>
+        /// <param name="pageSize">Page size.</param>
+        /// <param name="showDeleted">Show deleted triggers.</param>
+        /// <returns>List of job triggers.</returns>
         [HttpGet("jobs/{uniqueName}/triggers")]
         public IActionResult GetTriggersForJob(string uniqueName, int page = 1, int pageSize = 200, bool showDeleted = false)
         {
@@ -100,6 +137,12 @@ namespace Jobbr.Server.WebAPI.Controller
             return Ok(_queryService.GetTriggersByJobId(job.Id, page, pageSize, showDeleted));
         }
 
+        /// <summary>
+        /// Add trigger for job with job ID.
+        /// </summary>
+        /// <param name="jobId">Job ID.</param>
+        /// <param name="triggerDto">Trigger data.</param>
+        /// <returns>Multiple different types of result based on success.</returns>
         [HttpPost("jobs/{jobId:long}/triggers")]
         public IActionResult AddTriggerForJobId(long jobId, [FromBody] JobTriggerDtoBase triggerDto)
         {
@@ -113,6 +156,12 @@ namespace Jobbr.Server.WebAPI.Controller
             return AddTrigger(triggerDto, job);
         }
 
+        /// <summary>
+        /// Add trigger for job with unique name.
+        /// </summary>
+        /// <param name="uniqueName">Unique name.</param>
+        /// <param name="triggerDto">Trigger data.</param>
+        /// <returns>Multiple different types of result based on success.</returns>
         [HttpPost("jobs/{uniqueName}/triggers")]
         public IActionResult AddTriggerForJobUniqueName(string uniqueName, [FromBody] JobTriggerDtoBase triggerDto)
         {
