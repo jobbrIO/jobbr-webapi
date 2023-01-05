@@ -74,7 +74,7 @@ namespace Jobbr.WebApi.Tests
         }
 
         [TestMethod]
-        public void ServerWithdHostPathDash_AccessHostPathPlain_NoError()
+        public void ServerWithHostPathDash_AccessHostPathPlain_NoError()
         {
             var host = $"http://localhost:{NextFreeTcpPort()}";
 
