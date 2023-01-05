@@ -1,11 +1,11 @@
-﻿using Jobbr.ComponentModel.JobStorage;
+﻿using System.Net;
+using System.Net.Sockets;
+using Jobbr.ComponentModel.JobStorage;
 using Jobbr.ComponentModel.Registration;
 using Jobbr.Server;
 using Jobbr.Server.Builder;
 using Jobbr.Server.WebAPI;
 using Microsoft.Extensions.Logging.Abstractions;
-using System.Net;
-using System.Net.Sockets;
 
 namespace Jobbr.WebApi.Tests
 {
@@ -14,6 +14,15 @@ namespace Jobbr.WebApi.Tests
         public string BackendAddress { get; private set; }
 
         public IJobStorageProvider JobStorage => ExposeStorageProvider.Instance.JobStorageProvider;
+
+        public static int NextFreeTcpPort()
+        {
+            var l = new TcpListener(IPAddress.Loopback, 0);
+            l.Start();
+            var port = ((IPEndPoint)l.LocalEndpoint).Port;
+            l.Stop();
+            return port;
+        }
 
         protected JobbrServer GivenRunningServerWithWebApi(string url = "")
         {
@@ -41,15 +50,6 @@ namespace Jobbr.WebApi.Tests
             server.Start();
 
             return server;
-        }
-
-        public static int NextFreeTcpPort()
-        {
-            var l = new TcpListener(IPAddress.Loopback, 0);
-            l.Start();
-            var port = ((IPEndPoint)l.LocalEndpoint).Port;
-            l.Stop();
-            return port;
         }
 
         protected string CreateUrl(string path)

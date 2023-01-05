@@ -1,14 +1,22 @@
+using System.Collections.Generic;
+using System.Linq;
 using Jobbr.ComponentModel.Management;
 using Jobbr.ComponentModel.Management.Model;
 using Jobbr.Server.WebAPI.Infrastructure;
 using Jobbr.Server.WebAPI.Model;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace Jobbr.Server.WebAPI.Controller.Mapping
 {
+    /// <summary>
+    /// Object mapper for different objects related to jobs.
+    /// </summary>
     public static class JobMapper
     {
+        /// <summary>
+        /// Maps <see cref="Job"/> to a <see cref="JobDto"/>.
+        /// </summary>
+        /// <param name="job"><see cref="Job"/> object.</param>
+        /// <returns><see cref="JobDto"/> object.</returns>
         public static JobDto ToDto(this Job job)
         {
             return new JobDto
@@ -24,6 +32,12 @@ namespace Jobbr.Server.WebAPI.Controller.Mapping
             };
         }
 
+        /// <summary>
+        /// Maps <see cref="JobRun"/> and a list of <see cref="JobArtefact"/>s to a <see cref="JobRunDto"/>.
+        /// </summary>
+        /// <param name="jobRun"><see cref="Job"/> object.</param>
+        /// <param name="artefacts">List of artifacts.</param>
+        /// <returns><see cref="JobDto"/> object.</returns>
         public static JobRunDto ToDto(this JobRun jobRun, List<JobArtefact> artefacts)
         {
             return new JobRunDto
@@ -51,6 +65,11 @@ namespace Jobbr.Server.WebAPI.Controller.Mapping
             };
         }
 
+        /// <summary>
+        /// Maps <see cref="JobArtefact"/> to a <see cref="JobRunArtefactDto"/>.
+        /// </summary>
+        /// <param name="model"><see cref="JobArtefact"/> object.</param>
+        /// <returns><see cref="JobRunArtefactDto"/> object.</returns>
         public static JobRunArtefactDto ToDto(this JobArtefact model)
         {
             return new JobRunArtefactDto
@@ -61,6 +80,11 @@ namespace Jobbr.Server.WebAPI.Controller.Mapping
             };
         }
 
+        /// <summary>
+        /// Maps a paged result of <see cref="Job"/>s to a paged result of <see cref="JobDto"/>s.
+        /// </summary>
+        /// <param name="data">Paged result of <see cref="Job"/>s.</param>
+        /// <returns>Paged result of <see cref="JobDto"/>s.</returns>
         public static PagedResultDto<JobDto> ToPagedResult(this PagedResult<Job> data)
         {
             return new PagedResultDto<JobDto>
@@ -72,6 +96,11 @@ namespace Jobbr.Server.WebAPI.Controller.Mapping
             };
         }
 
+        /// <summary>
+        /// Maps a paged result of <see cref="JobRun"/>s to a paged result of <see cref="JobRunDto"/>s.
+        /// </summary>
+        /// <param name="data">Paged result of <see cref="JobRun"/>s.</param>
+        /// <returns>Paged result of <see cref="JobRunDto"/>s.</returns>
         public static PagedResultDto<JobRunDto> ToPagedResult(this PagedResult<JobRun> data)
         {
             return new PagedResultDto<JobRunDto>

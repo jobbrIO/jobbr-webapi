@@ -1,22 +1,37 @@
-﻿using Jobbr.ComponentModel.Registration;
-using System;
+﻿using System;
 using System.Net;
 using System.Net.Sockets;
+using Jobbr.ComponentModel.Registration;
 using Microsoft.Extensions.Logging;
 
 namespace Jobbr.Server.WebAPI
 {
+    /// <summary>
+    /// Web configuration validator.
+    /// </summary>
     internal class WebApiConfigurationValidator : IConfigurationValidator
     {
         private readonly ILogger<WebApiConfigurationValidator> _logger;
 
-        public Type ConfigurationType { get; set; } = typeof(JobbrWebApiConfiguration);
-
+        /// <summary>
+        /// Initializes a new instance of the <see cref="WebApiConfigurationValidator"/> class.
+        /// </summary>
+        /// <param name="loggerFactory">The logger factory.</param>
         public WebApiConfigurationValidator(ILoggerFactory loggerFactory)
         {
             _logger = loggerFactory.CreateLogger<WebApiConfigurationValidator>();
         }
 
+        /// <summary>
+        /// Configuration type.
+        /// </summary>
+        public Type ConfigurationType { get; set; } = typeof(JobbrWebApiConfiguration);
+
+        /// <summary>
+        /// Validate configuration.
+        /// </summary>
+        /// <param name="configuration">Configuration to validate.</param>
+        /// <returns>If configuration is valid.</returns>
         public bool Validate(object configuration)
         {
             var config = (JobbrWebApiConfiguration)configuration;

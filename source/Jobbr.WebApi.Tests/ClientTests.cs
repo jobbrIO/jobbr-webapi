@@ -114,7 +114,7 @@ namespace Jobbr.WebApi.Tests
                 var job = new Job();
                 JobStorage.AddJob(job);
 
-                var triggerDto = client.AddTrigger(job.Id, new InstantTriggerDto {Comment = "test"});
+                var triggerDto = client.AddTrigger(job.Id, new InstantTriggerDto { Comment = "test" });
 
                 Assert.IsNotNull(triggerDto);
                 Assert.IsTrue(triggerDto.Id > 0);
@@ -149,7 +149,7 @@ namespace Jobbr.WebApi.Tests
                 JobStorage.AddJob(job);
 
                 var triggerDto = client.AddTrigger(job.Id, new RecurringTriggerDto { Comment = "test" });
-                
+
                 Assert.IsNotNull(triggerDto);
                 Assert.IsTrue(triggerDto.Id > 0);
             }
