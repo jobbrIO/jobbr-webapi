@@ -2,6 +2,9 @@
   <PropertyGroup>
     <ProjectGuid>{B158F9AD-5480-4415-9BCE-8D8663C3F3C0}</ProjectGuid>
     <TargetFramework>net6.0</TargetFramework>
+    <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <GenerateBindingRedirectsOutputType>true</GenerateBindingRedirectsOutputType>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
   </PropertyGroup>
   <ItemGroup>
