@@ -13,7 +13,11 @@ namespace Jobbr.WebApi.Tests
 
             asserter.Add(new PackageExistsInBothRule("Jobbr.ComponentModel.Registration"));
             asserter.Add(new PackageExistsInBothRule("Jobbr.ComponentModel.Management"));
+            asserter.Add(new PackageExistsInBothRule("SimpleInjector"));
+
             asserter.Add(new VersionIsIncludedInRange("Jobbr.ComponentModel.*"));
+            asserter.Add(new VersionIsIncludedInRange("SimpleInjector"));
+
             asserter.Add(new NoMajorChangesInNuSpec("Jobbr.*"));
 
             var result = asserter.Validate();
