@@ -9,11 +9,13 @@
     <license type="expression">GPL-3.0-only</license>
     <requireLicenseAcceptance>true</requireLicenseAcceptance>
     <description>Adds Rest-style API to a Jobbr-Server</description>
-    <copyright>Copyright 2022</copyright>
+    <copyright>Copyright 2023</copyright>
     <icon>images\icon.png</icon>
     <dependencies>
       <dependency id="Jobbr.ComponentModel.Registration" version="[2.9,3.1)"/>
       <dependency id="Jobbr.ComponentModel.Management" version="[2.9,3.1)"/>
+      <dependency id="Microsoft.Extensions.Logging" version="[6.0,6.1)" />
+      <dependency id="Microsoft.Extensions.Logging.Abstractions" version="[6.0,6.1)" />
       <dependency id="SimpleInjector" version="[5.4,5.5)" />
     </dependencies>
   </metadata>

@@ -9,7 +9,7 @@
     <license type="expression">GPL-3.0-only</license>
     <requireLicenseAcceptance>true</requireLicenseAcceptance>
     <description>Strong typed .NET Client for Jobbr Rest API</description>
-    <copyright>Copyright 2022</copyright>
+    <copyright>Copyright 2023</copyright>
     <icon>images\icon.png</icon>
   </metadata>
   <files>
