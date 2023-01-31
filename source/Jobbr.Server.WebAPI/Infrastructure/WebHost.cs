@@ -13,10 +13,11 @@ namespace Jobbr.Server.WebAPI.Infrastructure
     /// </summary>
     public class WebHost : IJobbrComponent
     {
-        private IWebHost _webHost;
         private readonly ILogger _logger;
         private readonly InstanceProducer[] _serviceCollection;
         private readonly JobbrWebApiConfiguration _configuration;
+
+        private IWebHost _webHost;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="WebHost"/> class.

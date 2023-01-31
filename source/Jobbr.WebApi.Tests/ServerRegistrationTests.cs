@@ -35,7 +35,6 @@ namespace Jobbr.WebApi.Tests
 
                 Assert.AreEqual(HttpStatusCode.OK, result.StatusCode);
                 Assert.IsTrue(response.Contains("{"), "There should be something looking like a serialize json object");
-
             }
         }
 
@@ -52,7 +51,6 @@ namespace Jobbr.WebApi.Tests
                 var result = client.GetAsync(CreateUrl("status")).Result;
 
                 Assert.AreEqual(HttpStatusCode.OK, result.StatusCode);
-
             }
         }
 
