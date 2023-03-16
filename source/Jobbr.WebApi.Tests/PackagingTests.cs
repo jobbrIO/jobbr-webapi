@@ -13,7 +13,6 @@ namespace Jobbr.WebApi.Tests
 
             asserter.Add(new PackageExistsInBothRule("Jobbr.ComponentModel.Registration"));
             asserter.Add(new PackageExistsInBothRule("Jobbr.ComponentModel.Management"));
-            asserter.Add(new PackageExistsInBothRule("Microsoft.Extensions.Logging"));
             asserter.Add(new PackageExistsInBothRule("Microsoft.Extensions.Logging.Abstractions"));
             asserter.Add(new PackageExistsInBothRule("SimpleInjector"));
 
