@@ -6,7 +6,7 @@ using Jobbr.Server.WebAPI;
 using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Jobbr.WebApi.Tests
+namespace Jobbr.WebAPI.Tests
 {
     [TestClass]
     public class ServerRegistrationTests : IntegrationTestBase

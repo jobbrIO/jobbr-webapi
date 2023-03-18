@@ -2,7 +2,7 @@
 using Jobbr.Client;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Jobbr.WebApi.Tests
+namespace Jobbr.WebAPI.Tests
 {
     [TestClass]
     public class HostingUrlTests : IntegrationTestBase
