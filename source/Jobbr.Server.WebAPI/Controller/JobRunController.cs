@@ -3,43 +3,69 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Web.Http;
 using Jobbr.ComponentModel.Management;
 using Jobbr.ComponentModel.Management.Model;
 using Jobbr.Server.WebAPI.Controller.Mapping;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Jobbr.Server.WebAPI.Controller
 {
-    public class JobRunController : ApiController
+    /// <summary>
+    /// Job run controller.
+    /// </summary>
+    [ApiController]
+    public class JobRunController : ControllerBase
     {
-        private readonly IQueryService queryService;
-        private readonly IJobManagementService jobManagementService;
+        private readonly IQueryService _queryService;
+        private readonly IJobManagementService _jobManagementService;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="JobRunController"/> class.
+        /// </summary>
+        /// <param name="queryService">Query service.</param>
+        /// <param name="jobManagementService">Job management service.</param>
         public JobRunController(IQueryService queryService, IJobManagementService jobManagementService)
         {
-            this.queryService = queryService;
-            this.jobManagementService = jobManagementService;
+            _queryService = queryService;
+            _jobManagementService = jobManagementService;
         }
 
-        [HttpGet]
-        [Route("jobruns/{jobRunId}")]
-        public IHttpActionResult GetJobRun(long jobRunId)
+        /// <summary>
+        /// Get job run with ID.
+        /// </summary>
+        /// <param name="jobRunId">Job run ID.</param>
+        /// <returns>NotFound or the found job run.</returns>
+        [HttpGet("jobruns/{jobRunId}")]
+        public IActionResult GetJobRun(long jobRunId)
         {
-            var jobRun = this.queryService.GetJobRunById(jobRunId);
+            var jobRun = _queryService.GetJobRunById(jobRunId);
 
             if (jobRun == null)
             {
-                return this.NotFound();
+                return NotFound();
             }
 
-            var artefacts = this.jobManagementService.GetArtefactForJob(jobRunId);
+            var artefacts = _jobManagementService.GetArtefactForJob(jobRunId);
 
-            return this.Ok(jobRun.ToDto(artefacts));
+            return Ok(jobRun.ToDto(artefacts));
         }
 
-        [HttpGet]
-        [Route("jobruns")]
-        public IHttpActionResult GetJobRuns(int page = 1, int pageSize = 50, string jobTypeFilter = null, string jobUniqueNameFilter = null, string query = null, string sort = null, string state = null, string states = null, string userDisplayName = null, bool showDeleted = false)
+        /// <summary>
+        /// Get multiple job runs.
+        /// </summary>
+        /// <param name="page">Page number.</param>
+        /// <param name="pageSize">Page size.</param>
+        /// <param name="jobTypeFilter">Job type filter.</param>
+        /// <param name="jobUniqueNameFilter">Job unique name filter.</param>
+        /// <param name="query">Query.</param>
+        /// <param name="sort">Sort.</param>
+        /// <param name="state">Job run state.</param>
+        /// <param name="states">Job run states.</param>
+        /// <param name="userDisplayName">User display name.</param>
+        /// <param name="showDeleted">Show deleted job runs.</param>
+        /// <returns>List of job runs.</returns>
+        [HttpGet("jobruns")]
+        public IActionResult GetJobRuns(int page = 1, int pageSize = 50, string jobTypeFilter = null, string jobUniqueNameFilter = null, string query = null, string sort = null, string state = null, string states = null, string userDisplayName = null, bool showDeleted = false)
         {
             PagedResult<JobRun> jobRuns;
 
@@ -49,14 +75,14 @@ namespace Jobbr.Server.WebAPI.Controller
 
                 if (success == false)
                 {
-                    return this.BadRequest($"Unknown state: {state}");
+                    return BadRequest($"Unknown state: {state}");
                 }
 
-                jobRuns = this.queryService.GetJobRunsByState(enumValue, page, pageSize, jobTypeFilter, jobUniqueNameFilter, query, showDeleted, sort?.Split(','));
+                jobRuns = _queryService.GetJobRunsByState(enumValue, page, pageSize, jobTypeFilter, jobUniqueNameFilter, query, showDeleted, sort?.Split(','));
             }
             else if (string.IsNullOrWhiteSpace(states) == false)
             {
-                var stateAsEnums = states.Split(new[] {','}, StringSplitOptions.RemoveEmptyEntries).Select(s =>
+                var stateAsEnums = states.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries).Select(s =>
                 {
                     var success = Enum.TryParse(s, true, out JobRunStates enumValue);
 
@@ -68,50 +94,74 @@ namespace Jobbr.Server.WebAPI.Controller
                     return enumValue;
                 }).ToArray();
 
-                jobRuns = this.queryService.GetJobRunsByStates(stateAsEnums, page, pageSize, jobTypeFilter, jobUniqueNameFilter, query, showDeleted, sort?.Split(','));
+                jobRuns = _queryService.GetJobRunsByStates(stateAsEnums, page, pageSize, jobTypeFilter, jobUniqueNameFilter, query, showDeleted, sort?.Split(','));
             }
             else if (string.IsNullOrWhiteSpace(userDisplayName) == false)
             {
-                jobRuns = this.queryService.GetJobRunsByUserDisplayName(userDisplayName, page, pageSize, jobTypeFilter, jobUniqueNameFilter, showDeleted, sort?.Split(','));
+                jobRuns = _queryService.GetJobRunsByUserDisplayName(userDisplayName, page, pageSize, jobTypeFilter, jobUniqueNameFilter, showDeleted, sort?.Split(','));
             }
             else
             {
-                jobRuns = this.queryService.GetJobRuns(page, pageSize, jobTypeFilter, jobUniqueNameFilter, query, showDeleted, sort?.Split(','));
+                jobRuns = _queryService.GetJobRuns(page, pageSize, jobTypeFilter, jobUniqueNameFilter, query, showDeleted, sort?.Split(','));
             }
 
-            return this.Ok(jobRuns.ToPagedResult());
+            return Ok(jobRuns.ToPagedResult());
         }
 
-        [HttpGet]
-        [Route("users/{userId}/jobruns/")]
-        public IHttpActionResult GetJobRunsByUserId(string userId, int page = 1, int pageSize = 50, string jobTypeFilter = null, string jobUniqueNameFilter = null, string sort = null, bool showDeleted = false)
+        /// <summary>
+        /// Get job runs by user ID.
+        /// </summary>
+        /// <param name="userId">User ID.</param>
+        /// <param name="page">Page number.</param>
+        /// <param name="pageSize">Page size.</param>
+        /// <param name="jobTypeFilter">Job type filter.</param>
+        /// <param name="jobUniqueNameFilter">Job unique name filter.</param>
+        /// <param name="sort">Sort.</param>
+        /// <param name="showDeleted">Show deleted job runs.</param>
+        /// <returns>List of job runs.</returns>
+        [HttpGet("users/{userId}/jobruns/")]
+        public IActionResult GetJobRunsByUserId(string userId, int page = 1, int pageSize = 50, string jobTypeFilter = null, string jobUniqueNameFilter = null, string sort = null, bool showDeleted = false)
         {
-            var jobRuns = this.queryService.GetJobRunsByUserId(userId, page, pageSize, jobTypeFilter, jobUniqueNameFilter, showDeleted, sort?.Split(','));
+            var jobRuns = _queryService.GetJobRunsByUserId(userId, page, pageSize, jobTypeFilter, jobUniqueNameFilter, showDeleted, sort?.Split(','));
 
-            return this.Ok(jobRuns.ToPagedResult());
+            return Ok(jobRuns.ToPagedResult());
         }
 
-        [HttpGet]
-        [Route("jobs/{jobId}/triggers/{triggerId}/jobruns")]
-        public IHttpActionResult GetJobRunsByTrigger(long jobId, long triggerId, int page = 1, int pageSize = 50, string sort = null, bool showDeleted = false)
+        /// <summary>
+        /// Get job runs by trigger.
+        /// </summary>
+        /// <param name="jobId">Job ID.</param>
+        /// <param name="triggerId">Trigger ID.</param>
+        /// <param name="page">Page number.</param>
+        /// <param name="pageSize">Page size.</param>
+        /// <param name="sort">Sort.</param>
+        /// <param name="showDeleted">Show deleted job runs.</param>
+        /// <returns>List of job runs.</returns>
+        [HttpGet("jobs/{jobId}/triggers/{triggerId}/jobruns")]
+        public IActionResult GetJobRunsByTrigger(long jobId, long triggerId, int page = 1, int pageSize = 50, string sort = null, bool showDeleted = false)
         {
-            var jobRuns = this.queryService.GetJobRunsByTriggerId(jobId, triggerId, page, pageSize, showDeleted, sort?.Split(','));
+            var jobRuns = _queryService.GetJobRunsByTriggerId(jobId, triggerId, page, pageSize, showDeleted, sort?.Split(','));
 
-            return this.Ok(jobRuns.ToPagedResult());
+            return Ok(jobRuns.ToPagedResult());
         }
 
-        [HttpGet]
-        [Route("jobruns/{jobRunId}/artefacts/{filename}")]
-        public IHttpActionResult GetArtefact(long jobRunId, string filename)
+        /// <summary>
+        /// Get job run artifact.
+        /// </summary>
+        /// <param name="jobRunId">Job run ID.</param>
+        /// <param name="filename">Filename.</param>
+        /// <returns>The artifact.</returns>
+        [HttpGet("jobruns/{jobRunId}/artefacts/{filename}")]
+        public IActionResult GetArtefact(long jobRunId, string filename)
         {
-            var jobRun = this.queryService.GetJobRunById(jobRunId);
+            var jobRun = _queryService.GetJobRunById(jobRunId);
 
             if (jobRun == null)
             {
-                return this.NotFound();
+                return NotFound();
             }
 
-            var fileStream = this.jobManagementService.GetArtefactAsStream(jobRun.Id, filename);
+            var fileStream = _jobManagementService.GetArtefactAsStream(jobRun.Id, filename);
 
             var result = new HttpResponseMessage(HttpStatusCode.OK)
             {
@@ -120,16 +170,20 @@ namespace Jobbr.Server.WebAPI.Controller
 
             result.Content.Headers.ContentType = new MediaTypeHeaderValue("application/octet-stream");
 
-            return this.ResponseMessage(result);
+            return Ok(result);
         }
 
-        [HttpDelete]
-        [Route("jobruns/{jobRunId}")]
-        public IHttpActionResult SoftDeleteJobRun(long jobRunId)
+        /// <summary>
+        /// Soft delete job run.
+        /// </summary>
+        /// <param name="jobRunId">Job run ID.</param>
+        /// <returns>Ok.</returns>
+        [HttpDelete("jobruns/{jobRunId}")]
+        public IActionResult SoftDeleteJobRun(long jobRunId)
         {
-            this.jobManagementService.DeleteJobRun(jobRunId);
+            _jobManagementService.DeleteJobRun(jobRunId);
 
-            return this.Ok();
+            return Ok();
         }
     }
 }

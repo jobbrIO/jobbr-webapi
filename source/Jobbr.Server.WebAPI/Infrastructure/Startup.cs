@@ -1,78 +1,72 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web.Http;
-using System.Web.Http.Cors;
-using System.Web.Http.ExceptionHandling;
-using Jobbr.ComponentModel.Registration;
-using Jobbr.Server.WebAPI.Logging;
 using Jobbr.Server.WebAPI.Model;
-using Microsoft.Owin.Cors;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
-using Owin;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 namespace Jobbr.Server.WebAPI.Infrastructure
 {
+    /// <summary>
+    /// Application startup.
+    /// </summary>
     public class Startup
     {
-        private static readonly ILog Logger = LogProvider.For<Startup>();
-
-        /// <summary>
-        /// The dependency resolver from the JobbrServer which needs to be passed through the OWIN stack to WebAPI
-        /// </summary>
-        private readonly IJobbrServiceProvider dependencyResolver;
+        private readonly ILoggerFactory _loggerFactory;
+        private readonly JobbrWebApiConfiguration _configuration;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Startup"/> class.
         /// </summary>
-        /// <param name="serviceProvider">
-        /// The dependency resolver.
-        /// </param>
-        public Startup(IJobbrServiceProvider serviceProvider)
+        /// <param name="loggerFactory">The logger factory.</param>
+        /// <param name="configuration">Web API configuration.</param>
+        public Startup(ILoggerFactory loggerFactory, JobbrWebApiConfiguration configuration)
         {
-            if (serviceProvider == null)
+            _loggerFactory = loggerFactory;
+            _configuration = configuration;
+        }
+
+        /// <summary>
+        /// Configure application services.
+        /// </summary>
+        /// <param name="services">Service collection.</param>
+        public void ConfigureServices(IServiceCollection services)
+        {
+            services.AddMvc(o =>
             {
-                throw new ArgumentException("Please provide a service provider. See http://servercoredump.com/question/27246240/inject-current-user-owin-host-web-api-service for details", "serviceProvider");
-            }
+                o.Filters.Add(new ResponseCacheAttribute { NoStore = true, Location = ResponseCacheLocation.None });
+            });
 
-            this.dependencyResolver = serviceProvider;
+            services.AddControllers()
+                .AddJsonOptions(options =>
+                {
+                    options.JsonSerializerOptions.PropertyNamingPolicy = DefaultJsonOptions.Options.PropertyNamingPolicy;
+                    options.JsonSerializerOptions.PropertyNameCaseInsensitive = DefaultJsonOptions.Options.PropertyNameCaseInsensitive;
+                    options.JsonSerializerOptions.DefaultIgnoreCondition = DefaultJsonOptions.Options.DefaultIgnoreCondition;
+                    options.JsonSerializerOptions.Converters.Add(new JsonTypeConverter<JobTriggerDtoBase>(_loggerFactory, "TriggerType", JobTriggerTypeResolver));
+                });
         }
 
-        public void Configuration(IAppBuilder app)
+        /// <summary>
+        /// Configure application builder.
+        /// </summary>
+        /// <param name="app">Application builder.</param>
+        public void Configure(IApplicationBuilder app)
         {
-            var config = new HttpConfiguration();
+            app.UsePathBase(new Uri(_configuration.BackendAddress).AbsolutePath);
 
-            // Set the resolved to the service provider that gets injected when constructing this component
-            config.DependencyResolver = new DependencyResolverAdapter(this.dependencyResolver);
+            app.UseRouting();
 
-            // Add trace logger for exceptions
-            config.Services.Add(typeof(IExceptionLogger), new TraceSourceExceptionLogger(Logger));
+            app.UseCors(options => options.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
 
-            // Controllers all have attributes
-            config.MapHttpAttributeRoutes();
-
-            // Prevent IE from caching GET requests
-            config.Filters.Add(new DontCacheGetRequests());
-
-            // Serialization
-            var jsonSerializerSettings = new JsonSerializerSettings() { ContractResolver = new CamelCasePropertyNamesContractResolver(), NullValueHandling = NullValueHandling.Ignore };
-            jsonSerializerSettings.Converters.Add(new JsonTypeConverter<JobTriggerDtoBase>("TriggerType", this.JobTriggerTypeResolver));
-            config.Formatters.JsonFormatter.SerializerSettings = jsonSerializerSettings;
-
-            // Remove XML response format
-            var appXmlType = config.Formatters.XmlFormatter.SupportedMediaTypes.FirstOrDefault(t => t.MediaType == "application/xml");
-            config.Formatters.XmlFormatter.SupportedMediaTypes.Remove(appXmlType);
-
-            // enable cors
-            config.EnableCors(new EnableCorsAttribute("*", "*", "*"));
-
-            // Finally attach WebApi to the pipeline with the given configuration
-            app.UseWebApi(config);
-            app.UseCors(CorsOptions.AllowAll);
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers();
+            });
         }
 
-        private Type JobTriggerTypeResolver(List<Type> types, string typeValue)
+        private static Type JobTriggerTypeResolver(List<Type> types, string typeValue)
         {
             if (typeValue.ToLowerInvariant() == RecurringTriggerDto.Type.ToLowerInvariant())
             {

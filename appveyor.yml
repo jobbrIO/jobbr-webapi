@@ -1,4 +1,4 @@
-image: Visual Studio 2019
+image: Visual Studio 2022
 
 branches:
   only:
@@ -21,7 +21,7 @@ assembly_info:
 
 before_build:
   - nuget restore source/Jobbr.WebAPI.sln
-  - ps: C:\ProgramData\chocolatey\lib\GitVersion.Portable\tools\GitVersion.exe /l console /output buildserver /updateAssemblyInfo
+  - ps: C:\ProgramData\chocolatey\lib\GitVersion.Portable\tools\GitVersion.exe /l console /output buildserver /updateprojectfiles
 
 platform: Any CPU
 configuration: Release

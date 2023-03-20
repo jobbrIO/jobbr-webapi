@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jobbr.Server.WebAPI", "Jobb
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jobbr.Client", "Jobbr.Client\Jobbr.Client.csproj", "{79CF40B0-F063-4CA7-826B-7C92C0BE8232}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jobbr.WebApi.Tests", "Jobbr.WebApi.Tests\Jobbr.WebApi.Tests.csproj", "{CB3FE911-7034-471C-A2D7-CB89842423FC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jobbr.WebAPI.Tests", "Jobbr.WebAPI.Tests\Jobbr.WebAPI.Tests.csproj", "{CB3FE911-7034-471C-A2D7-CB89842423FC}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "build", "build", "{DE622AEC-8921-456F-8E2E-0A459F9BDA28}"
 	ProjectSection(SolutionItems) = preProject
@@ -28,7 +28,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "sandbox", "sandbox", "{3810
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sandbox.JobServer", "Sandbox.JobServer\Sandbox.JobServer.csproj", "{28B3BFFA-26E2-4A0E-A329-B6FD729FB981}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sandbox.JobRunner", "Sanbox.JobRunner\Sandbox.JobRunner.csproj", "{C75CE4B3-EF65-45B8-A1D2-E5D5CA6F1157}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sandbox.JobRunner", "Sandbox.JobRunner\Sandbox.JobRunner.csproj", "{C75CE4B3-EF65-45B8-A1D2-E5D5CA6F1157}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

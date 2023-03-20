@@ -1,9 +1,10 @@
 using System;
+using System.Threading.Tasks;
 using Jobbr.ComponentModel.Registration;
-using Jobbr.Server.WebAPI.Logging;
-using Microsoft.Owin.Hosting;
-using Microsoft.Owin.Hosting.Services;
-using Microsoft.Owin.Hosting.Starter;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using SimpleInjector;
 
 namespace Jobbr.Server.WebAPI.Infrastructure
 {
@@ -12,81 +13,94 @@ namespace Jobbr.Server.WebAPI.Infrastructure
     /// </summary>
     public class WebHost : IJobbrComponent
     {
-        /// <summary>
-        /// The logger.
-        /// </summary>
-        private static readonly ILog Logger = LogProvider.For<WebHost>();
+        private readonly ILogger _logger;
+        private readonly InstanceProducer[] _serviceCollection;
+        private readonly JobbrWebApiConfiguration _configuration;
 
-        /// <summary>
-        /// The dependency resolver.
-        /// </summary>
-        private readonly IJobbrServiceProvider dependencyResolver;
-
-        /// <summary>
-        /// The configuration for this component
-        /// </summary>
-        private readonly JobbrWebApiConfiguration configuration;
-
-        /// <summary>
-        /// The webhost that serves for the OWIN WebAPI component
-        /// </summary>
-        private IDisposable webHost;
+        private IWebHost _webHost;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="WebHost"/> class.
         /// </summary>
-        public WebHost(IJobbrServiceProvider dependencyResolver, JobbrWebApiConfiguration configuration)
+        /// <param name="loggerFactory">The logger factory.</param>
+        /// <param name="container">The service injector container.</param>
+        /// <param name="configuration">Web API configuration.</param>
+        public WebHost(ILoggerFactory loggerFactory, Container container, JobbrWebApiConfiguration configuration)
         {
-            this.dependencyResolver = dependencyResolver;
-            this.configuration = configuration;
+            _logger = loggerFactory.CreateLogger<WebHost>();
+            _serviceCollection = container.GetCurrentRegistrations();
+            _configuration = configuration;
         }
 
         /// <summary>
-        /// Start the component
+        /// Start the web host.
         /// </summary>
         public void Start()
         {
-            this.AssertBackendAddressIsValid();
-            
-            var services = (ServiceProvider)ServicesFactory.Create();
-            var options = new StartOptions()
+            if (_webHost != null)
             {
-                Urls = { this.configuration.BackendAddress },
-                AppStartup = typeof(Startup).FullName
-            };
-            // Pass through the IJobbrServiceProvider to allow Startup-Classes to let them inject this dependency
-            services.Add(typeof(IJobbrServiceProvider), () => this.dependencyResolver);
+                throw new InvalidOperationException("The server has already been started.");
+            }
 
-            var hostingStarter = services.GetService<IHostingStarter>();
-            this.webHost = hostingStarter.Start(options);
+            AssertBackendAddressIsValid();
 
-            Logger.InfoFormat($"Started OWIN-Host for WebAPI at '{this.configuration.BackendAddress}'.");
+            _webHost = new WebHostBuilder()
+                .UseKestrel()
+                .UseUrls(new Uri(_configuration.BackendAddress).GetLeftPart(UriPartial.Authority))
+                .ConfigureServices(services =>
+                {
+                    foreach (var instanceProducer in _serviceCollection)
+                    {
+                        services.Add(new ServiceDescriptor(instanceProducer.ServiceType, instanceProducer.GetInstance()));
+                    }
+                })
+                .UseStartup<Startup>()
+                .Build();
+
+            _webHost.Start();
+
+            _logger.LogInformation("Started web host for WebAPI at '{backendAddress}'.", _configuration.BackendAddress);
         }
 
+        /// <summary>
+        /// Stop web host.
+        /// </summary>
         public void Stop()
         {
-            Logger.InfoFormat("Stopping OWIN-Host for Web-Endpoints'");
-
-            this.webHost?.Dispose();
-
-            this.webHost = null;
+            Task.FromResult(_webHost.StopAsync());
         }
 
+        /// <summary>
+        /// Dispose.
+        /// </summary>
         public void Dispose()
         {
-            this.webHost.Dispose();
-            this.webHost = null;
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        /// <summary>
+        /// Conditional dispose.
+        /// </summary>
+        /// <param name="disposing">If should be disposed.</param>
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                Task.Run(async () => await _webHost.StopAsync());
+                _webHost?.Dispose();
+            }
         }
 
         private void AssertBackendAddressIsValid()
         {
-            if (string.IsNullOrWhiteSpace(this.configuration.BackendAddress))
+            if (string.IsNullOrWhiteSpace(_configuration.BackendAddress))
             {
                 throw new ArgumentException("Unable to start WebServer when no BackendUrl is specified.");
             }
-            var uri = new Uri(this.configuration.BackendAddress);
-            if (uri.Scheme != Uri.UriSchemeHttp &&
-                uri.Scheme != Uri.UriSchemeHttps)
+
+            var uri = new Uri(_configuration.BackendAddress);
+            if (uri.Scheme != Uri.UriSchemeHttp && uri.Scheme != Uri.UriSchemeHttps)
             {
                 throw new FormatException("No valid UriScheme was given. Please provide a scheme like http(s)");
             }

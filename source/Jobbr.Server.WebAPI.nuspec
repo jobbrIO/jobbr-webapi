@@ -8,18 +8,21 @@
     <projectUrl>http://github.com/jobbrIO/jobbr-webapi</projectUrl>
     <license type="expression">GPL-3.0-only</license>
     <requireLicenseAcceptance>true</requireLicenseAcceptance>
-    <description>Adds Rest-style api to a Jobbr-Server</description>
-    <copyright>Copyright 2022</copyright>
+    <description>Adds Rest-style API to a Jobbr-Server</description>
+    <copyright>Copyright 2023</copyright>
     <icon>images\icon.png</icon>
     <dependencies>
-      <dependency id="Microsoft.Owin.Host.HttpListener" version="[4,5)"/>
-      <dependency id="Jobbr.ComponentModel.Registration" version="[1,1.1)"/>
-      <dependency id="Jobbr.ComponentModel.Management" version="[1.6,1.7)"/>
+      <dependency id="Jobbr.ComponentModel.Registration" version="[2.9,3.1)"/>
+      <dependency id="Jobbr.ComponentModel.Management" version="[2.9,3.1)"/>
+      <dependency id="Microsoft.Extensions.Logging.Abstractions" version="[6.0,6.1)" />
+      <dependency id="SimpleInjector" version="[5.4.1,5.5)" />
     </dependencies>
   </metadata>
   <files>
-    <file src="Jobbr.Server.WebAPI\bin\Release\netstandard2.0\Jobbr.Server.WebAPI.dll" target="lib\netstandard20"/>
-    <file src="Jobbr.Server.WebAPI\bin\Release\netstandard2.0\Jobbr.Server.WebAPI.pdb" target="lib\netstandard20"/>
+    <file src="Jobbr.Server.WebAPI\bin\Release\net6.0\Jobbr.Server.WebAPI.dll" target="lib\net6.0"/>
+    <file src="Jobbr.Server.WebAPI\bin\Release\net6.0\Jobbr.Server.WebAPI.pdb" target="lib\net6.0"/>
+    <file src="Jobbr.Server.WebAPI\bin\Release\net6.0\Jobbr.Server.WebAPI.Model.dll" target="lib\net6.0"/>
+    <file src="Jobbr.Server.WebAPI\bin\Release\net6.0\Jobbr.Server.WebAPI.Model.pdb" target="lib\net6.0"/>
     <file src="icon.png" target="images/"/>
   </files>
 </package>

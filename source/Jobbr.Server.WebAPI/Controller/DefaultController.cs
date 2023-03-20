@@ -1,43 +1,52 @@
 ﻿using System;
-using System.Web.Http;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Jobbr.Server.WebAPI.Controller
 {
     /// <summary>
     /// The default controller.
     /// </summary>
-    public class DefaultController : ApiController
+    [ApiController]
+    public class DefaultController : ControllerBase
     {
-        private readonly JobbrWebApiConfiguration configuration;
+        private readonly JobbrWebApiConfiguration _configuration;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DefaultController"/> class.
+        /// </summary>
+        /// <param name="configuration">Jobbr Web API configuration.</param>
         public DefaultController(JobbrWebApiConfiguration configuration)
         {
-            this.configuration = configuration;
+            _configuration = configuration;
         }
 
         /// <summary>
-        /// The are you fine.
+        /// Service health check.
         /// </summary>
-        /// <returns>
-        /// The <see cref="IHttpActionResult"/>.
-        /// </returns>
-        [HttpGet]
-        [Route("status")]
-        public IHttpActionResult AreYouFine()
+        /// <returns>OkResult with the text "Fine".</returns>
+        [HttpGet("status")]
+        public IActionResult AreYouFine()
         {
-            return this.Ok("Fine");
+            return Ok("Fine");
         }
 
-        [HttpGet]
-        [Route("configuration")]
-        public IHttpActionResult GetConfiguration()
+        /// <summary>
+        /// Get the Jobbr Web API configuration object.
+        /// </summary>
+        /// <returns>ActionResult with the configuration object.</returns>
+        [HttpGet("configuration")]
+        public IActionResult GetConfiguration()
         {
-            return this.Ok(this.configuration);
+            return Ok(_configuration);
         }
 
-        [HttpGet]
-        [Route("fail")]
-        public IHttpActionResult Fail()
+        /// <summary>
+        /// Intentionally throw an exception.
+        /// </summary>
+        /// <returns>Never returns.</returns>
+        /// <exception cref="Exception">Always throws.</exception>
+        [HttpGet("fail")]
+        public IActionResult Fail()
         {
             throw new Exception("This has failed!");
         }

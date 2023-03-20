@@ -1,57 +1,48 @@
-﻿using System;
-
-namespace Jobbr.Server.WebAPI.Model
+﻿namespace Jobbr.Server.WebAPI.Model
 {
     /// <summary>
-    /// The job trigger base.
+    /// The job trigger base
     /// </summary>
-    public abstract class JobTriggerDtoBase
+    public class JobTriggerDtoBase
     {
+        /// <summary>
+        /// Job Trigger ID
+        /// </summary>
         public long Id { get; set; }
 
-        public abstract string TriggerType { get; }
+        /// <summary>
+        /// Trigger Type overwritten by derived types
+        /// </summary>
+        public virtual string TriggerType { get; }
 
+        /// <summary>
+        /// Determines if the Trigger is active or not
+        /// </summary>
         public bool IsActive { get; set; }
 
+        /// <summary>
+        /// Custom instance of variable parameters for the Trigger
+        /// </summary>
         public object Parameters { get; set; }
 
+        /// <summary>
+        /// Documentation or audit comment for the Trigger
+        /// </summary>
         public string Comment { get; set; }
 
+        /// <summary>
+        /// ID of the User who created the Trigger
+        /// </summary>
         public string UserId { get; set; }
 
+        /// <summary>
+        /// Name of the User who created the Trigger
+        /// </summary>
         public string UserDisplayName { get; set; }
 
+        /// <summary>
+        /// Indicator whether the Trigger was soft-deleted
+        /// </summary>
         public bool Deleted { get; set; }
-    }
-
-    public class RecurringTriggerDto : JobTriggerDtoBase
-    {
-        public static string Type = "Recurring";
-
-        public override string TriggerType => Type;
-
-        public DateTime? StartDateTimeUtc { get; set; }
-
-        public DateTime? EndDateTimeUtc { get; set; }
-
-        public string Definition { get; set; }
-    }
-
-    public class ScheduledTriggerDto : JobTriggerDtoBase
-    {
-        public static string Type = "Scheduled";
-
-        public override string TriggerType => Type;
-
-        public DateTime StartDateTimeUtc { get; set; }
-    }
-
-    public class InstantTriggerDto : JobTriggerDtoBase
-    {
-        public static string Type = "Instant";
-
-        public override string TriggerType => Type;
-
-        public int DelayedMinutes { get; set; }
     }
 }

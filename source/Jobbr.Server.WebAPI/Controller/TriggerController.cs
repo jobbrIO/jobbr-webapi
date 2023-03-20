@@ -1,58 +1,76 @@
-﻿using System;
-using System.Net;
-using System.Web.Http;
-using Jobbr.ComponentModel.Management;
+﻿using Jobbr.ComponentModel.Management;
 using Jobbr.ComponentModel.Management.Model;
 using Jobbr.Server.WebAPI.Controller.Mapping;
 using Jobbr.Server.WebAPI.Model;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Jobbr.Server.WebAPI.Controller
 {
-    public class TriggerController : ApiController
+    /// <summary>
+    /// Job trigger controller.
+    /// </summary>
+    [ApiController]
+    public class TriggerController : ControllerBase
     {
-        private readonly IQueryService queryService;
-        private readonly IJobManagementService jobManagementService;
+        private readonly IQueryService _queryService;
+        private readonly IJobManagementService _jobManagementService;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TriggerController"/> class.
+        /// </summary>
+        /// <param name="queryService">Query service for triggers.</param>
+        /// <param name="jobManagementService">Job management service.</param>
         public TriggerController(IQueryService queryService, IJobManagementService jobManagementService)
         {
-            this.queryService = queryService;
-            this.jobManagementService = jobManagementService;
+            _queryService = queryService;
+            _jobManagementService = jobManagementService;
         }
 
-        [HttpGet]
-        [Route("jobs/{jobId:long}/triggers/{triggerId:long}")]
-        public IHttpActionResult GetTriggerById(long jobId, long triggerId)
+        /// <summary>
+        /// Get trigger by job ID.
+        /// </summary>
+        /// <param name="jobId">Job ID.</param>
+        /// <param name="triggerId">Trigger ID.</param>
+        /// <returns>Trigger DTO.</returns>
+        [HttpGet("jobs/{jobId:long}/triggers/{triggerId:long}")]
+        public IActionResult GetTriggerById(long jobId, long triggerId)
         {
-            var trigger = this.queryService.GetTriggerById(jobId, triggerId);
+            var trigger = _queryService.GetTriggerById(jobId, triggerId);
 
             if (trigger == null)
             {
-                return this.NotFound();
+                return NotFound();
             }
 
-            return this.Ok(TriggerMapper.ConvertToDto((dynamic)trigger));
+            return Ok(TriggerMapper.ConvertToDto((dynamic)trigger));
         }
 
-        [HttpPatch]
-        [Route("jobs/{jobId:long}/triggers/{triggerId:long}")]
-        public IHttpActionResult UpdateTrigger(long jobId, long triggerId, [FromBody] JobTriggerDtoBase dto)
+        /// <summary>
+        /// Update job trigger.
+        /// </summary>
+        /// <param name="jobId">Job ID.</param>
+        /// <param name="triggerId">Trigger ID.</param>
+        /// <param name="dto">Information for updating.</param>
+        /// <returns>The given DTO.</returns>
+        [HttpPatch("jobs/{jobId:long}/triggers/{triggerId:long}")]
+        public IActionResult UpdateTrigger(long jobId, long triggerId, [FromBody] JobTriggerDtoBase dto)
         {
-            var currentTrigger = this.queryService.GetTriggerById(jobId, triggerId);
+            var currentTrigger = _queryService.GetTriggerById(jobId, triggerId);
 
             if (currentTrigger == null)
             {
-                return this.NotFound();
+                return NotFound();
             }
 
             if (currentTrigger.IsActive && !dto.IsActive)
             {
                 currentTrigger.IsActive = false;
-                this.jobManagementService.DisableTrigger(jobId, currentTrigger.Id);
+                _jobManagementService.DisableTrigger(jobId, currentTrigger.Id);
             }
             else if (!currentTrigger.IsActive && dto.IsActive)
             {
                 currentTrigger.IsActive = true;
-                this.jobManagementService.EnableTrigger(jobId, currentTrigger.Id);
+                _jobManagementService.EnableTrigger(jobId, currentTrigger.Id);
             }
 
             if (dto is RecurringTriggerDto recurringTriggerDto)
@@ -61,7 +79,7 @@ namespace Jobbr.Server.WebAPI.Controller
                 trigger.Id = triggerId;
                 trigger.JobId = jobId;
 
-                this.jobManagementService.Update(trigger);
+                _jobManagementService.Update(trigger);
             }
             else if (dto is ScheduledTriggerDto scheduledTriggerDto)
             {
@@ -69,75 +87,99 @@ namespace Jobbr.Server.WebAPI.Controller
                 trigger.Id = triggerId;
                 trigger.JobId = jobId;
 
-                this.jobManagementService.Update(trigger);
+                _jobManagementService.Update(trigger);
             }
 
-            return this.Ok(dto);
+            return Ok(dto);
         }
 
-        [HttpGet]
-        [Route("jobs/{jobId:long}/triggers")]
-        public IHttpActionResult GetTriggersForJob(long jobId, int page = 1, int pageSize = 200, bool showDeleted = false)
+        /// <summary>
+        /// Get job triggers with job ID.
+        /// </summary>
+        /// <param name="jobId">Job ID.</param>
+        /// <param name="page">Page number.</param>
+        /// <param name="pageSize">Page size.</param>
+        /// <param name="showDeleted">If deleted triggers should be shown.</param>
+        /// <returns>Triggers as a paged result.</returns>
+        [HttpGet("jobs/{jobId:long}/triggers")]
+        public IActionResult GetTriggersForJob(long jobId, int page = 1, int pageSize = 200, bool showDeleted = false)
         {
-            var job = this.queryService.GetJobById(jobId);
+            var job = _queryService.GetJobById(jobId);
 
             if (job == null)
             {
-                return this.NotFound();
+                return NotFound();
             }
 
-            var triggers = this.queryService.GetTriggersByJobId(jobId, page, pageSize, showDeleted);
-            
-            return this.Ok(triggers.ToPagedResult());
+            var triggers = _queryService.GetTriggersByJobId(jobId, page, pageSize, showDeleted);
+
+            return Ok(triggers.ToPagedResult());
         }
 
-        [HttpGet]
-        [Route("jobs/{uniqueName}/triggers")]
-        public IHttpActionResult GetTriggersForJob(string uniqueName, int page = 1, int pageSize = 200, bool showDeleted = false)
+        /// <summary>
+        /// Get job triggers with unique name.
+        /// </summary>
+        /// <param name="uniqueName">Unique name.</param>
+        /// <param name="page">Page number.</param>
+        /// <param name="pageSize">Page size.</param>
+        /// <param name="showDeleted">Show deleted triggers.</param>
+        /// <returns>List of job triggers.</returns>
+        [HttpGet("jobs/{uniqueName}/triggers")]
+        public IActionResult GetTriggersForJob(string uniqueName, int page = 1, int pageSize = 200, bool showDeleted = false)
         {
-            var job = this.queryService.GetJobByUniqueName(uniqueName);
+            var job = _queryService.GetJobByUniqueName(uniqueName);
 
             if (job == null)
             {
-                return this.NotFound();
+                return NotFound();
             }
 
-            return this.Ok(this.queryService.GetTriggersByJobId(job.Id, page, pageSize, showDeleted));
+            return Ok(_queryService.GetTriggersByJobId(job.Id, page, pageSize, showDeleted));
         }
 
-        [HttpPost]
-        [Route("jobs/{jobId:long}/triggers")]
-        public IHttpActionResult AddTriggerForJobId(long jobId, [FromBody] JobTriggerDtoBase triggerDto)
+        /// <summary>
+        /// Add trigger for job with job ID.
+        /// </summary>
+        /// <param name="jobId">Job ID.</param>
+        /// <param name="triggerDto">Trigger data.</param>
+        /// <returns>Multiple different types of result based on success.</returns>
+        [HttpPost("jobs/{jobId:long}/triggers")]
+        public IActionResult AddTriggerForJobId(long jobId, [FromBody] JobTriggerDtoBase triggerDto)
         {
-            var job = this.queryService.GetJobById(jobId);
+            var job = _queryService.GetJobById(jobId);
 
             if (job == null)
             {
-                return this.NotFound();
+                return NotFound();
             }
 
-            return this.AddTrigger(triggerDto, job);
+            return AddTrigger(triggerDto, job);
         }
 
-        [HttpPost]
-        [Route("jobs/{uniqueName}/triggers")]
-        public IHttpActionResult AddTriggerForJobUniqueName(string uniqueName, [FromBody] JobTriggerDtoBase triggerDto)
+        /// <summary>
+        /// Add trigger for job with unique name.
+        /// </summary>
+        /// <param name="uniqueName">Unique name.</param>
+        /// <param name="triggerDto">Trigger data.</param>
+        /// <returns>Multiple different types of result based on success.</returns>
+        [HttpPost("jobs/{uniqueName}/triggers")]
+        public IActionResult AddTriggerForJobUniqueName(string uniqueName, [FromBody] JobTriggerDtoBase triggerDto)
         {
-            var job = this.queryService.GetJobByUniqueName(uniqueName);
+            var job = _queryService.GetJobByUniqueName(uniqueName);
 
             if (job == null)
             {
-                return this.NotFound();
+                return NotFound();
             }
 
-            return this.AddTrigger(triggerDto, job);
+            return AddTrigger(triggerDto, job);
         }
 
-        private IHttpActionResult AddTrigger(JobTriggerDtoBase triggerDto, Job job)
+        private IActionResult AddTrigger(JobTriggerDtoBase triggerDto, Job job)
         {
             if (triggerDto == null)
             {
-                return this.StatusCode(HttpStatusCode.BadRequest);
+                return BadRequest();
             }
 
             if (triggerDto is InstantTriggerDto)
@@ -148,9 +190,9 @@ namespace Jobbr.Server.WebAPI.Controller
             var trigger = TriggerMapper.ConvertToTrigger(triggerDto as dynamic);
             ((IJobTrigger)trigger).JobId = job.Id;
 
-            this.jobManagementService.AddTrigger(job.Id, trigger);
+            _jobManagementService.AddTrigger(job.Id, trigger);
 
-            return this.Created(string.Format("jobs/{0}/triggers/{1}", job.Id, trigger.Id), TriggerMapper.ConvertToDto(trigger));
+            return Created(string.Format("jobs/{0}/triggers/{1}", job.Id, trigger.Id), TriggerMapper.ConvertToDto(trigger));
         }
     }
 }

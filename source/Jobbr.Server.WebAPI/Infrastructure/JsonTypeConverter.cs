@@ -2,45 +2,50 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using Jobbr.Server.WebAPI.Logging;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using Newtonsoft.Json.Serialization;
+using System.Text.Json;
+using System.Text.Json.Serialization;
+using Microsoft.Extensions.Logging;
 
 namespace Jobbr.Server.WebAPI.Infrastructure
 {
     /// <summary>
     /// Inspired by code from Michael Schnyder.
-    /// Deserializes JSON to an .NET object with type <paramref name="TType"/>
+    /// Deserializes JSON to an .NET object with type <paramref name="TType"/>.
     /// </summary>
-    /// <typeparam name="TType">
-    /// </typeparam>
-    public class JsonTypeConverter<TType> : JsonConverter
+    /// <typeparam name="TType">Object type.</typeparam>
+    public class JsonTypeConverter<TType> : JsonConverter<TType>
     {
-        private static readonly ILog Logger = LogProvider.For<JsonTypeConverter<TType>>();
+        private static ILogger<JsonTypeConverter<TType>> _logger;
 
         /// <summary>
         /// The cached types.
         /// </summary>
-        private static List<Type> possibleTypes;
+        private static List<Type> _possibleTypes;
 
         /// <summary>
         /// The prop selector name.
         /// </summary>
-        private readonly string propSelectorName;
+        private readonly string _propSelectorName;
 
-        private readonly Func<List<Type>, string, Type> resolver;
+        private readonly Func<List<Type>, string, Type> _resolver;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="JsonTypeConverter{TType}"/> class.
         /// </summary>
-        /// <param name="propSelectorName">
-        /// The prop selector name.
+        /// <param name="loggerFactory">
+        ///     The logger factory.
         /// </param>
-        public JsonTypeConverter(string propSelectorName, Func<List<Type>, string, Type> resolver)
+        /// <param name="propSelectorName">
+        ///     The prop selector name.
+        /// </param>
+        /// <param name="resolver">
+        ///     The type resolver.
+        /// </param>
+        public JsonTypeConverter(ILoggerFactory loggerFactory, string propSelectorName, Func<List<Type>, string, Type> resolver)
         {
-            this.propSelectorName = propSelectorName;
-            this.resolver = resolver;
+            _logger = loggerFactory.CreateLogger<JsonTypeConverter<TType>>();
+            _propSelectorName = propSelectorName;
+            _resolver = resolver;
         }
 
         /// <summary>
@@ -51,34 +56,44 @@ namespace Jobbr.Server.WebAPI.Infrastructure
         /// </param>
         public JsonTypeConverter(string propSelectorName)
         {
-            this.propSelectorName = propSelectorName;
-            this.resolver = DefaultResolver;
+            _propSelectorName = propSelectorName;
+            _resolver = DefaultResolver;
         }
 
-        public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
+        /// <summary>
+        /// Serialize value.
+        /// </summary>
+        /// <param name="writer">JSON writer.</param>
+        /// <param name="value">Value to serialize.</param>
+        /// <param name="options">Serializer options.</param>
+        public override void Write(Utf8JsonWriter writer, TType value, JsonSerializerOptions options)
         {
-            var seri = new JsonSerializer();
-
-            seri.ContractResolver = new CamelCasePropertyNamesContractResolver();
-            seri.NullValueHandling = NullValueHandling.Ignore;
-
-            seri.Serialize(writer, value);
+            JsonSerializer.Serialize(writer, value, CopyJsonSerializerOptions(options));
         }
 
-        public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
+        /// <summary>
+        /// Deserialize type.
+        /// </summary>
+        /// <param name="reader">JSON reader.</param>
+        /// <param name="typeToConvert">Type to deserialize.</param>
+        /// <param name="options">JSON serializer options.</param>
+        /// <returns>Read type.</returns>
+        public override TType Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {
-            // Load JObject from stream 
-            JObject jObject = JObject.Load(reader);
+            using (var jsonDocument = JsonDocument.ParseValue(ref reader))
+            {
+                var type = GetTypeFromJsonProperty(jsonDocument.RootElement);
+                var jsonObject = jsonDocument.RootElement.GetRawText();
 
-            // Create target object based on JObject 
-            var target = this.CreateInstanceForType(jObject);
-
-            // Populate the object properties 
-            serializer.Populate(jObject.CreateReader(), target);
-
-            return target;
+                return (TType)JsonSerializer.Deserialize(jsonObject, type, CopyJsonSerializerOptions(options));
+            }
         }
 
+        /// <summary>
+        /// If type can be converted.
+        /// </summary>
+        /// <param name="objectType">Object type.</param>
+        /// <returns>True if convertable, false if not.</returns>
         public override bool CanConvert(Type objectType)
         {
             return typeof(TType).IsAssignableFrom(objectType);
@@ -88,52 +103,52 @@ namespace Jobbr.Server.WebAPI.Infrastructure
         {
             try
             {
-                if (possibleTypes == null)
+                if (_possibleTypes == null)
                 {
-                    possibleTypes = AppDomain.CurrentDomain.GetAssemblies().SelectMany(a => a.GetTypes()).Where(t => t.IsSubclassOf(typeof(TType)) || typeof(TType).IsAssignableFrom(t)).ToList();
+                    _possibleTypes = AppDomain.CurrentDomain.GetAssemblies().SelectMany(a => a.GetTypes()).Where(t => t.IsSubclassOf(typeof(TType)) || typeof(TType).IsAssignableFrom(t)).ToList();
                 }
             }
             catch (ReflectionTypeLoadException e)
             {
-                Logger.ErrorException(e.Message, e);
+                _logger.LogError(e, e.Message);
 
                 foreach (var loaderException in e.LoaderExceptions)
                 {
-                    Logger.ErrorException(loaderException.Message, loaderException);
+                    _logger.LogError(loaderException, loaderException?.Message);
                 }
 
                 throw;
             }
 
-            return possibleTypes;
+            return _possibleTypes;
         }
 
-        private TType CreateInstanceForType(JObject jObject)
+        private Type GetTypeFromJsonProperty(JsonElement jsonObject)
         {
-            var property = jObject.Properties().FirstOrDefault(p => p.Name.ToLowerInvariant() == this.propSelectorName.ToLowerInvariant());
+            var property = jsonObject.EnumerateObject().FirstOrDefault(p => p.Name.ToLowerInvariant() == _propSelectorName.ToLowerInvariant());
 
-            if (property == null)
+            if (property.Value.ValueKind == JsonValueKind.Undefined)
             {
-                throw new ArgumentException(string.Format("The json didn't contain a property named '{0}'!", this.propSelectorName));
+                throw new ArgumentException($"The json didn't contain a property named '{_propSelectorName}'!");
             }
 
-            var typeValue = (string)property.Value;
+            var typeValue = property.Value.GetString();
 
             if (typeValue == null)
             {
-                throw new ArgumentException(string.Format("The property '{0}' was null!", this.propSelectorName));
+                throw new ArgumentException($"The property '{_propSelectorName}' was null!");
             }
 
             var typesFromAllAssemblies = GetTypesFromAllAssemblies();
 
-            var type = this.resolver(typesFromAllAssemblies, typeValue);
+            var type = _resolver(typesFromAllAssemblies, typeValue);
 
             if (type == null)
             {
-                throw new ArgumentException(string.Format("The cannot create object for empty type", typeValue));
+                throw new ArgumentException($"Cannot create object for empty type {typeValue}", nameof(typeValue));
             }
 
-            return (TType)Activator.CreateInstance(type);
+            return type;
         }
 
         private static Type DefaultResolver(IEnumerable<Type> typesFromAllAssemblies, string type)
@@ -145,15 +160,25 @@ namespace Jobbr.Server.WebAPI.Infrastructure
 
             if (!types.Any())
             {
-                throw new ArgumentException(string.Format("The Message-type '{0}' is not supported!", type));
+                throw new ArgumentException($"The Message-type '{type}' is not supported!", nameof(type));
             }
 
             if (types.Count() > 1)
             {
-                throw new ArgumentException(string.Format("multiple types for typename '{0}' found!", type));
+                throw new ArgumentException($"multiple types for typename '{type}' found!", nameof(type));
             }
-            
+
             return types.First();
+        }
+
+        private static JsonSerializerOptions CopyJsonSerializerOptions(JsonSerializerOptions options)
+        {
+            return new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = options.PropertyNameCaseInsensitive,
+                PropertyNamingPolicy = options.PropertyNamingPolicy,
+                DefaultIgnoreCondition = options.DefaultIgnoreCondition,
+            };
         }
     }
 }
