@@ -1,5 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using System;
+﻿using System;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Jobbr.Server.WebAPI.Controller
 {
@@ -11,29 +11,40 @@ namespace Jobbr.Server.WebAPI.Controller
     {
         private readonly JobbrWebApiConfiguration _configuration;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DefaultController"/> class.
+        /// </summary>
+        /// <param name="configuration">Jobbr Web API configuration.</param>
         public DefaultController(JobbrWebApiConfiguration configuration)
         {
             _configuration = configuration;
         }
 
         /// <summary>
-        /// The are you fine.
+        /// Service health check.
         /// </summary>
-        /// <returns>
-        /// The <see cref="IActionResult"/>.
-        /// </returns>
+        /// <returns>OkResult with the text "Fine".</returns>
         [HttpGet("status")]
         public IActionResult AreYouFine()
         {
             return Ok("Fine");
         }
 
+        /// <summary>
+        /// Get the Jobbr Web API configuration object.
+        /// </summary>
+        /// <returns>ActionResult with the configuration object.</returns>
         [HttpGet("configuration")]
         public IActionResult GetConfiguration()
         {
             return Ok(_configuration);
         }
 
+        /// <summary>
+        /// Intentionally throw an exception.
+        /// </summary>
+        /// <returns>Never returns.</returns>
+        /// <exception cref="Exception">Always throws.</exception>
         [HttpGet("fail")]
         public IActionResult Fail()
         {

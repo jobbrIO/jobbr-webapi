@@ -10,10 +10,9 @@ namespace Jobbr.Server.WebAPI.Infrastructure
 {
     /// <summary>
     /// Inspired by code from Michael Schnyder.
-    /// Deserializes JSON to an .NET object with type <paramref name="TType"/>
+    /// Deserializes JSON to an .NET object with type <paramref name="TType"/>.
     /// </summary>
-    /// <typeparam name="TType">
-    /// </typeparam>
+    /// <typeparam name="TType">Object type.</typeparam>
     public class JsonTypeConverter<TType> : JsonConverter<TType>
     {
         private static ILogger<JsonTypeConverter<TType>> _logger;
@@ -42,8 +41,7 @@ namespace Jobbr.Server.WebAPI.Infrastructure
         /// <param name="resolver">
         ///     The type resolver.
         /// </param>
-        public JsonTypeConverter(ILoggerFactory loggerFactory, string propSelectorName,
-            Func<List<Type>, string, Type> resolver)
+        public JsonTypeConverter(ILoggerFactory loggerFactory, string propSelectorName, Func<List<Type>, string, Type> resolver)
         {
             _logger = loggerFactory.CreateLogger<JsonTypeConverter<TType>>();
             _propSelectorName = propSelectorName;
@@ -62,11 +60,24 @@ namespace Jobbr.Server.WebAPI.Infrastructure
             _resolver = DefaultResolver;
         }
 
+        /// <summary>
+        /// Serialize value.
+        /// </summary>
+        /// <param name="writer">JSON writer.</param>
+        /// <param name="value">Value to serialize.</param>
+        /// <param name="options">Serializer options.</param>
         public override void Write(Utf8JsonWriter writer, TType value, JsonSerializerOptions options)
         {
             JsonSerializer.Serialize(writer, value, CopyJsonSerializerOptions(options));
         }
 
+        /// <summary>
+        /// Deserialize type.
+        /// </summary>
+        /// <param name="reader">JSON reader.</param>
+        /// <param name="typeToConvert">Type to deserialize.</param>
+        /// <param name="options">JSON serializer options.</param>
+        /// <returns>Read type.</returns>
         public override TType Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {
             using (var jsonDocument = JsonDocument.ParseValue(ref reader))
@@ -78,6 +89,11 @@ namespace Jobbr.Server.WebAPI.Infrastructure
             }
         }
 
+        /// <summary>
+        /// If type can be converted.
+        /// </summary>
+        /// <param name="objectType">Object type.</param>
+        /// <returns>True if convertable, false if not.</returns>
         public override bool CanConvert(Type objectType)
         {
             return typeof(TType).IsAssignableFrom(objectType);

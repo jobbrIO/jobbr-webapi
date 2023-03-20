@@ -2,7 +2,7 @@
 using Jobbr.Client;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Jobbr.WebApi.Tests
+namespace Jobbr.WebAPI.Tests
 {
     [TestClass]
     public class HostingUrlTests : IntegrationTestBase
@@ -74,7 +74,7 @@ namespace Jobbr.WebApi.Tests
         }
 
         [TestMethod]
-        public void ServerWithdHostPathDash_AccessHostPathPlain_NoError()
+        public void ServerWithHostPathDash_AccessHostPathPlain_NoError()
         {
             var host = $"http://localhost:{NextFreeTcpPort()}";
 

@@ -1,10 +1,10 @@
+using System;
+using System.Threading.Tasks;
 using Jobbr.ComponentModel.Registration;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using SimpleInjector;
-using System;
-using System.Threading.Tasks;
 
 namespace Jobbr.Server.WebAPI.Infrastructure
 {
@@ -13,10 +13,11 @@ namespace Jobbr.Server.WebAPI.Infrastructure
     /// </summary>
     public class WebHost : IJobbrComponent
     {
-        private IWebHost _webHost;
         private readonly ILogger _logger;
         private readonly InstanceProducer[] _serviceCollection;
         private readonly JobbrWebApiConfiguration _configuration;
+
+        private IWebHost _webHost;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="WebHost"/> class.
@@ -61,17 +62,27 @@ namespace Jobbr.Server.WebAPI.Infrastructure
             _logger.LogInformation("Started web host for WebAPI at '{backendAddress}'.", _configuration.BackendAddress);
         }
 
+        /// <summary>
+        /// Stop web host.
+        /// </summary>
         public void Stop()
         {
             Task.FromResult(_webHost.StopAsync());
         }
 
+        /// <summary>
+        /// Dispose.
+        /// </summary>
         public void Dispose()
         {
             Dispose(true);
             GC.SuppressFinalize(this);
         }
 
+        /// <summary>
+        /// Conditional dispose.
+        /// </summary>
+        /// <param name="disposing">If should be disposed.</param>
         protected virtual void Dispose(bool disposing)
         {
             if (disposing)
@@ -87,9 +98,9 @@ namespace Jobbr.Server.WebAPI.Infrastructure
             {
                 throw new ArgumentException("Unable to start WebServer when no BackendUrl is specified.");
             }
+
             var uri = new Uri(_configuration.BackendAddress);
-            if (uri.Scheme != Uri.UriSchemeHttp &&
-                uri.Scheme != Uri.UriSchemeHttps)
+            if (uri.Scheme != Uri.UriSchemeHttp && uri.Scheme != Uri.UriSchemeHttps)
             {
                 throw new FormatException("No valid UriScheme was given. Please provide a scheme like http(s)");
             }
