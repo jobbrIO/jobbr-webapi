@@ -14,7 +14,7 @@
     <DebugType>pdbonly</DebugType>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Jobbr.Runtime.ForkedExecution" Version="3.0.0-rc.7" />
+    <PackageReference Include="Jobbr.Runtime.ForkedExecution" Version="3.0.0" />
     <PackageReference Include="Microsoft.Extensions.Logging" Version="6.0.0" />
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="6.0.3" />
   </ItemGroup>

@@ -23,13 +23,13 @@
   </PropertyGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
   <ItemGroup>
-    <PackageReference Include="Jobbr.Server" Version="3.0.0-rc.8" />
+    <PackageReference Include="Jobbr.Server" Version="3.0.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.4.0" />
     <PackageReference Include="MSTest.TestAdapter" Version="3.0.0" />
     <PackageReference Include="MSTest.TestFramework" Version="3.0.0" />
-    <PackageReference Include="Jobbr.ComponentModel.JobStorage" Version="3.0.0-rc.2" />
-    <PackageReference Include="Jobbr.ComponentModel.ArtefactStorage" Version="3.0.0-rc.1" />
-    <PackageReference Include="Jobbr.ComponentModel.Execution" Version="3.0.0-rc.1" />
+    <PackageReference Include="Jobbr.ComponentModel.JobStorage" Version="3.0.0" />
+    <PackageReference Include="Jobbr.ComponentModel.ArtefactStorage" Version="3.0.0" />
+    <PackageReference Include="Jobbr.ComponentModel.Execution" Version="3.0.0" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Jobbr.Client\Jobbr.Client.csproj" />

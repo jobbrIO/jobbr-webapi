@@ -16,12 +16,12 @@
     <DebugType>pdbonly</DebugType>
   </PropertyGroup>
     <ItemGroup>
-    <PackageReference Include="Jobbr.Server" Version="3.0.0-rc.8" />
-    <PackageReference Include="Jobbr.Execution.Forked" Version="3.0.0-rc.7" />
-    <PackageReference Include="Jobbr.Storage.MsSql" Version="3.0.0-rc.8" />
-    <PackageReference Include="Jobbr.ComponentModel.JobStorage" Version="3.0.0-rc.2" />
-    <PackageReference Include="Jobbr.ComponentModel.ArtefactStorage" Version="3.0.0-rc.1" />
-    <PackageReference Include="Jobbr.ComponentModel.Execution" Version="3.0.0-rc.1" />
+    <PackageReference Include="Jobbr.Server" Version="3.0.0" />
+    <PackageReference Include="Jobbr.Execution.Forked" Version="3.0.0" />
+    <PackageReference Include="Jobbr.Storage.MsSql" Version="3.0.0" />
+    <PackageReference Include="Jobbr.ComponentModel.JobStorage" Version="3.0.0" />
+    <PackageReference Include="Jobbr.ComponentModel.ArtefactStorage" Version="3.0.0" />
+    <PackageReference Include="Jobbr.ComponentModel.Execution" Version="3.0.0" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Jobbr.Server.WebAPI\Jobbr.Server.WebAPI.csproj" />
