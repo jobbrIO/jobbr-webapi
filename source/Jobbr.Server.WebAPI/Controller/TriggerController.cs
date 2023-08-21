@@ -75,9 +75,13 @@ namespace Jobbr.Server.WebAPI.Controller
 
             if (dto is RecurringTriggerDto recurringTriggerDto)
             {
+                var existingTrigger = (RecurringTrigger)currentTrigger;
                 var trigger = TriggerMapper.ConvertToTrigger(recurringTriggerDto);
                 trigger.Id = triggerId;
                 trigger.JobId = jobId;
+                trigger.Definition = recurringTriggerDto.Definition ?? existingTrigger.Definition;
+                trigger.StartDateTimeUtc = recurringTriggerDto.StartDateTimeUtc ?? existingTrigger.StartDateTimeUtc;
+                trigger.EndDateTimeUtc = recurringTriggerDto.EndDateTimeUtc ?? existingTrigger.EndDateTimeUtc;
 
                 _jobManagementService.Update(trigger);
             }
