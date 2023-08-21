@@ -317,12 +317,18 @@ namespace Jobbr.WebAPI.Tests
         {
             using (GivenRunningServerWithWebApi())
             {
+                const string definition = "0 0 * * 6";
+
                 var client = new JobbrClient(BackendAddress);
 
                 var job = new Job();
                 JobStorage.AddJob(job);
 
-                var trigger = new RecurringTrigger();
+                var trigger = new RecurringTrigger
+                {
+                    Definition = definition
+                };
+
                 JobStorage.AddTrigger(job.Id, trigger);
 
                 var triggerDto = client.UpdateTrigger(job.Id, new RecurringTriggerDto { Id = trigger.Id, IsActive = true });
@@ -330,9 +336,11 @@ namespace Jobbr.WebAPI.Tests
                 Assert.IsNotNull(triggerDto);
                 Assert.IsTrue(triggerDto.IsActive);
 
-                var trigger2 = JobStorage.GetTriggerById(job.Id, trigger.Id);
+                var trigger2 = (RecurringTrigger)JobStorage.GetTriggerById(job.Id, trigger.Id);
 
                 Assert.IsTrue(trigger2.IsActive);
+                Assert.IsNotNull(trigger2.Definition);
+                Assert.IsTrue(trigger2.Definition == definition);
             }
         }
 
