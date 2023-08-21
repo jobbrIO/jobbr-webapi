@@ -78,12 +78,28 @@ namespace Jobbr.Server.WebAPI.Controller.Mapping
         }
 
         /// <summary>
+        /// Maps common trigger values to a paged DTO result.
+        /// </summary>
+        /// <param name="data">Paged result of trigger that use the <see cref="IJobTrigger"/> interface.</param>
+        /// <returns>Paged result of the base class with the trigger values.</returns>
+        internal static PagedResultDto<JobTriggerDtoBase> ToPagedResult(this PagedResult<IJobTrigger> data)
+        {
+            return new PagedResultDto<JobTriggerDtoBase>
+            {
+                Page = data.Page,
+                PageSize = data.PageSize,
+                Items = data.Items.Select(t => ConvertToDto((dynamic)t)).Cast<JobTriggerDtoBase>().ToList(),
+                TotalItems = data.TotalItems
+            };
+        }
+
+        /// <summary>
         /// Maps common trigger values.
         /// </summary>
         /// <param name="trigger">Trigger that uses the <see cref="IJobTrigger"/> interface.</param>
         /// <param name="dto">Base class <see cref="JobTriggerDtoBase"/>.</param>
         /// <returns>Base class with the mapped values.</returns>
-        internal static JobTriggerDtoBase MapCommonValues(IJobTrigger trigger, JobTriggerDtoBase dto)
+        private static JobTriggerDtoBase MapCommonValues(IJobTrigger trigger, JobTriggerDtoBase dto)
         {
             dto.Id = trigger.Id;
             dto.Comment = trigger.Comment;
@@ -102,32 +118,16 @@ namespace Jobbr.Server.WebAPI.Controller.Mapping
         /// <param name="dto">Base class <see cref="JobTriggerDtoBase"/>.</param>
         /// <param name="trigger">Trigger that uses the <see cref="IJobTrigger"/> interface.</param>
         /// <returns>Trigger class with the mapped values.</returns>
-        internal static IJobTrigger MapCommonValues(JobTriggerDtoBase dto, IJobTrigger trigger)
+        private static IJobTrigger MapCommonValues(JobTriggerDtoBase dto, IJobTrigger trigger)
         {
             trigger.Comment = dto.Comment;
             trigger.IsActive = dto.IsActive;
-            trigger.Parameters = JsonSerializer.Serialize(dto.Parameters, DefaultJsonOptions.Options);
+            trigger.Parameters = trigger.Parameters is null ? null : JsonSerializer.Serialize(dto.Parameters, DefaultJsonOptions.Options);
             trigger.UserDisplayName = dto.UserDisplayName;
             trigger.UserId = dto.UserId;
             trigger.Deleted = dto.Deleted;
 
             return trigger;
-        }
-
-        /// <summary>
-        /// Maps common trigger values to a paged DTO result.
-        /// </summary>
-        /// <param name="data">Paged result of trigger that use the <see cref="IJobTrigger"/> interface.</param>
-        /// <returns>Paged result of the base class with the trigger values.</returns>
-        internal static PagedResultDto<JobTriggerDtoBase> ToPagedResult(this PagedResult<IJobTrigger> data)
-        {
-            return new PagedResultDto<JobTriggerDtoBase>
-            {
-                Page = data.Page,
-                PageSize = data.PageSize,
-                Items = data.Items.Select(t => ConvertToDto((dynamic)t)).Cast<JobTriggerDtoBase>().ToList(),
-                TotalItems = data.TotalItems
-            };
         }
     }
 }
