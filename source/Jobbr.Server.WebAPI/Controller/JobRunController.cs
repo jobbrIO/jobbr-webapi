@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Net.Http.Headers;
 using Jobbr.ComponentModel.Management;
 using Jobbr.ComponentModel.Management.Model;
 using Jobbr.Server.WebAPI.Controller.Mapping;
@@ -152,6 +149,7 @@ namespace Jobbr.Server.WebAPI.Controller
         /// <param name="filename">Filename.</param>
         /// <returns>The artifact.</returns>
         [HttpGet("jobruns/{jobRunId}/artefacts/{filename}")]
+        [Produces("application/octet-stream")]
         public IActionResult GetArtefact(long jobRunId, string filename)
         {
             var jobRun = _queryService.GetJobRunById(jobRunId);
@@ -163,14 +161,7 @@ namespace Jobbr.Server.WebAPI.Controller
 
             var fileStream = _jobManagementService.GetArtefactAsStream(jobRun.Id, filename);
 
-            var result = new HttpResponseMessage(HttpStatusCode.OK)
-            {
-                Content = new StreamContent(fileStream)
-            };
-
-            result.Content.Headers.ContentType = new MediaTypeHeaderValue("application/octet-stream");
-
-            return Ok(result);
+            return new FileStreamResult(fileStream, "application/octet-stream");
         }
 
         /// <summary>
