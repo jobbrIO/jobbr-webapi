@@ -1,3 +1,7 @@
+> [!IMPORTANT]  
+> This repository is obsolete.  
+> Development of Jobbr has been moved to the [jobbr mono-repo](https://github.com/jobbrIO/jobbr).
+
 # Jobbr Web API Extension [![Develop build status](https://img.shields.io/appveyor/ci/Jobbr/jobbr-webapi/develop.svg?label=develop)](https://ci.appveyor.com/project/Jobbr/jobbr-webapi)
 
 Adds Rest-style api to a Jobbr-Server and and provides a strong typed .NET Client for the [Jobbr .NET JobServer](http://www.jobbr.io). 
